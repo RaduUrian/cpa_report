@@ -1,0 +1,148 @@
+TITLE:
+  7.1 CPA 2-Factor Longitudinal ESEM – Target-Rotation Syntax
+  (Items 1 & 5 dropped)
+
+DATA:
+  FILE = data_ora_cpa.csv;
+
+!-------------------------------------------------
+! 1. VARIABLES  (drop items 1 & 5)
+!-------------------------------------------------
+VARIABLE:
+  NAMES =
+      ID site gender age_t1 age_t2
+      cpa_2_t1 cpa_4_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1
+      cpa_10_t1 cpa_11_rs_t1 cpa_12_t1
+      cpa_2_t2 cpa_4_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2
+      cpa_10_t2 cpa_11_rs_t2 cpa_12_t2 ;
+
+  USEVARIABLES =
+      cpa_2_t1 cpa_4_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1
+      cpa_10_t1 cpa_11_rs_t1 cpa_12_t1
+      cpa_2_t2 cpa_4_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2
+      cpa_10_t2 cpa_11_rs_t2 cpa_12_t2 ;
+
+  CATEGORICAL =
+      cpa_2_t1 cpa_4_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1
+      cpa_10_t1 cpa_11_rs_t1 cpa_12_t1
+      cpa_2_t2 cpa_4_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2
+      cpa_10_t2 cpa_11_rs_t2 cpa_12_t2 ;
+  MISSING     = ALL (-999);
+  IDVARIABLE  = ID;
+
+!-------------------------------------------------
+! 2. ANALYSIS
+!-------------------------------------------------
+ANALYSIS:
+  TYPE             = GENERAL;
+  ESTIMATOR        = WLSMV;
+  PARAMETERIZATION = THETA;
+  ROTATION         = TARGET;
+  ITERATIONS = 10000;
+
+!-------------------------------------------------
+! 3. MODEL  (Target matrix inside BY lines)
+!-------------------------------------------------
+MODEL:
+
+!---------------- WAVE-1  (Factors F1, F2) ----------------
+F1 BY
+cpa_2_t1~0    cpa_6_t1~0    cpa_7_t1*    cpa_9_t1*
+cpa_10_t1~0   cpa_11_rs_t1*
+cpa_4_t1~0   cpa_8_t1~0   cpa_12_t1~0 (*1);
+
+F2 BY
+cpa_4_t1*    cpa_8_t1*    cpa_12_t1*
+cpa_2_t1*   cpa_6_t1*   cpa_7_t1~0   cpa_9_t1~0
+cpa_10_t1*  cpa_11_rs_t1~0 (*1);
+
+!---------------- WAVE-2  (Factors F3, F4) ----------------
+F3 BY
+cpa_2_t2~0    cpa_6_t2~0    cpa_7_t2*    cpa_9_t2*
+cpa_10_t2~0   cpa_11_rs_t2*
+cpa_4_t2~0   cpa_8_t2~0   cpa_12_t2~0 (*2);
+
+F4 BY
+cpa_4_t2*    cpa_8_t2*    cpa_12_t2*
+cpa_2_t2*   cpa_6_t2*   cpa_7_t2~0   cpa_9_t2~0
+cpa_10_t2*  cpa_11_rs_t2~0 (*2);
+
+! same-item residual correlations across waves
+cpa_2_t1   WITH cpa_2_t2 ;
+cpa_4_t1   WITH cpa_4_t2 ;
+cpa_6_t1   WITH cpa_6_t2 ;
+cpa_7_t1   WITH cpa_7_t2 ;
+cpa_8_t1   WITH cpa_8_t2 ;
+cpa_9_t1   WITH cpa_9_t2 ;
+cpa_10_t1  WITH cpa_10_t2 ;
+cpa_11_rs_t1 WITH cpa_11_rs_t2 ;
+cpa_12_t1  WITH cpa_12_t2 ;
+
+!factor means
+[F1@0];
+[F2@0];
+[F3@0];
+[F4@0];
+
+!uniquenesses
+cpa_2_t1-cpa_12_t1@1;
+cpa_2_t2-cpa_12_t2;
+
+  !---- CPA-2 anchor item ------------------------------------------
+  [cpa_2_t1$1] (t2);        [cpa_2_t2$1] (t2);
+  [cpa_2_t1$2] (t2_2);   [cpa_2_t2$2] (t2_2);
+  [cpa_2_t1$3];  ! (t2_3)   [cpa_2_t2$3];  ! (t2_3)
+  [cpa_2_t1$4];  ! (t2_4)   [cpa_2_t2$4];  ! (t2_4)
+
+  !---- CPA-4 ------------------------------------------
+  [cpa_4_t1$1] (t3);        [cpa_4_t2$1] (t3);
+  [cpa_4_t1$2];  ! (t4_2)   [cpa_4_t2$2];  ! (t4_2)
+  [cpa_4_t1$3];  ! (t4_3)   [cpa_4_t2$3];  ! (t4_3)
+  [cpa_4_t1$4];  ! (t4_4)   [cpa_4_t2$4];  ! (t4_4)
+
+  !---- CPA-6 ------------------------------------------
+  [cpa_6_t1$1] (t5);        [cpa_6_t2$1] (t5);
+  [cpa_6_t1$2];  ! (t6_2)   [cpa_6_t2$2];  ! (t6_2)
+  [cpa_6_t1$3];  ! (t6_3)   [cpa_6_t2$3];  ! (t6_3)
+  [cpa_6_t1$4];  ! (t6_4)   [cpa_6_t2$4];  ! (t6_4)
+
+  !---- CPA-7 ------------------------------------------
+  [cpa_7_t1$1] (t6);        [cpa_7_t2$1] (t6);
+  [cpa_7_t1$2];  ! (t7_2)   [cpa_7_t2$2];  ! (t7_2)
+  [cpa_7_t1$3];  ! (t7_3)   [cpa_7_t2$3];  ! (t7_3)
+  [cpa_7_t1$4];  ! (t7_4)   [cpa_7_t2$4];  ! (t7_4)
+
+  !---- CPA-8 ------------------------------------------
+  [cpa_8_t1$1] (t7);        [cpa_8_t2$1] (t7);
+  [cpa_8_t1$2];  ! (t8_2)   [cpa_8_t2$2];  ! (t8_2)
+  [cpa_8_t1$3];  ! (t8_3)   [cpa_8_t2$3];  ! (t8_3)
+  [cpa_8_t1$4];  ! (t8_4)   [cpa_8_t2$4];  ! (t8_4)
+
+  !---- CPA-9 ------------------------------------------
+  [cpa_9_t1$1] (t8);        [cpa_9_t2$1] (t8);
+  [cpa_9_t1$2];  ! (t9_2)   [cpa_9_t2$2];  ! (t9_2)
+  [cpa_9_t1$3];  ! (t9_3)   [cpa_9_t2$3];  ! (t9_3)
+  [cpa_9_t1$4];  ! (t9_4)   [cpa_9_t2$4];  ! (t9_4)
+
+  !---- CPA-10 -----------------------------------------
+  [cpa_10_t1$1] (t9);       [cpa_10_t2$1] (t9);
+  [cpa_10_t1$2]; ! (t10_2)  [cpa_10_t2$2]; ! (t10_2)
+  [cpa_10_t1$3]; ! (t10_3)  [cpa_10_t2$3]; ! (t10_3)
+  [cpa_10_t1$4]; ! (t10_4)  [cpa_10_t2$4]; ! (t10_4)
+
+  !---- CPA-11 (rev-scored) -----------------------------
+  [cpa_11_rs_t1$1] (t10);   [cpa_11_rs_t2$1] (t10);
+  [cpa_11_rs_t1$2]; ! (t11_2) [cpa_11_rs_t2$2]; ! (t11_2)
+  [cpa_11_rs_t1$3]; ! (t11_3) [cpa_11_rs_t2$3]; ! (t11_3)
+  [cpa_11_rs_t1$4]; ! (t11_4) [cpa_11_rs_t2$4]; ! (t11_4)
+
+  !---- CPA-12 -----------------------------------------
+  [cpa_12_t1$1] (t11);      [cpa_12_t2$1] (t11);
+  [cpa_12_t1$2]; ! (t12_2)  [cpa_12_t2$2]; ! (t12_2)
+  [cpa_12_t1$3]; ! (t12_3)  [cpa_12_t2$3]; ! (t12_3)
+  [cpa_12_t1$4]; ! (t12_4)  [cpa_12_t2$4]; ! (t12_4)
+
+!-------------------------------------------------
+OUTPUT:
+  SAMPSTAT STANDARDIZED MODINDICES (ALL)
+  CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;

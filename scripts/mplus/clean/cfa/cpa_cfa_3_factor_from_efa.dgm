@@ -1,0 +1,377 @@
+VERSION 1.1.0
+INPUT
+DATA:
+  File = data_ora_cpa.csv;
+VARIABLE:
+  NAMES = ID site gender age_t1 age_group_t1 age_t2 age_group_t2
+  cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+    cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+    cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+    cpa_12_t2;
+  USEVARIABLES =   cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_9_t1 cpa_10_t1
+     cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+    cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_9_t2 cpa_10_t2
+    cpa_12_t2;
+    CATEGORICAL =
+  cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_9_t1 cpa_10_t1
+     cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+    cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_9_t2 cpa_10_t2
+    cpa_12_t2;
+    MISSING     = ALL (-999);
+    IDVARIABLE  = ID;
+DEFINE:
+  CUT cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_9_t1 cpa_10_t1
+     cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2
+    cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_9_t2 cpa_10_t2
+    cpa_12_t2 (2 3 4);
+ANALYSIS:
+  TYPE = General;
+  ESTIMATOR = WLSMV;
+  PARAMETERIZATION = THETA;
+  ITERATIONS = 10000;
+OUTPUT:
+SAMPSTAT STANDARDIZED MODINDICES CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;
+MODEL:
+  HE_T1 BY cpa_3_rs_t1* cpa_6_t1;
+  SH_T1 BY cpa_5_rs_t1* cpa_7_t1 cpa_9_t1;
+  CO_T1 BY cpa_2_t1* cpa_4_t1 cpa_10_t1 cpa_12_t1;
+  HE_T2 BY cpa_1_v2_t2* cpa_6_t2 cpa_3_rs_t2;
+  SH_T2 BY cpa_5_v2_t2* cpa_7_t2 cpa_9_t2;
+  CO_T2 BY cpa_2_t2* cpa_4_t2 cpa_10_t2 cpa_12_t2;
+[HE_T1@0];
+[SH_T1@0];
+[CO_T1@0];
+[HE_T2*];
+[SH_T2*];
+[CO_T2*];
+HE_T1@1;
+SH_T1@1;
+CO_T1@1;
+HE_T2@1;
+SH_T2@1;
+CO_T2@1;
+cpa_2_t1-cpa_12_t1@1;
+cpa_1_v2_t2-cpa_12_t2;
+    [cpa_3_rs_t1$1] (t1);
+    [cpa_1_v2_t2$1] (t1);
+    [cpa_3_rs_t1$2];
+    [cpa_1_v2_t2$2];
+    [cpa_3_rs_t1$3];
+    [cpa_1_v2_t2$3];
+  [cpa_2_t1$1] (t2);
+  [cpa_2_t2$1] (t2);
+  [cpa_2_t1$2];
+  [cpa_2_t2$2];
+  [cpa_2_t1$3];
+  [cpa_2_t2$3];
+  [cpa_4_t1$1] (t4);
+  [cpa_4_t2$1] (t4);
+  [cpa_4_t1$2] (t4_2)
+  [cpa_4_t2$2] (t4_2)
+  [cpa_4_t1$3];
+  [cpa_4_t2$3];
+  [cpa_5_rs_t1$1] (t5);
+  [cpa_5_v2_t2$1] (t5);
+  [cpa_5_rs_t1$2];
+  [cpa_5_v2_t2$2];
+  [cpa_5_rs_t1$3];
+  [cpa_5_v2_t2$3];
+  [cpa_6_t1$1] (t6);
+  [cpa_6_t2$1] (t6);
+  [cpa_6_t1$2] (t6_2);
+  [cpa_6_t2$2] (t6_2);
+  [cpa_6_t1$3];
+  [cpa_6_t2$3];
+  [cpa_7_t1$1] (t7);
+  [cpa_7_t2$1] (t7);
+  [cpa_7_t1$2] (t7_2);
+  [cpa_7_t2$2] (t7_2);
+  [cpa_7_t1$3];
+  [cpa_7_t2$3];
+  [cpa_9_t1$1] (t9);
+   [cpa_9_t2$1] (t9);
+  [cpa_9_t1$2];
+  [cpa_9_t2$2];
+  [cpa_9_t1$3];
+  [cpa_9_t2$3];
+  [cpa_10_t1$1] (t10);
+  [cpa_10_t2$1] (t10);
+  [cpa_10_t1$2];
+  [cpa_10_t2$2];
+  [cpa_10_t1$3];
+  [cpa_10_t2$3];
+  [cpa_12_t1$1] (t12);
+  [cpa_12_t2$1] (t12);
+  [cpa_12_t1$2];
+  [cpa_12_t2$2];
+  [cpa_12_t1$3];
+  [cpa_12_t2$3];
+INPUT_END
+1
+1
+1
+1
+WLSMV
+1
+GENERAL
+0
+19
+6
+0
+cpa_2_t1 cpa_3_rs_t1 cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_9_t1 cpa_10_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2 cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_9_t2 cpa_10_t2 cpa_12_t2 he_t1 sh_t1 co_t1 he_t2 sh_t2 co_t2
+1
+-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0
+0
+6
+he_t1
+cpa_3_rs_t1 cpa_6_t1
+sh_t1
+cpa_5_rs_t1 cpa_7_t1 cpa_9_t1
+co_t1
+cpa_2_t1 cpa_4_t1 cpa_10_t1 cpa_12_t1
+he_t2
+cpa_1_v2_t2 cpa_6_t2 cpa_3_rs_t2
+sh_t2
+cpa_5_v2_t2 cpa_7_t2 cpa_9_t2
+co_t2
+cpa_2_t2 cpa_4_t2 cpa_10_t2 cpa_12_t2
+1 1 he_t1 cpa_3_rs_t1 0.614
+1 1 he_t1 cpa_6_t1 1.048
+1 1 sh_t1 cpa_5_rs_t1 0.496
+1 1 sh_t1 cpa_7_t1 1.084
+1 1 sh_t1 cpa_9_t1 1.510
+1 1 co_t1 cpa_2_t1 1.296
+1 1 co_t1 cpa_4_t1 1.456
+1 1 co_t1 cpa_10_t1 0.863
+1 1 co_t1 cpa_12_t1 1.091
+1 1 he_t2 cpa_1_v2_t2 0.449
+1 1 he_t2 cpa_6_t2 0.742
+1 1 he_t2 cpa_3_rs_t2 0.324
+1 1 sh_t2 cpa_5_v2_t2 0.435
+1 1 sh_t2 cpa_7_t2 1.347
+1 1 sh_t2 cpa_9_t2 1.362
+1 1 co_t2 cpa_2_t2 1.015
+1 1 co_t2 cpa_4_t2 1.304
+1 1 co_t2 cpa_10_t2 0.792
+1 1 co_t2 cpa_12_t2 1.104
+2 1 sh_t1 he_t1 0.346
+2 1 co_t1 he_t1 0.318
+2 1 co_t1 sh_t1 0.393
+2 1 he_t2 he_t1 0.835
+2 1 he_t2 sh_t1 0.345
+2 1 he_t2 co_t1 0.238
+2 1 sh_t2 he_t1 0.177
+2 1 sh_t2 sh_t1 0.589
+2 1 sh_t2 co_t1 0.197
+2 1 sh_t2 he_t2 0.640
+2 1 co_t2 he_t1 0.061
+2 1 co_t2 sh_t1 0.267
+2 1 co_t2 co_t1 0.638
+2 1 co_t2 he_t2 0.451
+2 1 co_t2 sh_t2 0.394
+4 1 cpa_2_t1 1.000
+4 1 cpa_3_rs_t1 1.000
+4 1 cpa_4_t1 1.000
+4 1 cpa_5_rs_t1 1.000
+4 1 cpa_6_t1 1.000
+4 1 cpa_7_t1 1.000
+4 1 cpa_9_t1 1.000
+4 1 cpa_10_t1 1.000
+4 1 cpa_12_t1 1.000
+4 1 cpa_1_v2_t2 0.286
+4 1 cpa_2_t2 1.158
+4 1 cpa_3_rs_t2 0.955
+4 1 cpa_4_t2 0.938
+4 1 cpa_5_v2_t2 0.495
+4 1 cpa_6_t2 1.138
+4 1 cpa_7_t2 1.134
+4 1 cpa_9_t2 1.000
+4 1 cpa_10_t2 0.575
+4 1 cpa_12_t2 1.159
+5 1 he_t1 1.000
+5 1 sh_t1 1.000
+5 1 co_t1 1.000
+5 1 he_t2 1.000
+5 1 sh_t2 1.000
+5 1 co_t2 1.000
+11 1 he_t1 cpa_3_rs_t1 0.523
+11 1 he_t1 cpa_6_t1 0.723
+11 1 sh_t1 cpa_5_rs_t1 0.444
+11 1 sh_t1 cpa_7_t1 0.735
+11 1 sh_t1 cpa_9_t1 0.834
+11 1 co_t1 cpa_2_t1 0.792
+11 1 co_t1 cpa_4_t1 0.824
+11 1 co_t1 cpa_10_t1 0.653
+11 1 co_t1 cpa_12_t1 0.737
+11 1 he_t2 cpa_1_v2_t2 0.643
+11 1 he_t2 cpa_6_t2 0.571
+11 1 he_t2 cpa_3_rs_t2 0.315
+11 1 sh_t2 cpa_5_v2_t2 0.526
+11 1 sh_t2 cpa_7_t2 0.785
+11 1 sh_t2 cpa_9_t2 0.806
+11 1 co_t2 cpa_2_t2 0.686
+11 1 co_t2 cpa_4_t2 0.803
+11 1 co_t2 cpa_10_t2 0.722
+11 1 co_t2 cpa_12_t2 0.716
+12 1 sh_t1 he_t1 0.346
+12 1 co_t1 he_t1 0.318
+12 1 co_t1 sh_t1 0.393
+12 1 he_t2 he_t1 0.835
+12 1 he_t2 sh_t1 0.345
+12 1 he_t2 co_t1 0.238
+12 1 sh_t2 he_t1 0.177
+12 1 sh_t2 sh_t1 0.589
+12 1 sh_t2 co_t1 0.197
+12 1 sh_t2 he_t2 0.640
+12 1 co_t2 he_t1 0.061
+12 1 co_t2 sh_t1 0.267
+12 1 co_t2 co_t1 0.638
+12 1 co_t2 he_t2 0.451
+12 1 co_t2 sh_t2 0.394
+14 1 cpa_2_t1 0.373
+14 1 cpa_3_rs_t1 0.726
+14 1 cpa_4_t1 0.321
+14 1 cpa_5_rs_t1 0.802
+14 1 cpa_6_t1 0.477
+14 1 cpa_7_t1 0.460
+14 1 cpa_9_t1 0.305
+14 1 cpa_10_t1 0.573
+14 1 cpa_12_t1 0.456
+14 1 cpa_1_v2_t2 0.586
+14 1 cpa_2_t2 0.529
+14 1 cpa_3_rs_t2 0.901
+14 1 cpa_4_t2 0.356
+14 1 cpa_5_v2_t2 0.723
+14 1 cpa_6_t2 0.674
+14 1 cpa_7_t2 0.384
+14 1 cpa_9_t2 0.350
+14 1 cpa_10_t2 0.478
+14 1 cpa_12_t2 0.487
+15 1 he_t1 1.000
+15 1 sh_t1 1.000
+15 1 co_t1 1.000
+15 1 he_t2 1.000
+15 1 sh_t2 1.000
+15 1 co_t2 1.000
+21 1 he_t1 cpa_3_rs_t1 0.523
+21 1 he_t1 cpa_6_t1 0.723
+21 1 sh_t1 cpa_5_rs_t1 0.444
+21 1 sh_t1 cpa_7_t1 0.735
+21 1 sh_t1 cpa_9_t1 0.834
+21 1 co_t1 cpa_2_t1 0.792
+21 1 co_t1 cpa_4_t1 0.824
+21 1 co_t1 cpa_10_t1 0.653
+21 1 co_t1 cpa_12_t1 0.737
+21 1 he_t2 cpa_1_v2_t2 0.643
+21 1 he_t2 cpa_6_t2 0.571
+21 1 he_t2 cpa_3_rs_t2 0.315
+21 1 sh_t2 cpa_5_v2_t2 0.526
+21 1 sh_t2 cpa_7_t2 0.785
+21 1 sh_t2 cpa_9_t2 0.806
+21 1 co_t2 cpa_2_t2 0.686
+21 1 co_t2 cpa_4_t2 0.803
+21 1 co_t2 cpa_10_t2 0.722
+21 1 co_t2 cpa_12_t2 0.716
+22 1 sh_t1 he_t1 0.346
+22 1 co_t1 he_t1 0.318
+22 1 co_t1 sh_t1 0.393
+22 1 he_t2 he_t1 0.835
+22 1 he_t2 sh_t1 0.345
+22 1 he_t2 co_t1 0.238
+22 1 sh_t2 he_t1 0.177
+22 1 sh_t2 sh_t1 0.589
+22 1 sh_t2 co_t1 0.197
+22 1 sh_t2 he_t2 0.640
+22 1 co_t2 he_t1 0.061
+22 1 co_t2 sh_t1 0.267
+22 1 co_t2 co_t1 0.638
+22 1 co_t2 he_t2 0.451
+22 1 co_t2 sh_t2 0.394
+24 1 cpa_2_t1 0.373
+24 1 cpa_3_rs_t1 0.726
+24 1 cpa_4_t1 0.321
+24 1 cpa_5_rs_t1 0.802
+24 1 cpa_6_t1 0.477
+24 1 cpa_7_t1 0.460
+24 1 cpa_9_t1 0.305
+24 1 cpa_10_t1 0.573
+24 1 cpa_12_t1 0.456
+24 1 cpa_1_v2_t2 0.586
+24 1 cpa_2_t2 0.529
+24 1 cpa_3_rs_t2 0.901
+24 1 cpa_4_t2 0.356
+24 1 cpa_5_v2_t2 0.723
+24 1 cpa_6_t2 0.674
+24 1 cpa_7_t2 0.384
+24 1 cpa_9_t2 0.350
+24 1 cpa_10_t2 0.478
+24 1 cpa_12_t2 0.487
+25 1 he_t1 1.000
+25 1 sh_t1 1.000
+25 1 co_t1 1.000
+25 1 he_t2 1.000
+25 1 sh_t2 1.000
+25 1 co_t2 1.000
+31 1 he_t1 cpa_3_rs_t1 0.614
+31 1 he_t1 cpa_6_t1 1.048
+31 1 sh_t1 cpa_5_rs_t1 0.496
+31 1 sh_t1 cpa_7_t1 1.084
+31 1 sh_t1 cpa_9_t1 1.510
+31 1 co_t1 cpa_2_t1 1.296
+31 1 co_t1 cpa_4_t1 1.456
+31 1 co_t1 cpa_10_t1 0.863
+31 1 co_t1 cpa_12_t1 1.091
+31 1 he_t2 cpa_1_v2_t2 0.449
+31 1 he_t2 cpa_6_t2 0.742
+31 1 he_t2 cpa_3_rs_t2 0.324
+31 1 sh_t2 cpa_5_v2_t2 0.435
+31 1 sh_t2 cpa_7_t2 1.347
+31 1 sh_t2 cpa_9_t2 1.362
+31 1 co_t2 cpa_2_t2 1.015
+31 1 co_t2 cpa_4_t2 1.304
+31 1 co_t2 cpa_10_t2 0.792
+31 1 co_t2 cpa_12_t2 1.104
+32 1 sh_t1 he_t1 0.346
+32 1 co_t1 he_t1 0.318
+32 1 co_t1 sh_t1 0.393
+32 1 he_t2 he_t1 0.835
+32 1 he_t2 sh_t1 0.345
+32 1 he_t2 co_t1 0.238
+32 1 sh_t2 he_t1 0.177
+32 1 sh_t2 sh_t1 0.589
+32 1 sh_t2 co_t1 0.197
+32 1 sh_t2 he_t2 0.640
+32 1 co_t2 he_t1 0.061
+32 1 co_t2 sh_t1 0.267
+32 1 co_t2 co_t1 0.638
+32 1 co_t2 he_t2 0.451
+32 1 co_t2 sh_t2 0.394
+34 1 cpa_2_t1 1.000
+34 1 cpa_3_rs_t1 1.000
+34 1 cpa_4_t1 1.000
+34 1 cpa_5_rs_t1 1.000
+34 1 cpa_6_t1 1.000
+34 1 cpa_7_t1 1.000
+34 1 cpa_9_t1 1.000
+34 1 cpa_10_t1 1.000
+34 1 cpa_12_t1 1.000
+34 1 cpa_1_v2_t2 0.286
+34 1 cpa_2_t2 1.158
+34 1 cpa_3_rs_t2 0.955
+34 1 cpa_4_t2 0.938
+34 1 cpa_5_v2_t2 0.495
+34 1 cpa_6_t2 1.138
+34 1 cpa_7_t2 1.134
+34 1 cpa_9_t2 1.000
+34 1 cpa_10_t2 0.575
+34 1 cpa_12_t2 1.159
+35 1 he_t1 1.000
+35 1 sh_t1 1.000
+35 1 co_t1 1.000
+35 1 he_t2 1.000
+35 1 sh_t2 1.000
+35 1 co_t2 1.000

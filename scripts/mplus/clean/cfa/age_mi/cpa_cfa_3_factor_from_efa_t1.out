@@ -1,0 +1,98 @@
+Mplus VERSION 8.10
+MUTHEN & MUTHEN
+07/28/2025   9:52 AM
+
+INPUT INSTRUCTIONS
+
+  DATA:
+
+  File = data_ora_cpa.csv;
+
+  VARIABLE:
+
+  NAMES = ID site gender age_t1 age_group_t1 age_t2 age_group_t2
+  cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+    cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+    cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+    cpa_12_t2;
+
+  USEVARIABLES = age_group_t1 cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_9_t1 cpa_10_t1
+     cpa_12_t1;
+
+    CATEGORICAL =
+  cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_9_t1 cpa_10_t1
+     cpa_12_t1;
+
+    MISSING     = ALL (-999);
+    IDVARIABLE  = ID;
+
+  GROUPING = age_group_t1 (4 = 4yo 5 = 5yo 6 = 5yo);
+
+  DEFINE:
+
+  CUT cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_9_t1 cpa_10_t1
+     cpa_12_t1 (2 3 4);
+
+  ANALYSIS:
+
+  TYPE = General;
+  ESTIMATOR = WLSMV;
+  PARAMETERIZATION = THETA;
+  ITERATIONS = 10000;
+  MODEL = CONFIGURAL METRIC SCALAR;
+
+  MODEL:
+  !--------------------T1------------------------------------
+
+  !help t1
+  HE_T1 BY cpa_3_rs_t1* cpa_6_t1;
+
+  !share t1
+  SH_T1 BY cpa_5_rs_t1* cpa_7_t1 cpa_9_t1;
+
+  !comfort t1
+  CO_T1 BY cpa_2_t1* cpa_4_t1 cpa_10_t1 cpa_12_t1;
+
+  !factor means
+  [HE_T1@0];
+  [SH_T1@0];
+  [CO_T1@0];
+
+  !factor variances
+  HE_T1@1;
+  SH_T1@1;
+  CO_T1@1;
+
+  OUTPUT:
+  SAMPSTAT STANDARDIZED MODINDICES CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;
+
+*** WARNING in VARIABLE command
+  Note that only the first 8 characters of variable names are used in the output.
+  Shorten variable names to avoid any confusion.
+*** WARNING in OUTPUT command
+  MODINDICES option is not available when performing measurement invariance
+  testing with multiple models with the MODEL option of the ANALYSIS command.
+  Request for MODINDICES is ignored.
+*** ERROR in ANALYSIS command
+  Measurement invariance testing with MODEL=METRIC is not allowed for analysis with
+  categorical outcomes.
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  18
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2023 Muthen & Muthen

@@ -1,0 +1,863 @@
+Mplus VERSION 8.10
+MUTHEN & MUTHEN
+06/18/2025   8:38 AM
+
+INPUT INSTRUCTIONS
+
+  TITLE:
+
+  1.2 psb 3-factor model
+
+  Data:
+
+  File = data_ora_ca_p2_clean.csv;
+
+  VARIABLE:
+
+  NAMES = ID gender age_t1 help_t1 share_t1 comfort_t1 aht_t1 mdg_t1 pain_t1
+  age_t2 help_t2 share_t2 comfort_t2 aht_t2 mdg_t2 pain_t2;
+
+  USEVARIABLES = help_t1 share_t1 comfort_t1 aht_t1 mdg_t1 pain_t1
+   help_t2 share_t2 comfort_t2 aht_t2 mdg_t2 pain_t2;
+
+  MISSING = all (-999);
+
+  IDVARIABLE = ID;
+
+  ANALYSIS:
+
+  TYPE = General;
+
+  ESTIMATOR = MLR;
+
+  MODEL:
+
+  !---------------------t1--------------------------------
+
+  !helping t1
+
+  HE_T1 BY help_t1* aht_t1;
+
+  [help_t1*  aht_t1];
+
+  HE_T1@1;
+
+  [HE_T1@0];
+
+  !sharing t1
+
+  SH_T1 BY share_t1* mdg_t1;
+
+  [share_t1* mdg_t1];
+
+  SH_T1@1;
+
+  [SH_T1@0];
+
+  !comforting t1
+
+  CO_T1 BY comfort_t1* pain_t1;
+
+  [comfort_t1* pain_t1];
+
+  CO_T1@1;
+
+  [CO_T1@0];
+
+  !---------------------t2--------------------------------
+
+  !helping t2
+
+  HE_T2 BY help_t2* aht_t2;
+
+  [help_t2*  aht_t2];
+
+  HE_T2@1;
+
+  [HE_T2@0];
+
+  !sharing t2
+
+  SH_T2 BY share_t2* mdg_t2;
+
+  [share_t2* mdg_t2];
+
+  SH_T2@1;
+
+  [SH_T2@0];
+
+  !comforting t2
+
+  CO_T2 BY comfort_t2* pain_t2;
+
+  [comfort_t2* pain_t2];
+
+  CO_T2@1;
+
+  [CO_T2@0];
+
+  !----------------------across-time----------------------
+
+  !covariances
+
+  HE_T1 SH_T1 CO_T1 WITH HE_T2 SH_T2 CO_T2;
+  HE_T1 WITH SH_T1 CO_T1;
+  SH_T1 WITH CO_T1;
+  HE_T2 WITH SH_T2 CO_T2;
+  SH_T2 WITH CO_T2;
+
+  ! cross-time residual covariances
+  help_t1 WITH help_t2;
+  share_t1 WITH share_t2;
+  comfort_t1 WITH comfort_t2;
+  aht_t1 WITH aht_t2;
+  mdg_t1 WITH mdg_t2;
+  pain_t1 WITH pain_t2;
+
+  OUTPUT:
+  SAMPSTAT STANDARDIZED MODINDICES CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;
+
+
+
+*** WARNING in VARIABLE command
+  Note that only the first 8 characters of variable names are used in the output.
+  Shorten variable names to avoid any confusion.
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+
+
+1.2 psb 3-factor model
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         186
+
+Number of dependent variables                                   12
+Number of independent variables                                  0
+Number of continuous latent variables                            6
+
+Observed dependent variables
+
+  Continuous
+   HELP_T1     SHARE_T1    COMFORT_T1  AHT_T1      MDG_T1      PAIN_T1
+   HELP_T2     SHARE_T2    COMFORT_T2  AHT_T2      MDG_T2      PAIN_T2
+
+Continuous latent variables
+   HE_T1       SH_T1       CO_T1       HE_T2       SH_T2       CO_T2
+
+Variables with special functions
+
+  ID variable           ID
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  data_ora_ca_p2_clean.csv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            48
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        0.914
+ SHARE_T1       0.817         0.887
+ COMFORT_       0.844         0.866         0.909
+ AHT_T1         0.839         0.806         0.839         0.898
+ MDG_T1         0.887         0.860         0.882         0.892         0.957
+ PAIN_T1        0.828         0.801         0.823         0.828         0.892
+ HELP_T2        0.683         0.651         0.672         0.656         0.710
+ SHARE_T2       0.769         0.747         0.769         0.753         0.806
+ COMFORT_       0.763         0.742         0.763         0.747         0.801
+ AHT_T2         0.710         0.667         0.683         0.688         0.726
+ MDG_T2         0.790         0.763         0.785         0.780         0.828
+ PAIN_T2        0.753         0.726         0.742         0.737         0.785
+
+
+           Covariance Coverage
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+ PAIN_T1        0.898
+ HELP_T2        0.661         0.742
+ SHARE_T2       0.753         0.737         0.839
+ COMFORT_       0.747         0.742         0.828         0.833
+ AHT_T2         0.683         0.624         0.704         0.704         0.758
+ MDG_T2         0.780         0.731         0.823         0.817         0.720
+ PAIN_T2        0.731         0.715         0.796         0.796         0.688
+
+
+           Covariance Coverage
+              MDG_T2        PAIN_T2
+              ________      ________
+ MDG_T2         0.860
+ PAIN_T2        0.801         0.817
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+                0.012        -0.037        -0.013        -0.009        -0.005
+
+
+           Means
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+               -0.022        -0.013         0.013         0.016        -0.015
+
+
+           Means
+              MDG_T2        PAIN_T2
+              ________      ________
+                0.012         0.013
+
+
+           Covariances
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        0.995
+ SHARE_T1       0.090         1.016
+ COMFORT_       0.218         0.492         0.998
+ AHT_T1        -0.021         0.022        -0.073         0.995
+ MDG_T1         0.053         0.091         0.038        -0.048         0.997
+ PAIN_T1        0.358         0.071         0.248        -0.173         0.050
+ HELP_T2        0.023         0.051         0.008         0.033         0.146
+ SHARE_T2       0.300         0.251         0.291         0.089         0.085
+ COMFORT_       0.239         0.119         0.098        -0.049        -0.074
+ AHT_T2        -0.044         0.000        -0.052         0.149         0.127
+ MDG_T2        -0.039        -0.033         0.095        -0.143         0.261
+ PAIN_T2        0.091         0.093         0.203        -0.001        -0.073
+
+
+           Covariances
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+ PAIN_T1        1.023
+ HELP_T2        0.088         0.997
+ SHARE_T2       0.222         0.193         0.981
+ COMFORT_       0.310         0.055         0.473         0.990
+ AHT_T2        -0.110         0.104        -0.015        -0.117         0.991
+ MDG_T2         0.093         0.184         0.054         0.049         0.028
+ PAIN_T2        0.260        -0.012         0.186         0.372         0.031
+
+
+           Covariances
+              MDG_T2        PAIN_T2
+              ________      ________
+ MDG_T2         1.004
+ PAIN_T2       -0.012         0.988
+
+
+           Correlations
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        1.000
+ SHARE_T1       0.089         1.000
+ COMFORT_       0.219         0.489         1.000
+ AHT_T1        -0.021         0.022        -0.073         1.000
+ MDG_T1         0.053         0.091         0.038        -0.048         1.000
+ PAIN_T1        0.354         0.069         0.245        -0.171         0.049
+ HELP_T2        0.024         0.050         0.008         0.034         0.147
+ SHARE_T2       0.303         0.251         0.294         0.090         0.086
+ COMFORT_       0.241         0.119         0.099        -0.049        -0.074
+ AHT_T2        -0.044         0.000        -0.052         0.150         0.128
+ MDG_T2        -0.039        -0.033         0.095        -0.143         0.261
+ PAIN_T2        0.092         0.093         0.204        -0.001        -0.074
+
+
+           Correlations
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+ PAIN_T1        1.000
+ HELP_T2        0.087         1.000
+ SHARE_T2       0.222         0.195         1.000
+ COMFORT_       0.308         0.056         0.480         1.000
+ AHT_T2        -0.109         0.104        -0.015        -0.118         1.000
+ MDG_T2         0.092         0.184         0.054         0.049         0.028
+ PAIN_T2        0.258        -0.012         0.189         0.376         0.032
+
+
+           Correlations
+              MDG_T2        PAIN_T2
+              ________      ________
+ MDG_T2         1.000
+ PAIN_T2       -0.012         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -2597.321
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     HELP_T1               0.000      -2.559      -4.106    2.94%      -0.432      0.486      0.486
+             170.000       0.994       6.771       0.486   72.94%       0.486      0.486
+     SHARE_T1              0.000      -0.798      -2.065    9.70%      -1.091     -0.118      0.369
+             165.000       0.994      -0.478       1.342    6.67%       0.369      0.855
+     COMFORT_T1            0.000      -0.596      -1.731   15.98%      -0.868     -0.005      0.426
+             169.000       0.994      -1.001       1.290    9.47%       0.426      0.858
+     AHT_T1                0.000       0.563      -1.112   32.34%      -1.112     -0.452      0.207
+             167.000       0.994      -0.461       2.187    7.78%       0.207      0.867
+     MDG_T1                0.000       0.087      -1.474   16.85%      -0.535     -0.535     -0.535
+             178.000       0.994      -1.238       1.370   25.84%       0.432      1.370
+     PAIN_T1               0.000       0.919      -0.833   52.10%      -0.833     -0.833     -0.833
+             167.000       0.994      -0.047       2.997    1.80%       0.443      0.443
+     HELP_T2               0.000      -1.809      -4.829    0.72%      -0.923      0.640      0.640
+             138.000       0.993       3.858       0.640   62.32%       0.640      0.640
+     SHARE_T2              0.000      -0.944      -2.934    1.28%      -0.581      0.008      0.008
+             156.000       0.994       0.118       1.184   16.67%       0.596      0.596
+     COMFORT_T2            0.000      -1.113      -2.354    7.74%      -0.468      0.003      0.474
+             155.000       0.994       0.200       0.946   27.74%       0.474      0.946
+     AHT_T2                0.000       0.093      -1.319   27.66%      -1.319      0.077      0.077
+             141.000       0.993      -0.854       2.171    3.55%       0.077      0.775
+     MDG_T2                0.000      -0.393      -1.715   14.37%      -0.794      0.154      0.154
+             160.000       0.994      -1.158       1.075   36.25%       0.154      1.075
+     PAIN_T2               0.000       1.080      -0.749   57.89%      -0.749     -0.749     -0.749
+             152.000       0.993       0.150       3.004    1.97%       0.502      0.502
+
+
+     THIS ANALYSIS MAY HAVE MULTIPLE SOLUTIONS.  EXPLORE THIS USING RANDOM STARTS,
+     FOR EXAMPLE, STARTS = 20.  USE A LARGE ENOUGH NUMBER OF STARTS SO THAT THE
+     BEST FIT FUNCTION VALUE IS REPLICATED SEVERAL TIMES.
+
+
+     NO CONVERGENCE.  NUMBER OF ITERATIONS EXCEEDED.
+
+
+
+MODEL RESULTS
+
+                    Estimate
+
+ HE_T1    BY
+    HELP_T1            0.233
+    AHT_T1            -0.018
+
+ SH_T1    BY
+    SHARE_T1           8.668
+    MDG_T1             0.009
+
+ CO_T1    BY
+    COMFORT_T1         0.704
+    PAIN_T1            0.328
+
+ HE_T2    BY
+    HELP_T2            1.279
+    AHT_T2             0.089
+
+ SH_T2    BY
+    SHARE_T2           5.183
+    MDG_T2            -0.005
+
+ CO_T2    BY
+    COMFORT_T2         0.955
+    PAIN_T2            0.379
+
+ HE_T1    WITH
+    HE_T2             -0.547
+    SH_T2              0.253
+    CO_T2              0.919
+    SH_T1              0.040
+    CO_T1              1.619
+
+ SH_T1    WITH
+    HE_T2              0.004
+    SH_T2              1.991
+    CO_T2              0.020
+    CO_T1              0.074
+
+ CO_T1    WITH
+    HE_T2              0.040
+    SH_T2              0.087
+    CO_T2              0.767
+
+ HE_T2    WITH
+    SH_T2              0.026
+    CO_T2              0.028
+
+ SH_T2    WITH
+    CO_T2              0.096
+
+ HELP_T1  WITH
+    HELP_T2            0.188
+
+ SHARE_T1 WITH
+    SHARE_T2         -89.180
+
+ COMFORT_ WITH
+    COMFORT_T2        -0.400
+
+ AHT_T1   WITH
+    AHT_T2             0.162
+
+ MDG_T1   WITH
+    MDG_T2             0.245
+
+ PAIN_T1  WITH
+    PAIN_T2            0.136
+
+ Means
+    HE_T1              0.000
+    SH_T1              0.000
+    CO_T1              0.000
+    HE_T2              0.000
+    SH_T2              0.000
+    CO_T2              0.000
+
+ Intercepts
+    HELP_T1            0.008
+    SHARE_T1          -0.030
+    COMFORT_T1        -0.010
+    AHT_T1            -0.009
+    MDG_T1            -0.001
+    PAIN_T1           -0.016
+    HELP_T2           -0.006
+    SHARE_T2           0.020
+    COMFORT_T2         0.022
+    AHT_T2            -0.016
+    MDG_T2             0.013
+    PAIN_T2            0.021
+
+ Variances
+    HE_T1              1.000
+    SH_T1              1.000
+    CO_T1              1.000
+    HE_T2              1.000
+    SH_T2              1.000
+    CO_T2              1.000
+
+ Residual Variances
+    HELP_T1            0.936
+    SHARE_T1         -74.118
+    COMFORT_T1         0.498
+    AHT_T1             0.994
+    MDG_T1             0.996
+    PAIN_T1            0.888
+    HELP_T2           -0.644
+    SHARE_T2         -25.874
+    COMFORT_T2         0.065
+    AHT_T2             0.988
+    MDG_T2             0.993
+    PAIN_T2            0.844
+
+
+MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
+
+     he_t1 BY help_t1*0.23283;
+     he_t1 BY aht_t1*-0.01774;
+     sh_t1 BY share_t1*8.66813;
+     sh_t1 BY mdg_t1*0.00886;
+     co_t1 BY comfort_t1*0.70405;
+     co_t1 BY pain_t1*0.32761;
+     he_t2 BY help_t2*1.27892;
+     he_t2 BY aht_t2*0.08901;
+     sh_t2 BY share_t2*5.18293;
+     sh_t2 BY mdg_t2*-0.00514;
+     co_t2 BY comfort_t2*0.95544;
+     co_t2 BY pain_t2*0.37851;
+
+     help_t1 WITH help_t2*0.18808;
+     share_t1 WITH share_t2*-89.17970;
+     comfort_t1 WITH comfort_t2*-0.39979;
+     aht_t1 WITH aht_t2*0.16243;
+     mdg_t1 WITH mdg_t2*0.24503;
+     pain_t1 WITH pain_t2*0.13634;
+     he_t1 WITH he_t2*-0.54719;
+     he_t1 WITH sh_t2*0.25317;
+     he_t1 WITH co_t2*0.91897;
+     he_t1 WITH sh_t1*0.03988;
+     he_t1 WITH co_t1*1.61862;
+     sh_t1 WITH he_t2*0.00415;
+     sh_t1 WITH sh_t2*1.99069;
+     sh_t1 WITH co_t2*0.02039;
+     sh_t1 WITH co_t1*0.07354;
+     co_t1 WITH he_t2*0.04008;
+     co_t1 WITH sh_t2*0.08700;
+     co_t1 WITH co_t2*0.76745;
+     he_t2 WITH sh_t2*0.02565;
+     he_t2 WITH co_t2*0.02770;
+     sh_t2 WITH co_t2*0.09552;
+
+     [ help_t1*0.00756 ];
+     [ share_t1*-0.02961 ];
+     [ comfort_t1*-0.00962 ];
+     [ aht_t1*-0.00878 ];
+     [ mdg_t1*-0.00133 ];
+     [ pain_t1*-0.01599 ];
+     [ help_t2*-0.00582 ];
+     [ share_t2*0.02035 ];
+     [ comfort_t2*0.02161 ];
+     [ aht_t2*-0.01563 ];
+     [ mdg_t2*0.01333 ];
+     [ pain_t2*0.02124 ];
+     [ he_t1@0 ];
+     [ sh_t1@0 ];
+     [ co_t1@0 ];
+     [ he_t2@0 ];
+     [ sh_t2@0 ];
+     [ co_t2@0 ];
+
+     help_t1*0.93566;
+     share_t1*-74.11768;
+     comfort_t1*0.49806;
+     aht_t1*0.99430;
+     mdg_t1*0.99552;
+     pain_t1*0.88838;
+     help_t2*-0.64442;
+     share_t2*-25.87426;
+     comfort_t2*0.06521;
+     aht_t2*0.98755;
+     mdg_t2*0.99265;
+     pain_t2*0.84442;
+     he_t1@1;
+     sh_t1@1;
+     co_t1@1;
+     he_t2@1;
+     sh_t2@1;
+     co_t2@1;
+
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION
+
+
+           NU
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+                  1             2             3             4             5
+
+
+           NU
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+                  6             7             8             9            10
+
+
+           NU
+              MDG_T2        PAIN_T2
+              ________      ________
+                 11            12
+
+
+           LAMBDA
+              HE_T1         SH_T1         CO_T1         HE_T2         SH_T2
+              ________      ________      ________      ________      ________
+ HELP_T1           13             0             0             0             0
+ SHARE_T1           0            14             0             0             0
+ COMFORT_           0             0            15             0             0
+ AHT_T1            16             0             0             0             0
+ MDG_T1             0            17             0             0             0
+ PAIN_T1            0             0            18             0             0
+ HELP_T2            0             0             0            19             0
+ SHARE_T2           0             0             0             0            20
+ COMFORT_           0             0             0             0             0
+ AHT_T2             0             0             0            22             0
+ MDG_T2             0             0             0             0            23
+ PAIN_T2            0             0             0             0             0
+
+
+           LAMBDA
+              CO_T2
+              ________
+ HELP_T1            0
+ SHARE_T1           0
+ COMFORT_           0
+ AHT_T1             0
+ MDG_T1             0
+ PAIN_T1            0
+ HELP_T2            0
+ SHARE_T2           0
+ COMFORT_          21
+ AHT_T2             0
+ MDG_T2             0
+ PAIN_T2           24
+
+
+           THETA
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+ HELP_T1           25
+ SHARE_T1           0            26
+ COMFORT_           0             0            27
+ AHT_T1             0             0             0            28
+ MDG_T1             0             0             0             0            29
+ PAIN_T1            0             0             0             0             0
+ HELP_T2           31             0             0             0             0
+ SHARE_T2           0            33             0             0             0
+ COMFORT_           0             0            35             0             0
+ AHT_T2             0             0             0            37             0
+ MDG_T2             0             0             0             0            39
+ PAIN_T2            0             0             0             0             0
+
+
+           THETA
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+ PAIN_T1           30
+ HELP_T2            0            32
+ SHARE_T2           0             0            34
+ COMFORT_           0             0             0            36
+ AHT_T2             0             0             0             0            38
+ MDG_T2             0             0             0             0             0
+ PAIN_T2           41             0             0             0             0
+
+
+           THETA
+              MDG_T2        PAIN_T2
+              ________      ________
+ MDG_T2            40
+ PAIN_T2            0            42
+
+
+           ALPHA
+              HE_T1         SH_T1         CO_T1         HE_T2         SH_T2
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           ALPHA
+              CO_T2
+              ________
+                  0
+
+
+           BETA
+              HE_T1         SH_T1         CO_T1         HE_T2         SH_T2
+              ________      ________      ________      ________      ________
+ HE_T1              0             0             0             0             0
+ SH_T1              0             0             0             0             0
+ CO_T1              0             0             0             0             0
+ HE_T2              0             0             0             0             0
+ SH_T2              0             0             0             0             0
+ CO_T2              0             0             0             0             0
+
+
+           BETA
+              CO_T2
+              ________
+ HE_T1              0
+ SH_T1              0
+ CO_T1              0
+ HE_T2              0
+ SH_T2              0
+ CO_T2              0
+
+
+           PSI
+              HE_T1         SH_T1         CO_T1         HE_T2         SH_T2
+              ________      ________      ________      ________      ________
+ HE_T1              0
+ SH_T1             43             0
+ CO_T1             44            45             0
+ HE_T2             46            47            48             0
+ SH_T2             49            50            51            52             0
+ CO_T2             53            54            55            56            57
+
+
+           PSI
+              CO_T2
+              ________
+ CO_T2              0
+
+
+     STARTING VALUES
+
+
+           NU
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              MDG_T2        PAIN_T2
+              ________      ________
+                0.000         0.000
+
+
+           LAMBDA
+              HE_T1         SH_T1         CO_T1         HE_T2         SH_T2
+              ________      ________      ________      ________      ________
+ HELP_T1        0.998         0.000         0.000         0.000         0.000
+ SHARE_T1       0.000         1.008         0.000         0.000         0.000
+ COMFORT_       0.000         0.000         0.999         0.000         0.000
+ AHT_T1        -0.021         0.000         0.000         0.000         0.000
+ MDG_T1         0.000         0.091         0.000         0.000         0.000
+ PAIN_T1        0.000         0.000         0.248         0.000         0.000
+ HELP_T2        0.000         0.000         0.000         0.998         0.000
+ SHARE_T2       0.000         0.000         0.000         0.000         0.991
+ COMFORT_       0.000         0.000         0.000         0.000         0.000
+ AHT_T2         0.000         0.000         0.000         0.104         0.000
+ MDG_T2         0.000         0.000         0.000         0.000         0.054
+ PAIN_T2        0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              CO_T2
+              ________
+ HELP_T1        0.000
+ SHARE_T1       0.000
+ COMFORT_       0.000
+ AHT_T1         0.000
+ MDG_T1         0.000
+ PAIN_T1        0.000
+ HELP_T2        0.000
+ SHARE_T2       0.000
+ COMFORT_       0.995
+ AHT_T2         0.000
+ MDG_T2         0.000
+ PAIN_T2        0.374
+
+
+           THETA
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        0.497
+ SHARE_T1       0.000         0.497
+ COMFORT_       0.000         0.000         0.497
+ AHT_T1         0.000         0.000         0.000         0.497
+ MDG_T1         0.000         0.000         0.000         0.000         0.497
+ PAIN_T1        0.000         0.000         0.000         0.000         0.000
+ HELP_T2        0.000         0.000         0.000         0.000         0.000
+ SHARE_T2       0.000         0.000         0.000         0.000         0.000
+ COMFORT_       0.000         0.000         0.000         0.000         0.000
+ AHT_T2         0.000         0.000         0.000         0.000         0.000
+ MDG_T2         0.000         0.000         0.000         0.000         0.000
+ PAIN_T2        0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+ PAIN_T1        0.497
+ HELP_T2        0.000         0.496
+ SHARE_T2       0.000         0.000         0.497
+ COMFORT_       0.000         0.000         0.000         0.497
+ AHT_T2         0.000         0.000         0.000         0.000         0.496
+ MDG_T2         0.000         0.000         0.000         0.000         0.000
+ PAIN_T2        0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              MDG_T2        PAIN_T2
+              ________      ________
+ MDG_T2         0.497
+ PAIN_T2        0.000         0.497
+
+
+           ALPHA
+              HE_T1         SH_T1         CO_T1         HE_T2         SH_T2
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              CO_T2
+              ________
+                0.000
+
+
+           BETA
+              HE_T1         SH_T1         CO_T1         HE_T2         SH_T2
+              ________      ________      ________      ________      ________
+ HE_T1          0.000         0.000         0.000         0.000         0.000
+ SH_T1          0.000         0.000         0.000         0.000         0.000
+ CO_T1          0.000         0.000         0.000         0.000         0.000
+ HE_T2          0.000         0.000         0.000         0.000         0.000
+ SH_T2          0.000         0.000         0.000         0.000         0.000
+ CO_T2          0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              CO_T2
+              ________
+ HE_T1          0.000
+ SH_T1          0.000
+ CO_T1          0.000
+ HE_T2          0.000
+ SH_T2          0.000
+ CO_T2          0.000
+
+
+           PSI
+              HE_T1         SH_T1         CO_T1         HE_T2         SH_T2
+              ________      ________      ________      ________      ________
+ HE_T1          1.000
+ SH_T1          0.000         1.000
+ CO_T1          0.000         0.000         1.000
+ HE_T2          0.000         0.000         0.000         1.000
+ SH_T2          0.000         0.000         0.000         0.000         1.000
+ CO_T2          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              CO_T2
+              ________
+ CO_T2          1.000
+
+
+DIAGRAM INFORMATION
+
+  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
+  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
+
+  Diagram output
+    g:\my drive\1. projects\seleste_replication_report\sb_replication_report\scripts\mplus\1.2_three-factor.dgm
+
+     Beginning Time:  08:38:17
+        Ending Time:  08:38:18
+       Elapsed Time:  00:00:01
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2023 Muthen & Muthen

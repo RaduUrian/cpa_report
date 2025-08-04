@@ -1,0 +1,542 @@
+VERSION 1.1.0
+INPUT
+TITLE:
+
+  7.1 CPA 2-Factor Longitudinal ESEM – Target-Rotation Syntax
+  (Items 1 & 5 dropped)
+
+DATA:
+  FILE = data_ora_cpa.csv;
+VARIABLE:
+NAMES = ID site gender age_t1 age_t2 cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+  cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+  cpa_12_t2;
+USEVARIABLES = cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+  cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+  cpa_12_t2;
+  CATEGORICAL =
+cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+  cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+  cpa_12_t2;
+  MISSING     = ALL (-999);
+  IDVARIABLE  = ID;
+DEFINE:
+CUT cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+  cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+  cpa_12_t2 (2 3 4);
+ANALYSIS:
+  TYPE             = GENERAL;
+  ESTIMATOR        = WLSMV;
+  PARAMETERIZATION = THETA;
+  ROTATION         = GEOMIN (0.5);
+  ITERATIONS = 10000;
+OUTPUT:
+  SAMPSTAT STANDARDIZED MODINDICES (ALL)
+  CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;
+MODEL:
+  F1_T1 F2_T1 BY
+  cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+    cpa_11_rs_t1 cpa_12_t1 (*t1);
+  F1_T2 F2_T2 BY
+  cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+    cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+    cpa_12_t2 (*t2);
+cpa_2_t1   WITH cpa_2_t2 ;
+cpa_3_rs_t1 WITH cpa_3_rs_t2;
+cpa_4_t1   WITH cpa_4_t2 ;
+cpa_5_rs_t1 WITH cpa_5_v2_t2;
+cpa_6_t1   WITH cpa_6_t2 ;
+cpa_7_t1   WITH cpa_7_t2 ;
+cpa_8_t1   WITH cpa_8_t2 ;
+cpa_9_t1   WITH cpa_9_t2 ;
+cpa_10_t1  WITH cpa_10_t2 ;
+cpa_11_rs_t1 WITH cpa_11_rs_t2 ;
+cpa_12_t1  WITH cpa_12_t2 ;
+[F1_T1@0];
+[F2_T1@0];
+[F1_T2*];
+[F2_T2*];
+  F1_T1@1;
+  F2_T1@1;
+  F1_T2@1;
+  F2_T2@1;
+cpa_1_t1-cpa_12_t1@1;
+cpa_1_v2_t2-cpa_12_t2;
+  [cpa_1_t1$1] (t1);
+  [cpa_1_v2_t2$1] (t1);
+  [cpa_1_t1$2];
+  [cpa_1_v2_t2$2];
+  [cpa_1_t1$3];
+  [cpa_1_v2_t2$3];
+  [cpa_2_t1$1] (t2);
+  [cpa_2_t2$1] (t2);
+  [cpa_2_t1$2]; (t2_2);
+  [cpa_2_t2$2]; (t2_2);
+  [cpa_2_t1$3];
+   [cpa_2_t2$3];
+  [cpa_3_rs_t1$1] (t3);
+  [cpa_3_rs_t2$1] (t3);
+  [cpa_3_rs_t1$2];
+  [cpa_3_rs_t2$2];
+  [cpa_3_rs_t1$3];
+  [cpa_3_rs_t2$3];
+  [cpa_4_t1$1] (t4);
+  [cpa_4_t2$1] (t4);
+  [cpa_4_t1$2] (t4_2);
+  [cpa_4_t2$2] (t4_2);
+  [cpa_4_t1$3];
+  [cpa_4_t2$3];
+  [cpa_5_rs_t1$1] (t5);
+  [cpa_5_v2_t2$1] (t5);
+  [cpa_5_rs_t1$2];
+  [cpa_5_v2_t2$2];
+  [cpa_5_rs_t1$3];
+  [cpa_5_v2_t2$3];
+  [cpa_6_t1$1] (t6);
+  [cpa_6_t2$1] (t6);
+  [cpa_6_t1$2];
+  [cpa_6_t2$2];
+  [cpa_6_t1$3];
+  [cpa_6_t2$3];
+  [cpa_7_t1$1] (t7);
+  [cpa_7_t2$1] (t7);
+  [cpa_7_t1$2];
+  [cpa_7_t2$2];
+  [cpa_7_t1$3];
+  [cpa_7_t2$3];
+  [cpa_8_t1$1] (t8);
+  [cpa_8_t2$1] (t8);
+  [cpa_8_t1$2];
+  [cpa_8_t2$2];
+  [cpa_8_t1$3];
+  [cpa_8_t2$3];
+  [cpa_9_t1$1] (t9);
+   [cpa_9_t2$1] (t9);
+  [cpa_9_t1$2];
+  [cpa_9_t2$2];
+  [cpa_9_t1$3];
+  [cpa_9_t2$3];
+  [cpa_10_t1$1] (t10);
+  [cpa_10_t2$1] (t10);
+  [cpa_10_t1$2];
+  [cpa_10_t2$2];
+  [cpa_10_t1$3];
+  [cpa_10_t2$3];
+  [cpa_11_rs_t1$1] (t11);
+  [cpa_11_rs_t2$1] (t11);
+  [cpa_11_rs_t1$2];
+  [cpa_11_rs_t2$2];
+  [cpa_11_rs_t1$3];
+  [cpa_11_rs_t2$3];
+  [cpa_12_t1$1] (t12);
+  [cpa_12_t2$1] (t12);
+  [cpa_12_t1$2];
+  [cpa_12_t2$2];
+  [cpa_12_t1$3];
+  [cpa_12_t2$3];
+INPUT_END
+1
+1
+1
+1
+WLSMV
+1
+GENERAL
+0
+24
+4
+0
+cpa_1_t1 cpa_2_t1 cpa_3_rs_t1 cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1 cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2 cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2 cpa_12_t2 f1_t1 f2_t1 f1_t2 f2_t2
+1
+-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 0 0 0 0
+0
+4
+f1_t1
+cpa_1_t1 cpa_2_t1 cpa_3_rs_t1 cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1 cpa_11_rs_t1 cpa_12_t1
+f2_t1
+cpa_1_t1 cpa_2_t1 cpa_3_rs_t1 cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1 cpa_11_rs_t1 cpa_12_t1
+f1_t2
+cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2 cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2 cpa_12_t2
+f2_t2
+cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2 cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2 cpa_12_t2
+1 1 f1_t1 cpa_1_t1 0.560
+1 1 f1_t1 cpa_2_t1 1.262
+1 1 f1_t1 cpa_3_rs_t1 0.244
+1 1 f1_t1 cpa_4_t1 1.316
+1 1 f1_t1 cpa_5_rs_t1 0.335
+1 1 f1_t1 cpa_6_t1 0.387
+1 1 f1_t1 cpa_7_t1 0.726
+1 1 f1_t1 cpa_8_t1 0.715
+1 1 f1_t1 cpa_9_t1 0.931
+1 1 f1_t1 cpa_10_t1 0.745
+1 1 f1_t1 cpa_11_rs_t1 0.480
+1 1 f1_t1 cpa_12_t1 0.971
+1 1 f2_t1 cpa_1_t1 0.000
+1 1 f2_t1 cpa_2_t1 0.612
+1 1 f2_t1 cpa_3_rs_t1 -0.175
+1 1 f2_t1 cpa_4_t1 0.711
+1 1 f2_t1 cpa_5_rs_t1 -0.421
+1 1 f2_t1 cpa_6_t1 -0.194
+1 1 f2_t1 cpa_7_t1 -0.732
+1 1 f2_t1 cpa_8_t1 0.017
+1 1 f2_t1 cpa_9_t1 -0.781
+1 1 f2_t1 cpa_10_t1 0.134
+1 1 f2_t1 cpa_11_rs_t1 -0.130
+1 1 f2_t1 cpa_12_t1 0.440
+1 1 f1_t2 cpa_1_v2_t2 0.692
+1 1 f1_t2 cpa_2_t2 0.702
+1 1 f1_t2 cpa_3_rs_t2 0.225
+1 1 f1_t2 cpa_4_t2 0.918
+1 1 f1_t2 cpa_5_v2_t2 0.408
+1 1 f1_t2 cpa_6_t2 0.408
+1 1 f1_t2 cpa_7_t2 0.896
+1 1 f1_t2 cpa_8_t2 0.693
+1 1 f1_t2 cpa_9_t2 0.907
+1 1 f1_t2 cpa_10_t2 0.690
+1 1 f1_t2 cpa_11_rs_t2 0.410
+1 1 f1_t2 cpa_12_t2 0.864
+1 1 f2_t2 cpa_1_v2_t2 0.000
+1 1 f2_t2 cpa_2_t2 0.905
+1 1 f2_t2 cpa_3_rs_t2 -0.110
+1 1 f2_t2 cpa_4_t2 1.032
+1 1 f2_t2 cpa_5_v2_t2 -0.192
+1 1 f2_t2 cpa_6_t2 -0.218
+1 1 f2_t2 cpa_7_t2 -0.456
+1 1 f2_t2 cpa_8_t2 -0.001
+1 1 f2_t2 cpa_9_t2 -0.513
+1 1 f2_t2 cpa_10_t2 0.253
+1 1 f2_t2 cpa_11_rs_t2 -0.164
+1 1 f2_t2 cpa_12_t2 0.669
+2 1 cpa_2_t1 cpa_2_t2 0.147
+2 1 cpa_3_rs_t1 cpa_3_rs_t2 0.357
+2 1 cpa_4_t1 cpa_4_t2 0.241
+2 1 cpa_5_rs_t1 cpa_5_v2_t2 0.031
+2 1 cpa_6_t1 cpa_6_t2 0.350
+2 1 cpa_7_t1 cpa_7_t2 0.213
+2 1 cpa_8_t1 cpa_8_t2 0.513
+2 1 cpa_9_t1 cpa_9_t2 0.109
+2 1 cpa_10_t1 cpa_10_t2 0.246
+2 1 cpa_11_rs_t1 cpa_11_rs_t2 0.265
+2 1 cpa_12_t1 cpa_12_t2 0.241
+2 1 f2_t1 f1_t1 0.000
+2 1 f1_t2 f1_t1 0.577
+2 1 f1_t2 f2_t1 -0.142
+2 1 f2_t2 f1_t1 0.176
+2 1 f2_t2 f2_t1 0.514
+2 1 f2_t2 f1_t2 0.000
+4 1 cpa_1_t1 1.000
+4 1 cpa_2_t1 1.000
+4 1 cpa_3_rs_t1 1.000
+4 1 cpa_4_t1 1.000
+4 1 cpa_5_rs_t1 1.000
+4 1 cpa_6_t1 1.000
+4 1 cpa_7_t1 1.000
+4 1 cpa_8_t1 1.000
+4 1 cpa_9_t1 1.000
+4 1 cpa_10_t1 1.000
+4 1 cpa_11_rs_t1 1.000
+4 1 cpa_12_t1 1.000
+4 1 cpa_1_v2_t2 1.201
+4 1 cpa_2_t2 1.108
+4 1 cpa_3_rs_t2 0.740
+4 1 cpa_4_t2 0.830
+4 1 cpa_5_v2_t2 0.426
+4 1 cpa_6_t2 0.744
+4 1 cpa_7_t2 0.834
+4 1 cpa_8_t2 1.219
+4 1 cpa_9_t2 0.712
+4 1 cpa_10_t2 0.553
+4 1 cpa_11_rs_t2 0.624
+4 1 cpa_12_t2 1.145
+5 1 f1_t1 1.000
+5 1 f2_t1 1.000
+5 1 f1_t2 1.000
+5 1 f2_t2 1.000
+11 1 f1_t1 cpa_1_t1 0.488
+11 1 f1_t1 cpa_2_t1 0.733
+11 1 f1_t1 cpa_3_rs_t1 0.234
+11 1 f1_t1 cpa_4_t1 0.731
+11 1 f1_t1 cpa_5_rs_t1 0.295
+11 1 f1_t1 cpa_6_t1 0.355
+11 1 f1_t1 cpa_7_t1 0.505
+11 1 f1_t1 cpa_8_t1 0.581
+11 1 f1_t1 cpa_9_t1 0.592
+11 1 f1_t1 cpa_10_t1 0.594
+11 1 f1_t1 cpa_11_rs_t1 0.429
+11 1 f1_t1 cpa_12_t1 0.664
+11 1 f2_t1 cpa_1_t1 0.000
+11 1 f2_t1 cpa_2_t1 0.355
+11 1 f2_t1 cpa_3_rs_t1 -0.167
+11 1 f2_t1 cpa_4_t1 0.395
+11 1 f2_t1 cpa_5_rs_t1 -0.371
+11 1 f2_t1 cpa_6_t1 -0.178
+11 1 f2_t1 cpa_7_t1 -0.509
+11 1 f2_t1 cpa_8_t1 0.014
+11 1 f2_t1 cpa_9_t1 -0.496
+11 1 f2_t1 cpa_10_t1 0.107
+11 1 f2_t1 cpa_11_rs_t1 -0.116
+11 1 f2_t1 cpa_12_t1 0.301
+11 1 f1_t2 cpa_1_v2_t2 0.534
+11 1 f1_t2 cpa_2_t2 0.451
+11 1 f1_t2 cpa_3_rs_t2 0.252
+11 1 f1_t2 cpa_4_t2 0.555
+11 1 f1_t2 cpa_5_v2_t2 0.514
+11 1 f1_t2 cpa_6_t2 0.416
+11 1 f1_t2 cpa_7_t2 0.659
+11 1 f1_t2 cpa_8_t2 0.532
+11 1 f1_t2 cpa_9_t2 0.677
+11 1 f1_t2 cpa_10_t2 0.660
+11 1 f1_t2 cpa_11_rs_t2 0.453
+11 1 f1_t2 cpa_12_t2 0.565
+11 1 f2_t2 cpa_1_v2_t2 0.000
+11 1 f2_t2 cpa_2_t2 0.582
+11 1 f2_t2 cpa_3_rs_t2 -0.123
+11 1 f2_t2 cpa_4_t2 0.624
+11 1 f2_t2 cpa_5_v2_t2 -0.243
+11 1 f2_t2 cpa_6_t2 -0.223
+11 1 f2_t2 cpa_7_t2 -0.336
+11 1 f2_t2 cpa_8_t2 -0.001
+11 1 f2_t2 cpa_9_t2 -0.382
+11 1 f2_t2 cpa_10_t2 0.242
+11 1 f2_t2 cpa_11_rs_t2 -0.181
+11 1 f2_t2 cpa_12_t2 0.437
+12 1 cpa_2_t1 cpa_2_t2 0.140
+12 1 cpa_3_rs_t1 cpa_3_rs_t2 0.415
+12 1 cpa_4_t1 cpa_4_t2 0.265
+12 1 cpa_5_rs_t1 cpa_5_v2_t2 0.047
+12 1 cpa_6_t1 cpa_6_t2 0.406
+12 1 cpa_7_t1 cpa_7_t2 0.233
+12 1 cpa_8_t1 cpa_8_t2 0.465
+12 1 cpa_9_t1 cpa_9_t2 0.129
+12 1 cpa_10_t1 cpa_10_t2 0.331
+12 1 cpa_11_rs_t1 cpa_11_rs_t2 0.336
+12 1 cpa_12_t1 cpa_12_t2 0.225
+12 1 f2_t1 f1_t1 0.000
+12 1 f1_t2 f1_t1 0.577
+12 1 f1_t2 f2_t1 -0.142
+12 1 f2_t2 f1_t1 0.176
+12 1 f2_t2 f2_t1 0.514
+12 1 f2_t2 f1_t2 0.000
+14 1 cpa_1_t1 0.762
+14 1 cpa_2_t1 0.337
+14 1 cpa_3_rs_t1 0.917
+14 1 cpa_4_t1 0.309
+14 1 cpa_5_rs_t1 0.776
+14 1 cpa_6_t1 0.842
+14 1 cpa_7_t1 0.485
+14 1 cpa_8_t1 0.662
+14 1 cpa_9_t1 0.404
+14 1 cpa_10_t1 0.636
+14 1 cpa_11_rs_t1 0.802
+14 1 cpa_12_t1 0.468
+14 1 cpa_1_v2_t2 0.715
+14 1 cpa_2_t2 0.458
+14 1 cpa_3_rs_t2 0.922
+14 1 cpa_4_t2 0.303
+14 1 cpa_5_v2_t2 0.677
+14 1 cpa_6_t2 0.777
+14 1 cpa_7_t2 0.452
+14 1 cpa_8_t2 0.717
+14 1 cpa_9_t2 0.396
+14 1 cpa_10_t2 0.506
+14 1 cpa_11_rs_t2 0.762
+14 1 cpa_12_t2 0.490
+15 1 f1_t1 1.000
+15 1 f2_t1 1.000
+15 1 f1_t2 1.000
+15 1 f2_t2 1.000
+21 1 f1_t1 cpa_1_t1 0.488
+21 1 f1_t1 cpa_2_t1 0.733
+21 1 f1_t1 cpa_3_rs_t1 0.234
+21 1 f1_t1 cpa_4_t1 0.731
+21 1 f1_t1 cpa_5_rs_t1 0.295
+21 1 f1_t1 cpa_6_t1 0.355
+21 1 f1_t1 cpa_7_t1 0.505
+21 1 f1_t1 cpa_8_t1 0.581
+21 1 f1_t1 cpa_9_t1 0.592
+21 1 f1_t1 cpa_10_t1 0.594
+21 1 f1_t1 cpa_11_rs_t1 0.429
+21 1 f1_t1 cpa_12_t1 0.664
+21 1 f2_t1 cpa_1_t1 0.000
+21 1 f2_t1 cpa_2_t1 0.355
+21 1 f2_t1 cpa_3_rs_t1 -0.167
+21 1 f2_t1 cpa_4_t1 0.395
+21 1 f2_t1 cpa_5_rs_t1 -0.371
+21 1 f2_t1 cpa_6_t1 -0.178
+21 1 f2_t1 cpa_7_t1 -0.509
+21 1 f2_t1 cpa_8_t1 0.014
+21 1 f2_t1 cpa_9_t1 -0.496
+21 1 f2_t1 cpa_10_t1 0.107
+21 1 f2_t1 cpa_11_rs_t1 -0.116
+21 1 f2_t1 cpa_12_t1 0.301
+21 1 f1_t2 cpa_1_v2_t2 0.534
+21 1 f1_t2 cpa_2_t2 0.451
+21 1 f1_t2 cpa_3_rs_t2 0.252
+21 1 f1_t2 cpa_4_t2 0.555
+21 1 f1_t2 cpa_5_v2_t2 0.514
+21 1 f1_t2 cpa_6_t2 0.416
+21 1 f1_t2 cpa_7_t2 0.659
+21 1 f1_t2 cpa_8_t2 0.532
+21 1 f1_t2 cpa_9_t2 0.677
+21 1 f1_t2 cpa_10_t2 0.660
+21 1 f1_t2 cpa_11_rs_t2 0.453
+21 1 f1_t2 cpa_12_t2 0.565
+21 1 f2_t2 cpa_1_v2_t2 0.000
+21 1 f2_t2 cpa_2_t2 0.582
+21 1 f2_t2 cpa_3_rs_t2 -0.123
+21 1 f2_t2 cpa_4_t2 0.624
+21 1 f2_t2 cpa_5_v2_t2 -0.243
+21 1 f2_t2 cpa_6_t2 -0.223
+21 1 f2_t2 cpa_7_t2 -0.336
+21 1 f2_t2 cpa_8_t2 -0.001
+21 1 f2_t2 cpa_9_t2 -0.382
+21 1 f2_t2 cpa_10_t2 0.242
+21 1 f2_t2 cpa_11_rs_t2 -0.181
+21 1 f2_t2 cpa_12_t2 0.437
+22 1 cpa_2_t1 cpa_2_t2 0.140
+22 1 cpa_3_rs_t1 cpa_3_rs_t2 0.415
+22 1 cpa_4_t1 cpa_4_t2 0.265
+22 1 cpa_5_rs_t1 cpa_5_v2_t2 0.047
+22 1 cpa_6_t1 cpa_6_t2 0.406
+22 1 cpa_7_t1 cpa_7_t2 0.233
+22 1 cpa_8_t1 cpa_8_t2 0.465
+22 1 cpa_9_t1 cpa_9_t2 0.129
+22 1 cpa_10_t1 cpa_10_t2 0.331
+22 1 cpa_11_rs_t1 cpa_11_rs_t2 0.336
+22 1 cpa_12_t1 cpa_12_t2 0.225
+22 1 f2_t1 f1_t1 0.000
+22 1 f1_t2 f1_t1 0.577
+22 1 f1_t2 f2_t1 -0.142
+22 1 f2_t2 f1_t1 0.176
+22 1 f2_t2 f2_t1 0.514
+22 1 f2_t2 f1_t2 0.000
+24 1 cpa_1_t1 0.762
+24 1 cpa_2_t1 0.337
+24 1 cpa_3_rs_t1 0.917
+24 1 cpa_4_t1 0.309
+24 1 cpa_5_rs_t1 0.776
+24 1 cpa_6_t1 0.842
+24 1 cpa_7_t1 0.485
+24 1 cpa_8_t1 0.662
+24 1 cpa_9_t1 0.404
+24 1 cpa_10_t1 0.636
+24 1 cpa_11_rs_t1 0.802
+24 1 cpa_12_t1 0.468
+24 1 cpa_1_v2_t2 0.715
+24 1 cpa_2_t2 0.458
+24 1 cpa_3_rs_t2 0.922
+24 1 cpa_4_t2 0.303
+24 1 cpa_5_v2_t2 0.677
+24 1 cpa_6_t2 0.777
+24 1 cpa_7_t2 0.452
+24 1 cpa_8_t2 0.717
+24 1 cpa_9_t2 0.396
+24 1 cpa_10_t2 0.506
+24 1 cpa_11_rs_t2 0.762
+24 1 cpa_12_t2 0.490
+25 1 f1_t1 1.000
+25 1 f2_t1 1.000
+25 1 f1_t2 1.000
+25 1 f2_t2 1.000
+31 1 f1_t1 cpa_1_t1 0.560
+31 1 f1_t1 cpa_2_t1 1.262
+31 1 f1_t1 cpa_3_rs_t1 0.244
+31 1 f1_t1 cpa_4_t1 1.316
+31 1 f1_t1 cpa_5_rs_t1 0.335
+31 1 f1_t1 cpa_6_t1 0.387
+31 1 f1_t1 cpa_7_t1 0.726
+31 1 f1_t1 cpa_8_t1 0.715
+31 1 f1_t1 cpa_9_t1 0.931
+31 1 f1_t1 cpa_10_t1 0.745
+31 1 f1_t1 cpa_11_rs_t1 0.480
+31 1 f1_t1 cpa_12_t1 0.971
+31 1 f2_t1 cpa_1_t1 0.000
+31 1 f2_t1 cpa_2_t1 0.612
+31 1 f2_t1 cpa_3_rs_t1 -0.175
+31 1 f2_t1 cpa_4_t1 0.711
+31 1 f2_t1 cpa_5_rs_t1 -0.421
+31 1 f2_t1 cpa_6_t1 -0.194
+31 1 f2_t1 cpa_7_t1 -0.732
+31 1 f2_t1 cpa_8_t1 0.017
+31 1 f2_t1 cpa_9_t1 -0.781
+31 1 f2_t1 cpa_10_t1 0.134
+31 1 f2_t1 cpa_11_rs_t1 -0.130
+31 1 f2_t1 cpa_12_t1 0.440
+31 1 f1_t2 cpa_1_v2_t2 0.692
+31 1 f1_t2 cpa_2_t2 0.702
+31 1 f1_t2 cpa_3_rs_t2 0.225
+31 1 f1_t2 cpa_4_t2 0.918
+31 1 f1_t2 cpa_5_v2_t2 0.408
+31 1 f1_t2 cpa_6_t2 0.408
+31 1 f1_t2 cpa_7_t2 0.896
+31 1 f1_t2 cpa_8_t2 0.693
+31 1 f1_t2 cpa_9_t2 0.907
+31 1 f1_t2 cpa_10_t2 0.690
+31 1 f1_t2 cpa_11_rs_t2 0.410
+31 1 f1_t2 cpa_12_t2 0.864
+31 1 f2_t2 cpa_1_v2_t2 0.000
+31 1 f2_t2 cpa_2_t2 0.905
+31 1 f2_t2 cpa_3_rs_t2 -0.110
+31 1 f2_t2 cpa_4_t2 1.032
+31 1 f2_t2 cpa_5_v2_t2 -0.192
+31 1 f2_t2 cpa_6_t2 -0.218
+31 1 f2_t2 cpa_7_t2 -0.456
+31 1 f2_t2 cpa_8_t2 -0.001
+31 1 f2_t2 cpa_9_t2 -0.513
+31 1 f2_t2 cpa_10_t2 0.253
+31 1 f2_t2 cpa_11_rs_t2 -0.164
+31 1 f2_t2 cpa_12_t2 0.669
+32 1 cpa_2_t1 cpa_2_t2 0.147
+32 1 cpa_3_rs_t1 cpa_3_rs_t2 0.357
+32 1 cpa_4_t1 cpa_4_t2 0.241
+32 1 cpa_5_rs_t1 cpa_5_v2_t2 0.031
+32 1 cpa_6_t1 cpa_6_t2 0.350
+32 1 cpa_7_t1 cpa_7_t2 0.213
+32 1 cpa_8_t1 cpa_8_t2 0.513
+32 1 cpa_9_t1 cpa_9_t2 0.109
+32 1 cpa_10_t1 cpa_10_t2 0.246
+32 1 cpa_11_rs_t1 cpa_11_rs_t2 0.265
+32 1 cpa_12_t1 cpa_12_t2 0.241
+32 1 f2_t1 f1_t1 0.000
+32 1 f1_t2 f1_t1 0.577
+32 1 f1_t2 f2_t1 -0.142
+32 1 f2_t2 f1_t1 0.176
+32 1 f2_t2 f2_t1 0.514
+32 1 f2_t2 f1_t2 0.000
+34 1 cpa_1_t1 1.000
+34 1 cpa_2_t1 1.000
+34 1 cpa_3_rs_t1 1.000
+34 1 cpa_4_t1 1.000
+34 1 cpa_5_rs_t1 1.000
+34 1 cpa_6_t1 1.000
+34 1 cpa_7_t1 1.000
+34 1 cpa_8_t1 1.000
+34 1 cpa_9_t1 1.000
+34 1 cpa_10_t1 1.000
+34 1 cpa_11_rs_t1 1.000
+34 1 cpa_12_t1 1.000
+34 1 cpa_1_v2_t2 1.201
+34 1 cpa_2_t2 1.108
+34 1 cpa_3_rs_t2 0.740
+34 1 cpa_4_t2 0.830
+34 1 cpa_5_v2_t2 0.426
+34 1 cpa_6_t2 0.744
+34 1 cpa_7_t2 0.834
+34 1 cpa_8_t2 1.219
+34 1 cpa_9_t2 0.712
+34 1 cpa_10_t2 0.553
+34 1 cpa_11_rs_t2 0.624
+34 1 cpa_12_t2 1.145
+35 1 f1_t1 1.000
+35 1 f2_t1 1.000
+35 1 f1_t2 1.000
+35 1 f2_t2 1.000

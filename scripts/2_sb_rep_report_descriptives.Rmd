@@ -1,0 +1,447 @@
+---
+title: "2_sb_rep_report_descriptives"
+output: html_document
+---
+
+#1. Setup
+
+```{r Setup, include=FALSE}
+# Sets pseudo random number generator seed to fixed value for reproducibility
+set.seed(1)
+
+# Check if package 'here' is installed; if not, install. 
+if (!require("here")) install.packages("here")
+
+# Load 'here' package
+library(here)
+
+# Check if renv file exists in project directory
+if (file.exists(here("renv.lock")))
+
+{
+  
+  if (!require("renv")) {
+    
+    install.packages("renv")
+    renv::init(project = here())
+    here()
+  }
+  
+  else {
+  # If renv file exists, restore stored packages
+  renv::restore(project = here(),
+                clean = TRUE,
+                prompt = FALSE)
+  
+  }  
+    
+} else {
+  
+  # If renv file doesn't exist, check if pacman is not installed;
+  # if yes, install & load, if not, just load.
+  if (!require("pacman")) install.packages("pacman")
+  library(pacman)
+  
+}
+
+snapshot()
+
+# Increase timeout for downloading packages in case of slow download speed
+options(timeout = 300)
+
+# Load all required packages
+pacman::p_load(
+  psych,
+  osfr,
+  tidyverse,
+  skimr,
+  naniar,
+  ggpubr,
+  rstatix,
+  modelbased,
+  performance,
+  haven,
+  MVN,
+  ggrepel,
+  see,
+  lavaan,
+  EFAtools,
+  olsrr
+)
+
+# Remove scientific notations
+options(scipen = 999) 
+
+```
+
+#2. Data Load
+
+```{r load clean data}
+data <- read.csv(here("data", "data_ora_ca_p2_descriptives.csv"))
+
+# data <- read.csv(here("data", "data_ora_ca_p2.csv"),
+#                  col.names = c("id",
+#                               "gender",
+#                                 "age",
+#                                 "help_t1",
+#                                 "share_t1",
+#                                 "comfort_t1",
+#                                 "mdg_t1",
+#                                 "aht_t1",
+#                                 "pain_t1",
+#                                 "age_t2",
+#                                 "help_t2",
+#                                 "share_t2",
+#                                 "comfort_t2",
+#                                 "mdg_t2",
+#                                 "aht_t2",
+#   "pain_t2"), header = FALSE,
+#   na.strings = "-999")
+```
+
+```{r fix gender}
+data <- data %>% 
+  mutate(Gender_raw_t1 = case_when(
+    Gender_raw_t1 == "girl" ~ 1,
+    Gender_raw_t1 == "boy" ~ 0
+  )) 
+```
+
+```{r fix site}
+data <- data %>% 
+  mutate(Site_raw_t1_child = case_when(
+    Site_raw_t1_child == "CA" ~ 1,
+    Site_raw_t1_child == "GE" ~ 2,
+    Site_raw_t1_child == "UK" ~ 3
+  )) 
+```
+
+
+```{r fix variable types}
+# coerce into numeric format
+data <- data %>% 
+  mutate(
+    across(
+      .cols = Site_raw_t1_child:CPA_12_t2,
+      .fns = ~ as.numeric(.)
+    )
+  )
+```
+
+```{r variable select}
+# pick relevant variables for descriptives
+data <- data %>% 
+  select(-c(Helping_Cue_PSB_PSV_t1,
+            Sharing_Cue_PSB_PSV_t1,
+            Comforting_Cue_PSB_PSV_t1,
+            Helping_Cue_PSB_PSV_t2,
+            Sharing_Cue_PSB_PSV_t2,
+            Comforting_Cue_PSB_PSV_t2,
+            AHT_noEscape_t1,
+            AHT_noEscape_t2,
+            DG_cos_pub_t1,
+            DG_cos_pub_t2))
+
+# select only CPA
+data_cpa <- data %>% 
+  select(c(ID, Site_raw_t1_child, Gender_raw_t1, age_months_raw_t1, age_months_raw_t2, CPA_1:CPA_12_t2))
+```
+
+```{r canadian sample only}
+data <- data %>% 
+  filter(Site_raw_t1_child == "CA")
+```
+
+#3. Descriptives
+
+## Basic Descriptives
+
+```{r basic descriptives}
+skim(data)
+
+describe(data)
+```
+
+## Missing Data
+
+```{r}
+naniar::vis_miss(data)
+```
+
+```{r case-wise missing data prop}
+miss_case_table(data)
+```
+
+```{r shadow matrix}
+# create shadow matrix
+data_missing_full_shadow <- bind_shadow(data,
+                                        only_miss = TRUE)
+
+# turn variable type into factor with 1 = NA, 0 = not NA
+data_missing_full_shadow <- data_missing_full_shadow %>%
+  mutate(across(
+      .cols = c(SimpPSB_he_door_NA:CPA_12_t2_NA),
+      ~case_when(.x == "!NA" ~ 0,
+                          .x == "NA" ~ 1)))
+
+```
+
+```{r NA correlation plot}
+jpeg(file = here("output", "NA_correlation.jpeg"),   # The directory you want to save the file in
+    width = 700, # The width of the plot in inches
+    height = 700) # The height of the plot in inches
+
+# create correlation plot of missingness
+data_missing_full_shadow %>% 
+  dplyr::select(SimpPSB_he_door_NA:CPA_12_t2_NA) %>%
+  cor(method = "spearman") %>% 
+  corrplot::corrplot(addCoef.col = 'black',
+                   type = "lower",
+                   diag = FALSE)
+
+# Step 3: Run dev.off() to create the file!
+dev.off()
+
+```
+
+```{r overall missingness pattern}
+# open picture save interface
+jpeg(file = here("output", "all_correlations.jpeg"),
+    width = 800, # The width of the plot in inches
+    height = 800) # The height of the plot in inches
+
+# create plot
+data_missing_full_shadow %>% 
+  mutate(across(c(SimpPSB_he_door:CPA_12_t2_NA), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .))) %>% 
+  select(-c(ID)) %>% 
+  cor(use = "pairwise.complete.obs") %>% 
+  corrplot::corrplot(addCoef.col = 'black',
+                   type = "lower",
+                   diag = FALSE)
+
+# run dev.off() to create the file
+dev.off()
+```
+```{r mean imputation}
+data_imputed <- data %>%
+  mutate(across(c(SimpPSB_he_door:CPA_12_t2), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .)))
+```
+
+## MVN
+
+```{r mvn}
+
+data_imputed %>% 
+  dplyr::select(-c(ID, Gender_raw_t1, age_months_raw_t1, age_months_raw_t2)) %>% 
+  mvn(mvn_test = "mardia" )
+
+```
+
+## Outliers
+
+```{r fake regression model}
+# build fake regression of id on all predictors
+lm_id <- lm(ID ~ SimpPSB_he_door + Sharing_Cue_PSB_only_t1 + Comforting_Cue_PSB_only_t1 + Pain_PA_t1 + SimpPSB_he_cabinet_T2 + Sharing_Cue_PSB_only_t2 + Comforting_Cue_PSB_only_t2 + Pain_PA_t2 + CPA_1 + CPA_2_t1 + CPA_3_RS_t1 + CPA_4_t1 + CPA_5_RS + CPA_6_t1 +
+    CPA_7_t1 + CPA_8_t1 + CPA_9_t1 + CPA_10_t1 + CPA_11_RS_t1 + CPA_12_t1 +
+    CPA_1_V2 + CPA_2_t2 + CPA_3_RS_t2 + CPA_4_t2 + CPA_5_V2_RS + CPA_6_t2 +
+    CPA_7_t2 + CPA_8_t2 + CPA_9_t2 + CPA_10_t2 + CPA_11_RS_t2 + CPA_12_t2,
+            data = data_imputed)
+
+summary(lm_id)
+```
+
+```{r Cook's and Mahalanobis distance}
+# calculate cook's & mahalanobis distances
+outliers <- performance::check_outliers(lm_id,
+                            method = c("cook",
+                                       "mahalanobis")
+                            )
+
+# save outliers output as data frame
+outliers <- as.data.frame(outliers)
+
+```
+
+```{r merge distances to dataset}
+# create a row identifier to allow merging with the outliers dataframe
+data_outliers <- data_imputed %>% 
+  tibble::rowid_to_column("Row")
+
+# merge dataframe based on row number
+data_outliers <- full_join(data_outliers, outliers, by = "Row")
+```
+
+```{r plot distance metrics}
+# add a column to identify points that exceed the thresholds
+data_outliers <- data_outliers %>%
+  mutate(
+    across(
+      .cols = c(Distance_Mahalanobis, Distance_Cook),
+      .fns = ~ scale(.)
+    )
+  ) 
+
+data_outliers <- data_outliers %>% 
+  mutate(outlier = ifelse(Distance_Mahalanobis > 3.29 & Distance_Cook > 3.29, as.character(ID), NA))
+
+# standardize distance metrics and then scatter plot with cutoff lines at 3.29
+mv_outliers_hist <- data_outliers %>%
+  ggplot(aes(x = Distance_Mahalanobis, 
+             y = Distance_Cook)) +
+  geom_point() +
+  geom_text_repel(aes(label = outlier), color = "red", na.rm = TRUE, max.overlaps = 20) +
+  geom_hline(yintercept = 3.29 , linetype = "dashed", color = "red") +
+  geom_vline(xintercept = 3.29, linetype = "dashed", color = "red") +
+  labs(
+    x = "Standardized Mahalanobis Distance",
+    y = "Standardized Cook's Distance"
+  ) +
+  theme_minimal()
+
+ggsave(here("output", "mv_outiers_hist.jpeg"),
+       mv_outliers_hist,
+       units = "in",
+       height = 7,
+       width = 9)
+```
+
+Need to remove ID 151 as a multivariate outlier.
+
+```{r remove outliers}
+# removes ID 151
+data_clean <- data %>% 
+  dplyr::filter(ID != 160)
+```
+
+## Variance Ratio
+
+```{r variance ratios}
+data_imputed_numeric <- data_imputed %>% 
+  select(-c(ID, Gender_raw_t1, age_months_raw_t1, age_months_raw_t2))
+
+# Calculate variances for all variables
+variances <- sapply(data_imputed_numeric, var)
+
+# Create a matrix to store variance ratios
+variance_ratios <- outer(variances, variances, FUN = "/")
+
+# Convert to a dataframe for better readability (optional)
+variance_ratios_df <- as.data.frame(variance_ratios)
+rownames(variance_ratios_df) <- colnames(data_imputed_numeric)
+colnames(variance_ratios_df) <- colnames(data_imputed_numeric)
+
+# Display the result
+print(variance_ratios_df)
+
+descriptives <- describe(variance_ratios_df)
+
+describe(descriptives)
+```
+
+Variance ratios range from 0.01 to 78.50. Need to standardize.
+
+```{r scale variables}
+# standardize all variables except for ID and gender
+data_clean_scaled <- data_clean %>% 
+  mutate(
+    across(
+      age_months_raw_t1:CPA_12_t2,
+      ~ scale(.)
+    )
+  )
+```
+
+## Multicollinearity
+
+```{r vif}
+# calculate vif
+check_collinearity(lm_id)
+
+#plot(performance::check_collinearity(lm_id))
+
+```
+
+```{r collinearity diagnostics}
+ols_coll_diag(lm_id)
+```
+
+## Correlations
+
+```{r}
+# open picture save interface
+jpeg(file = here("output", "all_correlations.jpeg"),
+    width = 1200, # The width of the plot in inches
+    height = 1200) # The height of the plot in inches
+
+data_clean %>% 
+  dplyr::select(SimpPSB_he_door:CPA_12_t2) %>% 
+  mutate(across(c(SimpPSB_he_door:CPA_12_t2), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .))) %>% 
+  cor() %>% 
+  corrplot::corrplot(addCoef.col = 'black',
+                   type = "lower",
+                   diag = FALSE)
+
+# run dev.off() to create the file
+dev.off()
+```
+
+## Positive Definiteness
+
+```{r}
+cov_matrix <- data %>% 
+  select(SimpPSB_he_door:CPA_12_t2) %>% 
+  mutate(across(c(SimpPSB_he_door:CPA_12_t2), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .))) %>%
+  cov()
+eigen(cov_matrix) 
+det(cov_matrix) 
+solve(cov_matrix) 
+cov2cor(cov_matrix)
+```
+
+## Factorability
+
+```{r kmo & bartlett}
+# calculate KMO from imputed data
+kmo <- KMO(data_imputed_numeric)
+
+# calculate Bartlett's from imputed data
+# bartlett <- BARTLETT(data_imputed_numeric)
+```
+
+#5. Export
+
+```{r export}
+# export outlier free data as csv file and remove column names for MPlus
+write.table(data_clean_scaled,
+          here("data","data_ora_ca_p2_clean.csv"),
+          sep = ",",
+          row.names = FALSE,
+          qmethod = "double",
+          col.names = FALSE,
+          na = "-999"
+          )
+
+write.table(data_clean_scaled,
+          here("scripts", "mplus", "data_ora_ca_p2_clean.csv"),
+          sep = ",",
+          row.names = FALSE,
+          qmethod = "double",
+          col.names = FALSE,
+          na = "-999"
+          )
+
+write.table(data_cpa,
+          here("scripts", "mplus", "data_cpa.csv"),
+          sep = ",",
+          row.names = FALSE,
+          qmethod = "double",
+          col.names = FALSE,
+          na = "-999"
+          )
+```
+
+
+
+
+
+

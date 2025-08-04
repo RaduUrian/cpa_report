@@ -1,0 +1,2201 @@
+Mplus VERSION 8.10
+MUTHEN & MUTHEN
+06/18/2025   8:45 AM
+
+INPUT INSTRUCTIONS
+
+  TITLE:
+
+  1.0 psb 1-factor model
+
+  Data:
+
+  File = data_ora_ca_p2_clean.csv;
+
+  VARIABLE:
+
+  NAMES = ID gender age_t1 help_t1 share_t1 comfort_t1 aht_t1 mdg_t1 pain_t1
+  age_t2 help_t2 share_t2 comfort_t2 aht_t2 mdg_t2 pain_t2;
+
+  USEVARIABLES = help_t1 share_t1 comfort_t1 aht_t1 mdg_t1 pain_t1
+   help_t2 share_t2 comfort_t2 aht_t2 mdg_t2 pain_t2;
+
+  MISSING = all (-999);
+
+  IDVARIABLE = ID;
+
+  ANALYSIS:
+
+  TYPE = General;
+
+  ESTIMATOR = MLR;
+
+  MODEL:
+
+  !---------------------t1--------------------------------
+
+  !psb t1
+
+  PSB_T1 BY help_t1* share_t1 comfort_t1 aht_t1 mdg_t1 pain_t1;
+
+  [help_t1* share_t1 comfort_t1 aht_t1 mdg_t1 pain_t1];
+
+  PSB_T1@1;
+
+  [PSB_T1@0];
+
+  !---------------------t2--------------------------------
+
+  !psb t2
+
+  PSB_T2 BY help_t2* share_t2 comfort_t2 aht_t2 mdg_t2 pain_t2;
+
+  [help_t2* share_t2 comfort_t2 aht_t2 mdg_t2 pain_t2];
+
+  PSB_T2@1;
+
+  [PSB_T2@0];
+
+  !----------------------across-time----------------------
+
+  !latent covariances
+
+  psb_t1 WITH psb_t2;
+
+  ! cross-time residual covariances
+  help_t1 WITH help_t2;
+  share_t1 WITH share_t2;
+  comfort_t1 WITH comfort_t2 (r1);
+  aht_t1 WITH aht_t2;
+  mdg_t1 WITH mdg_t2;
+  pain_t1 WITH pain_t2;
+
+  MODEL CONSTRAINT:
+  r1 < .5;
+
+  OUTPUT:
+  SAMPSTAT STANDARDIZED MODINDICES CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;
+
+
+
+*** WARNING in VARIABLE command
+  Note that only the first 8 characters of variable names are used in the output.
+  Shorten variable names to avoid any confusion.
+*** WARNING in OUTPUT command
+  MODINDICES option is not available in conjunction with nonlinear constraints
+  through the use of MODEL CONSTRAINT.  Request for MODINDICES is ignored.
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+
+
+1.0 psb 1-factor model
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         186
+
+Number of dependent variables                                   12
+Number of independent variables                                  0
+Number of continuous latent variables                            2
+
+Observed dependent variables
+
+  Continuous
+   HELP_T1     SHARE_T1    COMFORT_T1  AHT_T1      MDG_T1      PAIN_T1
+   HELP_T2     SHARE_T2    COMFORT_T2  AHT_T2      MDG_T2      PAIN_T2
+
+Continuous latent variables
+   PSB_T1      PSB_T2
+
+Variables with special functions
+
+  ID variable           ID
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  data_ora_ca_p2_clean.csv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            48
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        0.914
+ SHARE_T1       0.817         0.887
+ COMFORT_       0.844         0.866         0.909
+ AHT_T1         0.839         0.806         0.839         0.898
+ MDG_T1         0.887         0.860         0.882         0.892         0.957
+ PAIN_T1        0.828         0.801         0.823         0.828         0.892
+ HELP_T2        0.683         0.651         0.672         0.656         0.710
+ SHARE_T2       0.769         0.747         0.769         0.753         0.806
+ COMFORT_       0.763         0.742         0.763         0.747         0.801
+ AHT_T2         0.710         0.667         0.683         0.688         0.726
+ MDG_T2         0.790         0.763         0.785         0.780         0.828
+ PAIN_T2        0.753         0.726         0.742         0.737         0.785
+
+
+           Covariance Coverage
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+ PAIN_T1        0.898
+ HELP_T2        0.661         0.742
+ SHARE_T2       0.753         0.737         0.839
+ COMFORT_       0.747         0.742         0.828         0.833
+ AHT_T2         0.683         0.624         0.704         0.704         0.758
+ MDG_T2         0.780         0.731         0.823         0.817         0.720
+ PAIN_T2        0.731         0.715         0.796         0.796         0.688
+
+
+           Covariance Coverage
+              MDG_T2        PAIN_T2
+              ________      ________
+ MDG_T2         0.860
+ PAIN_T2        0.801         0.817
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+                0.012        -0.037        -0.013        -0.009        -0.005
+
+
+           Means
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+               -0.022        -0.013         0.013         0.016        -0.015
+
+
+           Means
+              MDG_T2        PAIN_T2
+              ________      ________
+                0.012         0.013
+
+
+           Covariances
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        0.995
+ SHARE_T1       0.090         1.016
+ COMFORT_       0.218         0.492         0.998
+ AHT_T1        -0.021         0.022        -0.073         0.995
+ MDG_T1         0.053         0.091         0.038        -0.048         0.997
+ PAIN_T1        0.358         0.071         0.248        -0.173         0.050
+ HELP_T2        0.023         0.051         0.008         0.033         0.146
+ SHARE_T2       0.300         0.251         0.291         0.089         0.085
+ COMFORT_       0.239         0.119         0.098        -0.049        -0.074
+ AHT_T2        -0.044         0.000        -0.052         0.149         0.127
+ MDG_T2        -0.039        -0.033         0.095        -0.143         0.261
+ PAIN_T2        0.091         0.093         0.203        -0.001        -0.073
+
+
+           Covariances
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+ PAIN_T1        1.023
+ HELP_T2        0.088         0.997
+ SHARE_T2       0.222         0.193         0.981
+ COMFORT_       0.310         0.055         0.473         0.990
+ AHT_T2        -0.110         0.104        -0.015        -0.117         0.991
+ MDG_T2         0.093         0.184         0.054         0.049         0.028
+ PAIN_T2        0.260        -0.012         0.186         0.372         0.031
+
+
+           Covariances
+              MDG_T2        PAIN_T2
+              ________      ________
+ MDG_T2         1.004
+ PAIN_T2       -0.012         0.988
+
+
+           Correlations
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        1.000
+ SHARE_T1       0.089         1.000
+ COMFORT_       0.219         0.489         1.000
+ AHT_T1        -0.021         0.022        -0.073         1.000
+ MDG_T1         0.053         0.091         0.038        -0.048         1.000
+ PAIN_T1        0.354         0.069         0.245        -0.171         0.049
+ HELP_T2        0.024         0.050         0.008         0.034         0.147
+ SHARE_T2       0.303         0.251         0.294         0.090         0.086
+ COMFORT_       0.241         0.119         0.099        -0.049        -0.074
+ AHT_T2        -0.044         0.000        -0.052         0.150         0.128
+ MDG_T2        -0.039        -0.033         0.095        -0.143         0.261
+ PAIN_T2        0.092         0.093         0.204        -0.001        -0.074
+
+
+           Correlations
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+ PAIN_T1        1.000
+ HELP_T2        0.087         1.000
+ SHARE_T2       0.222         0.195         1.000
+ COMFORT_       0.308         0.056         0.480         1.000
+ AHT_T2        -0.109         0.104        -0.015        -0.118         1.000
+ MDG_T2         0.092         0.184         0.054         0.049         0.028
+ PAIN_T2        0.258        -0.012         0.189         0.376         0.032
+
+
+           Correlations
+              MDG_T2        PAIN_T2
+              ________      ________
+ MDG_T2         1.000
+ PAIN_T2       -0.012         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -2597.321
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     HELP_T1               0.000      -2.559      -4.106    2.94%      -0.432      0.486      0.486
+             170.000       0.994       6.771       0.486   72.94%       0.486      0.486
+     SHARE_T1              0.000      -0.798      -2.065    9.70%      -1.091     -0.118      0.369
+             165.000       0.994      -0.478       1.342    6.67%       0.369      0.855
+     COMFORT_T1            0.000      -0.596      -1.731   15.98%      -0.868     -0.005      0.426
+             169.000       0.994      -1.001       1.290    9.47%       0.426      0.858
+     AHT_T1                0.000       0.563      -1.112   32.34%      -1.112     -0.452      0.207
+             167.000       0.994      -0.461       2.187    7.78%       0.207      0.867
+     MDG_T1                0.000       0.087      -1.474   16.85%      -0.535     -0.535     -0.535
+             178.000       0.994      -1.238       1.370   25.84%       0.432      1.370
+     PAIN_T1               0.000       0.919      -0.833   52.10%      -0.833     -0.833     -0.833
+             167.000       0.994      -0.047       2.997    1.80%       0.443      0.443
+     HELP_T2               0.000      -1.809      -4.829    0.72%      -0.923      0.640      0.640
+             138.000       0.993       3.858       0.640   62.32%       0.640      0.640
+     SHARE_T2              0.000      -0.944      -2.934    1.28%      -0.581      0.008      0.008
+             156.000       0.994       0.118       1.184   16.67%       0.596      0.596
+     COMFORT_T2            0.000      -1.113      -2.354    7.74%      -0.468      0.003      0.474
+             155.000       0.994       0.200       0.946   27.74%       0.474      0.946
+     AHT_T2                0.000       0.093      -1.319   27.66%      -1.319      0.077      0.077
+             141.000       0.993      -0.854       2.171    3.55%       0.077      0.775
+     MDG_T2                0.000      -0.393      -1.715   14.37%      -0.794      0.154      0.154
+             160.000       0.994      -1.158       1.075   36.25%       0.154      1.075
+     PAIN_T2               0.000       1.080      -0.749   57.89%      -0.749     -0.749     -0.749
+             152.000       0.993       0.150       3.004    1.97%       0.502      0.502
+
+
+     THIS ANALYSIS MAY HAVE MULTIPLE SOLUTIONS.  EXPLORE THIS USING RANDOM STARTS,
+     FOR EXAMPLE, STARTS = 20.  USE A LARGE ENOUGH NUMBER OF STARTS SO THAT THE
+     BEST FIT FUNCTION VALUE IS REPLICATED SEVERAL TIMES.
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     WARNING:  THE RESIDUAL COVARIANCE MATRIX (THETA) IS NOT POSITIVE DEFINITE.
+     THIS COULD INDICATE A NEGATIVE VARIANCE/RESIDUAL VARIANCE FOR AN OBSERVED
+     VARIABLE, A CORRELATION GREATER OR EQUAL TO ONE BETWEEN TWO OBSERVED
+     VARIABLES, OR A LINEAR DEPENDENCY AMONG MORE THAN TWO OBSERVED VARIABLES.
+     CHECK THE RESULTS SECTION FOR MORE INFORMATION.
+     PROBLEM INVOLVING VARIABLE COMFORT_.
+
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       43
+
+Loglikelihood
+
+          H0 Value                       -2631.618
+          H0 Scaling Correction Factor      1.1694
+            for MLR
+          H1 Value                       -2597.321
+          H1 Scaling Correction Factor      1.0150
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                    5349.236
+          Bayesian (BIC)                  5487.943
+          Sample-Size Adjusted BIC        5351.747
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                             78.512*
+          Degrees of Freedom                    47
+          P-Value                           0.0027
+          Scaling Correction Factor         0.8737
+            for MLR
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.060
+          90 Percent C.I.                    0.035  0.083
+          Probability RMSEA <= .05           0.227
+
+CFI/TLI
+
+          CFI                                0.821
+          TLI                                0.749
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                            242.174
+          Degrees of Freedom                    66
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.071
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ PSB_T1   BY
+    HELP_T1            0.277      0.208      1.336      0.181
+    SHARE_T1           0.480      0.084      5.688      0.000
+    COMFORT_T1         0.855      0.321      2.661      0.008
+    AHT_T1            -0.110      0.095     -1.167      0.243
+    MDG_T1            -0.001      0.089     -0.011      0.991
+    PAIN_T1            0.317      0.194      1.631      0.103
+
+ PSB_T2   BY
+    HELP_T2            0.027      0.118      0.233      0.816
+    SHARE_T2           0.544      0.118      4.602      0.000
+    COMFORT_T2         0.881      0.184      4.802      0.000
+    AHT_T2            -0.127      0.085     -1.489      0.136
+    MDG_T2             0.096      0.083      1.151      0.250
+    PAIN_T2            0.412      0.104      3.976      0.000
+
+ PSB_T1   WITH
+    PSB_T2             0.618      0.207      2.980      0.003
+
+ HELP_T1  WITH
+    HELP_T2            0.014      0.058      0.246      0.806
+
+ SHARE_T1 WITH
+    SHARE_T2           0.111      0.120      0.927      0.354
+
+ COMFORT_ WITH
+    COMFORT_T2        -0.346      0.168     -2.060      0.039
+
+ AHT_T1   WITH
+    AHT_T2             0.155      0.092      1.674      0.094
+
+ MDG_T1   WITH
+    MDG_T2             0.257      0.079      3.239      0.001
+
+ PAIN_T1  WITH
+    PAIN_T2            0.142      0.095      1.493      0.135
+
+ Means
+    PSB_T1             0.000      0.000    999.000    999.000
+    PSB_T2             0.000      0.000    999.000    999.000
+
+ Intercepts
+    HELP_T1            0.001      0.076      0.017      0.986
+    SHARE_T1          -0.031      0.081     -0.384      0.701
+    COMFORT_T1        -0.005      0.078     -0.069      0.945
+    AHT_T1            -0.007      0.077     -0.086      0.931
+    MDG_T1             0.000      0.075      0.001      0.999
+    PAIN_T1           -0.008      0.077     -0.110      0.912
+    HELP_T2            0.001      0.084      0.017      0.987
+    SHARE_T2           0.007      0.079      0.091      0.928
+    COMFORT_T2         0.021      0.079      0.261      0.794
+    AHT_T2            -0.008      0.084     -0.097      0.923
+    MDG_T2             0.015      0.078      0.197      0.844
+    PAIN_T2            0.023      0.082      0.287      0.774
+
+ Variances
+    PSB_T1             1.000      0.000    999.000    999.000
+    PSB_T2             1.000      0.000    999.000    999.000
+
+ Residual Variances
+    HELP_T1            0.918      0.206      4.454      0.000
+    SHARE_T1           0.783      0.098      8.000      0.000
+    COMFORT_T1         0.248      0.537      0.461      0.645
+    AHT_T1             0.982      0.096     10.199      0.000
+    MDG_T1             0.995      0.065     15.231      0.000
+    PAIN_T1            0.893      0.165      5.414      0.000
+    HELP_T2            0.992      0.202      4.907      0.000
+    SHARE_T2           0.702      0.134      5.223      0.000
+    COMFORT_T2         0.215      0.303      0.712      0.476
+    AHT_T2             0.977      0.092     10.643      0.000
+    MDG_T2             0.991      0.074     13.381      0.000
+    PAIN_T2            0.816      0.107      7.648      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.134E-02
+       (ratio of smallest to largest eigenvalue)
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ PSB_T1   BY
+    HELP_T1            0.278      0.197      1.412      0.158
+    SHARE_T1           0.477      0.076      6.256      0.000
+    COMFORT_T1         0.864      0.319      2.710      0.007
+    AHT_T1            -0.111      0.095     -1.169      0.242
+    MDG_T1            -0.001      0.089     -0.011      0.991
+    PAIN_T1            0.318      0.196      1.621      0.105
+
+ PSB_T2   BY
+    HELP_T2            0.028      0.117      0.235      0.814
+    SHARE_T2           0.545      0.109      4.987      0.000
+    COMFORT_T2         0.885      0.173      5.123      0.000
+    AHT_T2            -0.127      0.085     -1.488      0.137
+    MDG_T2             0.096      0.083      1.152      0.249
+    PAIN_T2            0.415      0.095      4.353      0.000
+
+ PSB_T1   WITH
+    PSB_T2             0.618      0.207      2.980      0.003
+
+ HELP_T1  WITH
+    HELP_T2            0.015      0.061      0.245      0.806
+
+ SHARE_T1 WITH
+    SHARE_T2           0.150      0.149      1.005      0.315
+
+ COMFORT_ WITH
+    COMFORT_T2        -1.497      3.161     -0.474      0.636
+
+ AHT_T1   WITH
+    AHT_T2             0.158      0.095      1.660      0.097
+
+ MDG_T1   WITH
+    MDG_T2             0.259      0.076      3.424      0.001
+
+ PAIN_T1  WITH
+    PAIN_T2            0.167      0.103      1.618      0.106
+
+ Means
+    PSB_T1             0.000      0.000    999.000    999.000
+    PSB_T2             0.000      0.000    999.000    999.000
+
+ Intercepts
+    HELP_T1            0.001      0.077      0.017      0.986
+    SHARE_T1          -0.031      0.079     -0.389      0.697
+    COMFORT_T1        -0.005      0.079     -0.069      0.945
+    AHT_T1            -0.007      0.078     -0.086      0.931
+    MDG_T1             0.000      0.075      0.001      0.999
+    PAIN_T1           -0.009      0.078     -0.110      0.913
+    HELP_T2            0.001      0.085      0.017      0.987
+    SHARE_T2           0.007      0.079      0.091      0.928
+    COMFORT_T2         0.021      0.080      0.258      0.796
+    AHT_T2            -0.008      0.084     -0.097      0.923
+    MDG_T2             0.015      0.078      0.196      0.844
+    PAIN_T2            0.024      0.081      0.290      0.772
+
+ Variances
+    PSB_T1             1.000      0.000    999.000    999.000
+    PSB_T2             1.000      0.000    999.000    999.000
+
+ Residual Variances
+    HELP_T1            0.923      0.110      8.425      0.000
+    SHARE_T1           0.772      0.073     10.619      0.000
+    COMFORT_T1         0.253      0.551      0.459      0.646
+    AHT_T1             0.988      0.021     47.162      0.000
+    MDG_T1             1.000      0.000   5741.206      0.000
+    PAIN_T1            0.899      0.125      7.211      0.000
+    HELP_T2            0.999      0.006    155.041      0.000
+    SHARE_T2           0.703      0.119      5.910      0.000
+    COMFORT_T2         0.217      0.306      0.710      0.477
+    AHT_T2             0.984      0.022     45.264      0.000
+    MDG_T2             0.991      0.016     61.879      0.000
+    PAIN_T2            0.828      0.079     10.459      0.000
+
+
+STDY Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ PSB_T1   BY
+    HELP_T1            0.278      0.197      1.412      0.158
+    SHARE_T1           0.477      0.076      6.256      0.000
+    COMFORT_T1         0.864      0.319      2.710      0.007
+    AHT_T1            -0.111      0.095     -1.169      0.242
+    MDG_T1            -0.001      0.089     -0.011      0.991
+    PAIN_T1            0.318      0.196      1.621      0.105
+
+ PSB_T2   BY
+    HELP_T2            0.028      0.117      0.235      0.814
+    SHARE_T2           0.545      0.109      4.987      0.000
+    COMFORT_T2         0.885      0.173      5.123      0.000
+    AHT_T2            -0.127      0.085     -1.488      0.137
+    MDG_T2             0.096      0.083      1.152      0.249
+    PAIN_T2            0.415      0.095      4.353      0.000
+
+ PSB_T1   WITH
+    PSB_T2             0.618      0.207      2.980      0.003
+
+ HELP_T1  WITH
+    HELP_T2            0.015      0.061      0.245      0.806
+
+ SHARE_T1 WITH
+    SHARE_T2           0.150      0.149      1.005      0.315
+
+ COMFORT_ WITH
+    COMFORT_T2        -1.497      3.161     -0.474      0.636
+
+ AHT_T1   WITH
+    AHT_T2             0.158      0.095      1.660      0.097
+
+ MDG_T1   WITH
+    MDG_T2             0.259      0.076      3.424      0.001
+
+ PAIN_T1  WITH
+    PAIN_T2            0.167      0.103      1.618      0.106
+
+ Means
+    PSB_T1             0.000      0.000    999.000    999.000
+    PSB_T2             0.000      0.000    999.000    999.000
+
+ Intercepts
+    HELP_T1            0.001      0.077      0.017      0.986
+    SHARE_T1          -0.031      0.079     -0.389      0.697
+    COMFORT_T1        -0.005      0.079     -0.069      0.945
+    AHT_T1            -0.007      0.078     -0.086      0.931
+    MDG_T1             0.000      0.075      0.001      0.999
+    PAIN_T1           -0.009      0.078     -0.110      0.913
+    HELP_T2            0.001      0.085      0.017      0.987
+    SHARE_T2           0.007      0.079      0.091      0.928
+    COMFORT_T2         0.021      0.080      0.258      0.796
+    AHT_T2            -0.008      0.084     -0.097      0.923
+    MDG_T2             0.015      0.078      0.196      0.844
+    PAIN_T2            0.024      0.081      0.290      0.772
+
+ Variances
+    PSB_T1             1.000      0.000    999.000    999.000
+    PSB_T2             1.000      0.000    999.000    999.000
+
+ Residual Variances
+    HELP_T1            0.923      0.110      8.425      0.000
+    SHARE_T1           0.772      0.073     10.619      0.000
+    COMFORT_T1         0.253      0.551      0.459      0.646
+    AHT_T1             0.988      0.021     47.162      0.000
+    MDG_T1             1.000      0.000   5741.206      0.000
+    PAIN_T1            0.899      0.125      7.211      0.000
+    HELP_T2            0.999      0.006    155.041      0.000
+    SHARE_T2           0.703      0.119      5.910      0.000
+    COMFORT_T2         0.217      0.306      0.710      0.477
+    AHT_T2             0.984      0.022     45.264      0.000
+    MDG_T2             0.991      0.016     61.879      0.000
+    PAIN_T2            0.828      0.079     10.459      0.000
+
+
+STD Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ PSB_T1   BY
+    HELP_T1            0.277      0.208      1.336      0.181
+    SHARE_T1           0.480      0.084      5.688      0.000
+    COMFORT_T1         0.855      0.321      2.661      0.008
+    AHT_T1            -0.110      0.095     -1.167      0.243
+    MDG_T1            -0.001      0.089     -0.011      0.991
+    PAIN_T1            0.317      0.194      1.631      0.103
+
+ PSB_T2   BY
+    HELP_T2            0.027      0.118      0.233      0.816
+    SHARE_T2           0.544      0.118      4.602      0.000
+    COMFORT_T2         0.881      0.184      4.802      0.000
+    AHT_T2            -0.127      0.085     -1.489      0.136
+    MDG_T2             0.096      0.083      1.151      0.250
+    PAIN_T2            0.412      0.104      3.976      0.000
+
+ PSB_T1   WITH
+    PSB_T2             0.618      0.207      2.980      0.003
+
+ HELP_T1  WITH
+    HELP_T2            0.014      0.058      0.246      0.806
+
+ SHARE_T1 WITH
+    SHARE_T2           0.111      0.120      0.927      0.354
+
+ COMFORT_ WITH
+    COMFORT_T2        -0.346      0.168     -2.060      0.039
+
+ AHT_T1   WITH
+    AHT_T2             0.155      0.092      1.674      0.094
+
+ MDG_T1   WITH
+    MDG_T2             0.257      0.079      3.239      0.001
+
+ PAIN_T1  WITH
+    PAIN_T2            0.142      0.095      1.493      0.135
+
+ Means
+    PSB_T1             0.000      0.000    999.000    999.000
+    PSB_T2             0.000      0.000    999.000    999.000
+
+ Intercepts
+    HELP_T1            0.001      0.076      0.017      0.986
+    SHARE_T1          -0.031      0.081     -0.384      0.701
+    COMFORT_T1        -0.005      0.078     -0.069      0.945
+    AHT_T1            -0.007      0.077     -0.086      0.931
+    MDG_T1             0.000      0.075      0.001      0.999
+    PAIN_T1           -0.008      0.077     -0.110      0.912
+    HELP_T2            0.001      0.084      0.017      0.987
+    SHARE_T2           0.007      0.079      0.091      0.928
+    COMFORT_T2         0.021      0.079      0.261      0.794
+    AHT_T2            -0.008      0.084     -0.097      0.923
+    MDG_T2             0.015      0.078      0.197      0.844
+    PAIN_T2            0.023      0.082      0.287      0.774
+
+ Variances
+    PSB_T1             1.000      0.000    999.000    999.000
+    PSB_T2             1.000      0.000    999.000    999.000
+
+ Residual Variances
+    HELP_T1            0.918      0.206      4.454      0.000
+    SHARE_T1           0.783      0.098      8.000      0.000
+    COMFORT_T1         0.248      0.537      0.461      0.645
+    AHT_T1             0.982      0.096     10.199      0.000
+    MDG_T1             0.995      0.065     15.231      0.000
+    PAIN_T1            0.893      0.165      5.414      0.000
+    HELP_T2            0.992      0.202      4.907      0.000
+    SHARE_T2           0.702      0.134      5.223      0.000
+    COMFORT_T2         0.215      0.303      0.712      0.476
+    AHT_T2             0.977      0.092     10.643      0.000
+    MDG_T2             0.991      0.074     13.381      0.000
+    PAIN_T2            0.816      0.107      7.648      0.000
+
+
+R-SQUARE
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    HELP_T1            0.077      0.110      0.706      0.480
+    SHARE_T1           0.228      0.073      3.128      0.002
+    COMFORT_           0.747      0.551      1.355      0.175
+    AHT_T1             0.012      0.021      0.584      0.559
+    MDG_T1             0.000      0.000      0.005      0.996
+    PAIN_T1            0.101      0.125      0.810      0.418
+    HELP_T2            0.001      0.006      0.118      0.906
+    SHARE_T2           0.297      0.119      2.494      0.013
+    COMFORT_           0.783      0.306      2.562      0.010
+    AHT_T2             0.016      0.022      0.744      0.457
+    MDG_T2             0.009      0.016      0.576      0.565
+    PAIN_T2            0.172      0.079      2.177      0.030
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ PSB_T1   BY
+    HELP_T1         -0.257      -0.129      -0.064       0.277       0.619       0.684       0.812
+    SHARE_T1         0.263       0.315       0.341       0.480       0.619       0.646       0.698
+    COMFORT_T1       0.028       0.225       0.327       0.855       1.383       1.485       1.682
+    AHT_T1          -0.354      -0.296      -0.266      -0.110       0.045       0.075       0.133
+    MDG_T1          -0.230      -0.175      -0.147      -0.001       0.145       0.173       0.228
+    PAIN_T1         -0.184      -0.064      -0.003       0.317       0.636       0.697       0.817
+
+ PSB_T2   BY
+    HELP_T2         -0.275      -0.203      -0.166       0.027       0.221       0.258       0.330
+    SHARE_T2         0.240       0.313       0.350       0.544       0.739       0.776       0.849
+    COMFORT_T2       0.409       0.522       0.580       0.881       1.183       1.241       1.354
+    AHT_T2          -0.346      -0.293      -0.267      -0.127       0.013       0.040       0.092
+    MDG_T2          -0.119      -0.067      -0.041       0.096       0.233       0.259       0.311
+    PAIN_T2          0.145       0.209       0.242       0.412       0.582       0.615       0.679
+
+ PSB_T1   WITH
+    PSB_T2           0.084       0.212       0.277       0.618       0.960       1.025       1.153
+
+ HELP_T1  WITH
+    HELP_T2         -0.136      -0.100      -0.081       0.014       0.110       0.128       0.164
+
+ SHARE_T1 WITH
+    SHARE_T2        -0.198      -0.124      -0.086       0.111       0.308       0.346       0.420
+
+ COMFORT_ WITH
+    COMFORT_T2      -0.779      -0.675      -0.622      -0.346      -0.070      -0.017       0.087
+
+ AHT_T1   WITH
+    AHT_T2          -0.083      -0.026       0.003       0.155       0.307       0.336       0.393
+
+ MDG_T1   WITH
+    MDG_T2           0.053       0.102       0.127       0.257       0.388       0.413       0.462
+
+ PAIN_T1  WITH
+    PAIN_T2         -0.103      -0.045      -0.014       0.142       0.299       0.329       0.388
+
+ Means
+    PSB_T1           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    PSB_T2           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Intercepts
+    HELP_T1         -0.195      -0.148      -0.124       0.001       0.127       0.151       0.198
+    SHARE_T1        -0.240      -0.190      -0.164      -0.031       0.102       0.128       0.178
+    COMFORT_T1      -0.206      -0.158      -0.134      -0.005       0.123       0.148       0.196
+    AHT_T1          -0.206      -0.158      -0.134      -0.007       0.120       0.145       0.192
+    MDG_T1          -0.192      -0.146      -0.123       0.000       0.123       0.146       0.192
+    PAIN_T1         -0.207      -0.159      -0.135      -0.008       0.118       0.142       0.190
+    HELP_T2         -0.215      -0.164      -0.137       0.001       0.140       0.166       0.218
+    SHARE_T2        -0.196      -0.147      -0.123       0.007       0.137       0.162       0.210
+    COMFORT_T2      -0.182      -0.134      -0.109       0.021       0.150       0.175       0.223
+    AHT_T2          -0.224      -0.172      -0.146      -0.008       0.130       0.156       0.208
+    MDG_T2          -0.185      -0.137      -0.113       0.015       0.143       0.168       0.216
+    PAIN_T2         -0.187      -0.137      -0.111       0.023       0.158       0.184       0.234
+
+ Variances
+    PSB_T1           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    PSB_T2           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    HELP_T1          0.387       0.514       0.579       0.918       1.257       1.322       1.449
+    SHARE_T1         0.531       0.591       0.622       0.783       0.944       0.975       1.035
+    COMFORT_T1      -1.137      -0.806      -0.636       0.248       1.132       1.301       1.632
+    AHT_T1           0.734       0.794       0.824       0.982       1.141       1.171       1.231
+    MDG_T1           0.827       0.867       0.888       0.995       1.103       1.123       1.164
+    PAIN_T1          0.468       0.570       0.622       0.893       1.164       1.216       1.318
+    HELP_T2          0.471       0.596       0.659       0.992       1.324       1.388       1.513
+    SHARE_T2         0.356       0.439       0.481       0.702       0.924       0.966       1.049
+    COMFORT_T2      -0.564      -0.377      -0.282       0.215       0.713       0.808       0.995
+    AHT_T2           0.740       0.797       0.826       0.977       1.127       1.156       1.213
+    MDG_T2           0.800       0.846       0.869       0.991       1.112       1.136       1.181
+    PAIN_T2          0.541       0.607       0.640       0.816       0.991       1.025       1.090
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ PSB_T1   BY
+    HELP_T1         -0.229      -0.108      -0.046       0.278       0.602       0.664       0.785
+    SHARE_T1         0.281       0.328       0.352       0.477       0.602       0.626       0.673
+    COMFORT_T1       0.043       0.239       0.340       0.864       1.389       1.489       1.686
+    AHT_T1          -0.354      -0.296      -0.266      -0.111       0.045       0.075       0.133
+    MDG_T1          -0.231      -0.176      -0.148      -0.001       0.146       0.174       0.229
+    PAIN_T1         -0.187      -0.067      -0.005       0.318       0.640       0.702       0.823
+
+ PSB_T2   BY
+    HELP_T2         -0.274      -0.202      -0.165       0.028       0.220       0.257       0.329
+    SHARE_T2         0.263       0.331       0.365       0.545       0.724       0.759       0.826
+    COMFORT_T2       0.440       0.546       0.601       0.885       1.169       1.223       1.330
+    AHT_T2          -0.347      -0.295      -0.268      -0.127       0.013       0.040       0.093
+    MDG_T2          -0.119      -0.067      -0.041       0.096       0.233       0.259       0.311
+    PAIN_T2          0.169       0.228       0.258       0.415       0.572       0.602       0.661
+
+ PSB_T1   WITH
+    PSB_T2           0.084       0.212       0.277       0.618       0.960       1.025       1.153
+
+ HELP_T1  WITH
+    HELP_T2         -0.142      -0.105      -0.085       0.015       0.115       0.135       0.172
+
+ SHARE_T1 WITH
+    SHARE_T2        -0.234      -0.142      -0.095       0.150       0.395       0.442       0.534
+
+ COMFORT_ WITH
+    COMFORT_T2      -9.639      -7.693      -6.697      -1.497       3.702       4.698       6.644
+
+ AHT_T1   WITH
+    AHT_T2          -0.087      -0.029       0.001       0.158       0.315       0.345       0.403
+
+ MDG_T1   WITH
+    MDG_T2           0.064       0.111       0.135       0.259       0.384       0.407       0.454
+
+ PAIN_T1  WITH
+    PAIN_T2         -0.099      -0.035      -0.003       0.167       0.337       0.369       0.433
+
+ Means
+    PSB_T1           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    PSB_T2           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Intercepts
+    HELP_T1         -0.196      -0.149      -0.125       0.001       0.127       0.151       0.198
+    SHARE_T1        -0.235      -0.187      -0.162      -0.031       0.100       0.125       0.174
+    COMFORT_T1      -0.208      -0.160      -0.135      -0.005       0.124       0.149       0.197
+    AHT_T1          -0.207      -0.159      -0.134      -0.007       0.121       0.145       0.193
+    MDG_T1          -0.193      -0.147      -0.123       0.000       0.123       0.147       0.193
+    PAIN_T1         -0.208      -0.161      -0.136      -0.009       0.119       0.144       0.191
+    HELP_T2         -0.217      -0.164      -0.138       0.001       0.141       0.167       0.219
+    SHARE_T2        -0.197      -0.148      -0.123       0.007       0.138       0.162       0.211
+    COMFORT_T2      -0.185      -0.136      -0.111       0.021       0.152       0.177       0.226
+    AHT_T2          -0.225      -0.173      -0.146      -0.008       0.130       0.157       0.208
+    MDG_T2          -0.186      -0.138      -0.113       0.015       0.144       0.168       0.216
+    PAIN_T2         -0.186      -0.136      -0.110       0.024       0.158       0.183       0.233
+
+ Variances
+    PSB_T1           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    PSB_T2           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    HELP_T1          0.641       0.708       0.743       0.923       1.103       1.137       1.205
+    SHARE_T1         0.585       0.630       0.653       0.772       0.892       0.915       0.960
+    COMFORT_T1      -1.167      -0.827      -0.654       0.253       1.160       1.333       1.673
+    AHT_T1           0.934       0.947       0.953       0.988       1.022       1.029       1.042
+    MDG_T1           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    PAIN_T1          0.578       0.655       0.694       0.899       1.104       1.143       1.220
+    HELP_T2          0.983       0.987       0.989       0.999       1.010       1.012       1.016
+    SHARE_T2         0.397       0.470       0.507       0.703       0.899       0.936       1.010
+    COMFORT_T2      -0.570      -0.382      -0.286       0.217       0.720       0.816       1.004
+    AHT_T2           0.928       0.941       0.948       0.984       1.020       1.026       1.040
+    MDG_T2           0.950       0.959       0.964       0.991       1.017       1.022       1.032
+    PAIN_T2          0.624       0.673       0.698       0.828       0.958       0.983       1.032
+
+
+STDY Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ PSB_T1   BY
+    HELP_T1         -0.229      -0.108      -0.046       0.278       0.602       0.664       0.785
+    SHARE_T1         0.281       0.328       0.352       0.477       0.602       0.626       0.673
+    COMFORT_T1       0.043       0.239       0.340       0.864       1.389       1.489       1.686
+    AHT_T1          -0.354      -0.296      -0.266      -0.111       0.045       0.075       0.133
+    MDG_T1          -0.231      -0.176      -0.148      -0.001       0.146       0.174       0.229
+    PAIN_T1         -0.187      -0.067      -0.005       0.318       0.640       0.702       0.823
+
+ PSB_T2   BY
+    HELP_T2         -0.274      -0.202      -0.165       0.028       0.220       0.257       0.329
+    SHARE_T2         0.263       0.331       0.365       0.545       0.724       0.759       0.826
+    COMFORT_T2       0.440       0.546       0.601       0.885       1.169       1.223       1.330
+    AHT_T2          -0.347      -0.295      -0.268      -0.127       0.013       0.040       0.093
+    MDG_T2          -0.119      -0.067      -0.041       0.096       0.233       0.259       0.311
+    PAIN_T2          0.169       0.228       0.258       0.415       0.572       0.602       0.661
+
+ PSB_T1   WITH
+    PSB_T2           0.084       0.212       0.277       0.618       0.960       1.025       1.153
+
+ HELP_T1  WITH
+    HELP_T2         -0.142      -0.105      -0.085       0.015       0.115       0.135       0.172
+
+ SHARE_T1 WITH
+    SHARE_T2        -0.234      -0.142      -0.095       0.150       0.395       0.442       0.534
+
+ COMFORT_ WITH
+    COMFORT_T2      -9.639      -7.693      -6.697      -1.497       3.702       4.698       6.644
+
+ AHT_T1   WITH
+    AHT_T2          -0.087      -0.029       0.001       0.158       0.315       0.345       0.403
+
+ MDG_T1   WITH
+    MDG_T2           0.064       0.111       0.135       0.259       0.384       0.407       0.454
+
+ PAIN_T1  WITH
+    PAIN_T2         -0.099      -0.035      -0.003       0.167       0.337       0.369       0.433
+
+ Means
+    PSB_T1           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    PSB_T2           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Intercepts
+    HELP_T1         -0.196      -0.149      -0.125       0.001       0.127       0.151       0.198
+    SHARE_T1        -0.235      -0.187      -0.162      -0.031       0.100       0.125       0.174
+    COMFORT_T1      -0.208      -0.160      -0.135      -0.005       0.124       0.149       0.197
+    AHT_T1          -0.207      -0.159      -0.134      -0.007       0.121       0.145       0.193
+    MDG_T1          -0.193      -0.147      -0.123       0.000       0.123       0.147       0.193
+    PAIN_T1         -0.208      -0.161      -0.136      -0.009       0.119       0.144       0.191
+    HELP_T2         -0.217      -0.164      -0.138       0.001       0.141       0.167       0.219
+    SHARE_T2        -0.197      -0.148      -0.123       0.007       0.138       0.162       0.211
+    COMFORT_T2      -0.185      -0.136      -0.111       0.021       0.152       0.177       0.226
+    AHT_T2          -0.225      -0.173      -0.146      -0.008       0.130       0.157       0.208
+    MDG_T2          -0.186      -0.138      -0.113       0.015       0.144       0.168       0.216
+    PAIN_T2         -0.186      -0.136      -0.110       0.024       0.158       0.183       0.233
+
+ Variances
+    PSB_T1           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    PSB_T2           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    HELP_T1          0.641       0.708       0.743       0.923       1.103       1.137       1.205
+    SHARE_T1         0.585       0.630       0.653       0.772       0.892       0.915       0.960
+    COMFORT_T1      -1.167      -0.827      -0.654       0.253       1.160       1.333       1.673
+    AHT_T1           0.934       0.947       0.953       0.988       1.022       1.029       1.042
+    MDG_T1           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    PAIN_T1          0.578       0.655       0.694       0.899       1.104       1.143       1.220
+    HELP_T2          0.983       0.987       0.989       0.999       1.010       1.012       1.016
+    SHARE_T2         0.397       0.470       0.507       0.703       0.899       0.936       1.010
+    COMFORT_T2      -0.570      -0.382      -0.286       0.217       0.720       0.816       1.004
+    AHT_T2           0.928       0.941       0.948       0.984       1.020       1.026       1.040
+    MDG_T2           0.950       0.959       0.964       0.991       1.017       1.022       1.032
+    PAIN_T2          0.624       0.673       0.698       0.828       0.958       0.983       1.032
+
+
+STD Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ PSB_T1   BY
+    HELP_T1         -0.257      -0.129      -0.064       0.277       0.619       0.684       0.812
+    SHARE_T1         0.263       0.315       0.341       0.480       0.619       0.646       0.698
+    COMFORT_T1       0.028       0.225       0.327       0.855       1.383       1.485       1.682
+    AHT_T1          -0.354      -0.296      -0.266      -0.110       0.045       0.075       0.133
+    MDG_T1          -0.230      -0.175      -0.147      -0.001       0.145       0.173       0.228
+    PAIN_T1         -0.184      -0.064      -0.003       0.317       0.636       0.697       0.817
+
+ PSB_T2   BY
+    HELP_T2         -0.275      -0.203      -0.166       0.027       0.221       0.258       0.330
+    SHARE_T2         0.240       0.313       0.350       0.544       0.739       0.776       0.849
+    COMFORT_T2       0.409       0.522       0.580       0.881       1.183       1.241       1.354
+    AHT_T2          -0.346      -0.293      -0.267      -0.127       0.013       0.040       0.092
+    MDG_T2          -0.119      -0.067      -0.041       0.096       0.233       0.259       0.311
+    PAIN_T2          0.145       0.209       0.242       0.412       0.582       0.615       0.679
+
+ PSB_T1   WITH
+    PSB_T2           0.084       0.212       0.277       0.618       0.960       1.025       1.153
+
+ HELP_T1  WITH
+    HELP_T2         -0.136      -0.100      -0.081       0.014       0.110       0.128       0.164
+
+ SHARE_T1 WITH
+    SHARE_T2        -0.198      -0.124      -0.086       0.111       0.308       0.346       0.420
+
+ COMFORT_ WITH
+    COMFORT_T2      -0.779      -0.675      -0.622      -0.346      -0.070      -0.017       0.087
+
+ AHT_T1   WITH
+    AHT_T2          -0.083      -0.026       0.003       0.155       0.307       0.336       0.393
+
+ MDG_T1   WITH
+    MDG_T2           0.053       0.102       0.127       0.257       0.388       0.413       0.462
+
+ PAIN_T1  WITH
+    PAIN_T2         -0.103      -0.045      -0.014       0.142       0.299       0.329       0.388
+
+ Means
+    PSB_T1           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    PSB_T2           0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Intercepts
+    HELP_T1         -0.195      -0.148      -0.124       0.001       0.127       0.151       0.198
+    SHARE_T1        -0.240      -0.190      -0.164      -0.031       0.102       0.128       0.178
+    COMFORT_T1      -0.206      -0.158      -0.134      -0.005       0.123       0.148       0.196
+    AHT_T1          -0.206      -0.158      -0.134      -0.007       0.120       0.145       0.192
+    MDG_T1          -0.192      -0.146      -0.123       0.000       0.123       0.146       0.192
+    PAIN_T1         -0.207      -0.159      -0.135      -0.008       0.118       0.142       0.190
+    HELP_T2         -0.215      -0.164      -0.137       0.001       0.140       0.166       0.218
+    SHARE_T2        -0.196      -0.147      -0.123       0.007       0.137       0.162       0.210
+    COMFORT_T2      -0.182      -0.134      -0.109       0.021       0.150       0.175       0.223
+    AHT_T2          -0.224      -0.172      -0.146      -0.008       0.130       0.156       0.208
+    MDG_T2          -0.185      -0.137      -0.113       0.015       0.143       0.168       0.216
+    PAIN_T2         -0.187      -0.137      -0.111       0.023       0.158       0.184       0.234
+
+ Variances
+    PSB_T1           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    PSB_T2           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    HELP_T1          0.387       0.514       0.579       0.918       1.257       1.322       1.449
+    SHARE_T1         0.531       0.591       0.622       0.783       0.944       0.975       1.035
+    COMFORT_T1      -1.137      -0.806      -0.636       0.248       1.132       1.301       1.632
+    AHT_T1           0.734       0.794       0.824       0.982       1.141       1.171       1.231
+    MDG_T1           0.827       0.867       0.888       0.995       1.103       1.123       1.164
+    PAIN_T1          0.468       0.570       0.622       0.893       1.164       1.216       1.318
+    HELP_T2          0.471       0.596       0.659       0.992       1.324       1.388       1.513
+    SHARE_T2         0.356       0.439       0.481       0.702       0.924       0.966       1.049
+    COMFORT_T2      -0.564      -0.377      -0.282       0.215       0.713       0.808       0.995
+    AHT_T2           0.740       0.797       0.826       0.977       1.127       1.156       1.213
+    MDG_T2           0.800       0.846       0.869       0.991       1.112       1.136       1.181
+    PAIN_T2          0.541       0.607       0.640       0.816       0.991       1.025       1.090
+
+
+MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
+
+     psb_t1 BY help_t1*0.27738;
+     psb_t1 BY share_t1*0.48033;
+     psb_t1 BY comfort_t1*0.85497;
+     psb_t1 BY aht_t1*-0.11033;
+     psb_t1 BY mdg_t1*-0.00097;
+     psb_t1 BY pain_t1*0.31675;
+     psb_t2 BY help_t2*0.02743;
+     psb_t2 BY share_t2*0.54442;
+     psb_t2 BY comfort_t2*0.88144;
+     psb_t2 BY aht_t2*-0.12668;
+     psb_t2 BY mdg_t2*0.09601;
+     psb_t2 BY pain_t2*0.41199;
+
+     help_t1 WITH help_t2*0.01430;
+     share_t1 WITH share_t2*0.11116;
+     comfort_t1 WITH comfort_t2*-0.34600 (r1);
+     aht_t1 WITH aht_t2*0.15476;
+     mdg_t1 WITH mdg_t2*0.25727;
+     pain_t1 WITH pain_t2*0.14244;
+     psb_t1 WITH psb_t2*0.61827;
+
+     [ help_t1*0.00130 ];
+     [ share_t1*-0.03111 ];
+     [ comfort_t1*-0.00535 ];
+     [ aht_t1*-0.00668 ];
+     [ mdg_t1*0.00005 ];
+     [ pain_t1*-0.00848 ];
+     [ help_t2*0.00142 ];
+     [ share_t2*0.00717 ];
+     [ comfort_t2*0.02052 ];
+     [ aht_t2*-0.00809 ];
+     [ mdg_t2*0.01533 ];
+     [ pain_t2*0.02346 ];
+     [ psb_t1@0 ];
+     [ psb_t2@0 ];
+
+     help_t1*0.91792;
+     share_t1*0.78321;
+     comfort_t1*0.24777;
+     aht_t1*0.98241;
+     mdg_t1*0.99525;
+     pain_t1*0.89282;
+     help_t2*0.99187;
+     share_t2*0.70242;
+     comfort_t2*0.21548;
+     aht_t2*0.97655;
+     mdg_t2*0.99069;
+     pain_t2*0.81560;
+     psb_t1@1;
+     psb_t2@1;
+
+
+
+RESIDUAL OUTPUT
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED)
+
+
+           Model Estimated Means
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+                0.001        -0.031        -0.005        -0.007         0.000
+
+
+           Model Estimated Means
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+               -0.008         0.001         0.007         0.021        -0.008
+
+
+           Model Estimated Means
+              MDG_T2        PAIN_T2
+              ________      ________
+                0.015         0.023
+
+
+           Residuals for Means
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+                0.011        -0.006        -0.008        -0.003        -0.005
+
+
+           Residuals for Means
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+               -0.013        -0.014         0.006        -0.004        -0.007
+
+
+           Residuals for Means
+              MDG_T2        PAIN_T2
+              ________      ________
+               -0.003        -0.011
+
+
+           Standardized Residuals (z-scores) for Means
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+              999.000       999.000       999.000       999.000       999.000
+
+
+           Standardized Residuals (z-scores) for Means
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+              999.000        -0.566       999.000       999.000       999.000
+
+
+           Standardized Residuals (z-scores) for Means
+              MDG_T2        PAIN_T2
+              ________      ________
+               -0.230       999.000
+
+
+           Normalized Residuals for Means
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+                0.143        -0.074        -0.104        -0.034        -0.068
+
+
+           Normalized Residuals for Means
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+               -0.172        -0.159         0.075        -0.052        -0.089
+
+
+           Normalized Residuals for Means
+              MDG_T2        PAIN_T2
+              ________      ________
+               -0.043        -0.132
+
+
+           Model Estimated Covariances
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        0.995
+ SHARE_T1       0.133         1.014
+ COMFORT_       0.237         0.411         0.979
+ AHT_T1        -0.031        -0.053        -0.094         0.995
+ MDG_T1         0.000         0.000        -0.001         0.000         0.995
+ PAIN_T1        0.088         0.152         0.271        -0.035         0.000
+ HELP_T2        0.019         0.008         0.015        -0.002         0.000
+ SHARE_T2       0.093         0.273         0.288        -0.037         0.000
+ COMFORT_       0.151         0.262         0.120        -0.060        -0.001
+ AHT_T2        -0.022        -0.038        -0.067         0.163         0.000
+ MDG_T2         0.016         0.029         0.051        -0.007         0.257
+ PAIN_T2        0.071         0.122         0.218        -0.028         0.000
+
+
+           Model Estimated Covariances
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+ PAIN_T1        0.993
+ HELP_T2        0.005         0.993
+ SHARE_T2       0.107         0.015         0.999
+ COMFORT_       0.173         0.024         0.480         0.992
+ AHT_T2        -0.025        -0.003        -0.069        -0.112         0.993
+ MDG_T2         0.019         0.003         0.052         0.085        -0.012
+ PAIN_T2        0.223         0.011         0.224         0.363        -0.052
+
+
+           Model Estimated Covariances
+              MDG_T2        PAIN_T2
+              ________      ________
+ MDG_T2         1.000
+ PAIN_T2        0.040         0.985
+
+
+           Model Estimated Correlations
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        1.000
+ SHARE_T1       0.133         1.000
+ COMFORT_       0.240         0.412         1.000
+ AHT_T1        -0.031        -0.053        -0.096         1.000
+ MDG_T1         0.000         0.000        -0.001         0.000         1.000
+ PAIN_T1        0.088         0.152         0.275        -0.035         0.000
+ HELP_T2        0.019         0.008         0.015        -0.002         0.000
+ SHARE_T2       0.094         0.271         0.291        -0.037         0.000
+ COMFORT_       0.152         0.261         0.122        -0.061        -0.001
+ AHT_T2        -0.022        -0.038        -0.068         0.164         0.000
+ MDG_T2         0.017         0.028         0.051        -0.007         0.258
+ PAIN_T2        0.071         0.122         0.222        -0.028         0.000
+
+
+           Model Estimated Correlations
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+ PAIN_T1        1.000
+ HELP_T2        0.005         1.000
+ SHARE_T2       0.107         0.015         1.000
+ COMFORT_       0.174         0.024         0.482         1.000
+ AHT_T2        -0.025        -0.004        -0.069        -0.113         1.000
+ MDG_T2         0.019         0.003         0.052         0.085        -0.012
+ PAIN_T2        0.226         0.011         0.226         0.367        -0.053
+
+
+           Model Estimated Correlations
+              MDG_T2        PAIN_T2
+              ________      ________
+ MDG_T2         1.000
+ PAIN_T2        0.040         1.000
+
+
+           Residuals for Covariances
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        0.000
+ SHARE_T1      -0.043         0.002
+ COMFORT_      -0.019         0.082         0.019
+ AHT_T1         0.009         0.075         0.022         0.001
+ MDG_T1         0.053         0.092         0.039        -0.048         0.002
+ PAIN_T1        0.270        -0.081        -0.023        -0.138         0.050
+ HELP_T2        0.004         0.042        -0.006         0.035         0.146
+ SHARE_T2       0.206        -0.022         0.003         0.126         0.085
+ COMFORT_       0.088        -0.143        -0.022         0.012        -0.073
+ AHT_T2        -0.022         0.038         0.015        -0.014         0.127
+ MDG_T2        -0.055        -0.062         0.044        -0.136         0.004
+ PAIN_T2        0.021        -0.029        -0.015         0.027        -0.073
+
+
+           Residuals for Covariances
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+ PAIN_T1        0.030
+ HELP_T2        0.083         0.004
+ SHARE_T2       0.116         0.178        -0.017
+ COMFORT_       0.137         0.031        -0.007        -0.002
+ AHT_T2        -0.085         0.107         0.054        -0.005        -0.001
+ MDG_T2         0.074         0.182         0.001        -0.036         0.040
+ PAIN_T2        0.036        -0.024        -0.038         0.009         0.084
+
+
+           Residuals for Covariances
+              MDG_T2        PAIN_T2
+              ________      ________
+ MDG_T2         0.004
+ PAIN_T2       -0.051         0.002
+
+
+           Residuals for Correlations
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        0.000
+ SHARE_T1      -0.043         0.000
+ COMFORT_      -0.021         0.077         0.000
+ AHT_T1         0.009         0.075         0.023         0.000
+ MDG_T1         0.053         0.091         0.039        -0.048         0.000
+ PAIN_T1        0.266        -0.082        -0.029        -0.136         0.050
+ HELP_T2        0.004         0.042        -0.006         0.035         0.147
+ SHARE_T2       0.210        -0.020         0.003         0.127         0.086
+ COMFORT_       0.089        -0.142        -0.023         0.012        -0.074
+ AHT_T2        -0.022         0.038         0.015        -0.014         0.128
+ MDG_T2        -0.055        -0.061         0.044        -0.136         0.003
+ PAIN_T2        0.021        -0.029        -0.017         0.027        -0.074
+
+
+           Residuals for Correlations
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+ PAIN_T1        0.000
+ HELP_T2        0.082         0.000
+ SHARE_T2       0.115         0.180         0.000
+ COMFORT_       0.134         0.031        -0.002         0.000
+ AHT_T2        -0.084         0.108         0.054        -0.005         0.000
+ MDG_T2         0.073         0.182         0.002        -0.036         0.040
+ PAIN_T2        0.033        -0.024        -0.037         0.009         0.085
+
+
+           Residuals for Correlations
+              MDG_T2        PAIN_T2
+              ________      ________
+ MDG_T2         0.000
+ PAIN_T2       -0.052         0.000
+
+
+           Standardized Residuals (z-scores) for Covariances
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+ HELP_T1      999.000
+ SHARE_T1     999.000       999.000
+ COMFORT_     999.000       999.000         1.430
+ AHT_T1         0.141         1.057         0.645         0.054
+ MDG_T1         0.696         1.555       999.000        -0.642         0.309
+ PAIN_T1      999.000       999.000       999.000        -2.281         0.711
+ HELP_T2      999.000         0.532        -0.146         0.400         1.878
+ SHARE_T2     999.000        -2.963         0.102         1.905         1.289
+ COMFORT_     999.000        -2.839        -5.953         0.152        -1.141
+ AHT_T2        -0.292         0.439         0.182       999.000         1.404
+ MDG_T2        -0.754        -0.795         0.756        -1.634         1.325
+ PAIN_T2      999.000        -0.607        -0.319         0.342        -0.911
+
+
+           Standardized Residuals (z-scores) for Covariances
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+ PAIN_T1        0.751
+ HELP_T2        0.952         0.096
+ SHARE_T2     999.000         1.592       999.000
+ COMFORT_     999.000         0.754        -0.274       999.000
+ AHT_T2        -1.094         1.144         0.887        -0.258        -0.070
+ MDG_T2         0.989         1.642         0.018        -1.007         0.425
+ PAIN_T2      999.000        -0.267       999.000         0.878         1.145
+
+
+           Standardized Residuals (z-scores) for Covariances
+              MDG_T2        PAIN_T2
+              ________      ________
+ MDG_T2         0.266
+ PAIN_T2       -0.629         0.134
+
+
+           Normalized Residuals for Covariances
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        0.002
+ SHARE_T1      -0.603         0.020
+ COMFORT_      -0.204         0.910         0.247
+ AHT_T1         0.122         0.885         0.250         0.007
+ MDG_T1         0.662         1.260         0.523        -0.636         0.033
+ PAIN_T1        3.715        -0.911        -0.289        -1.873         0.660
+ HELP_T2        0.078         0.486        -0.083         0.399         1.878
+ SHARE_T2       2.136        -0.253         0.038         1.649         1.175
+ COMFORT_       0.942        -1.747        -0.253         0.123        -0.911
+ AHT_T2        -0.272         0.414         0.157        -0.150         1.400
+ MDG_T2        -0.731        -0.759         0.595        -1.626         0.050
+ PAIN_T2        0.313        -0.369        -0.193         0.319        -0.877
+
+
+           Normalized Residuals for Covariances
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+ PAIN_T1        0.267
+ HELP_T2        0.915         0.019
+ SHARE_T2       1.470         1.369        -0.152
+ COMFORT_       1.706         0.286        -0.073        -0.018
+ AHT_T2        -1.017         1.130         0.683        -0.062        -0.012
+ MDG_T2         0.954         1.634         0.015        -0.413         0.422
+ PAIN_T2        0.376        -0.233        -0.493         0.127         1.025
+
+
+           Normalized Residuals for Covariances
+              MDG_T2        PAIN_T2
+              ________      ________
+ MDG_T2         0.055
+ PAIN_T2       -0.582         0.019
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION
+
+
+           NU
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+                  1             2             3             4             5
+
+
+           NU
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+                  6             7             8             9            10
+
+
+           NU
+              MDG_T2        PAIN_T2
+              ________      ________
+                 11            12
+
+
+           LAMBDA
+              PSB_T1        PSB_T2
+              ________      ________
+ HELP_T1           13             0
+ SHARE_T1          14             0
+ COMFORT_          15             0
+ AHT_T1            16             0
+ MDG_T1            17             0
+ PAIN_T1           18             0
+ HELP_T2            0            19
+ SHARE_T2           0            20
+ COMFORT_           0            21
+ AHT_T2             0            22
+ MDG_T2             0            23
+ PAIN_T2            0            24
+
+
+           THETA
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+ HELP_T1           25
+ SHARE_T1           0            26
+ COMFORT_           0             0            27
+ AHT_T1             0             0             0            28
+ MDG_T1             0             0             0             0            29
+ PAIN_T1            0             0             0             0             0
+ HELP_T2           31             0             0             0             0
+ SHARE_T2           0            33             0             0             0
+ COMFORT_           0             0            35             0             0
+ AHT_T2             0             0             0            37             0
+ MDG_T2             0             0             0             0            39
+ PAIN_T2            0             0             0             0             0
+
+
+           THETA
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+ PAIN_T1           30
+ HELP_T2            0            32
+ SHARE_T2           0             0            34
+ COMFORT_           0             0             0            36
+ AHT_T2             0             0             0             0            38
+ MDG_T2             0             0             0             0             0
+ PAIN_T2           41             0             0             0             0
+
+
+           THETA
+              MDG_T2        PAIN_T2
+              ________      ________
+ MDG_T2            40
+ PAIN_T2            0            42
+
+
+           ALPHA
+              PSB_T1        PSB_T2
+              ________      ________
+                  0             0
+
+
+           BETA
+              PSB_T1        PSB_T2
+              ________      ________
+ PSB_T1             0             0
+ PSB_T2             0             0
+
+
+           PSI
+              PSB_T1        PSB_T2
+              ________      ________
+ PSB_T1             0
+ PSB_T2            43             0
+
+
+     STARTING VALUES
+
+
+           NU
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              MDG_T2        PAIN_T2
+              ________      ________
+                0.000         0.000
+
+
+           LAMBDA
+              PSB_T1        PSB_T2
+              ________      ________
+ HELP_T1        0.518         0.000
+ SHARE_T1       0.340         0.000
+ COMFORT_       0.452         0.000
+ AHT_T1        -0.237         0.000
+ MDG_T1         0.067         0.000
+ PAIN_T1        0.594         0.000
+ HELP_T2        0.000         0.576
+ SHARE_T2       0.000         0.426
+ COMFORT_       0.000         0.504
+ AHT_T2         0.000         0.043
+ MDG_T2         0.000         0.158
+ PAIN_T2        0.000         0.179
+
+
+           THETA
+              HELP_T1       SHARE_T1      COMFORT_      AHT_T1        MDG_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        0.497
+ SHARE_T1       0.000         0.497
+ COMFORT_       0.000         0.000         0.497
+ AHT_T1         0.000         0.000         0.000         0.497
+ MDG_T1         0.000         0.000         0.000         0.000         0.497
+ PAIN_T1        0.000         0.000         0.000         0.000         0.000
+ HELP_T2        0.000         0.000         0.000         0.000         0.000
+ SHARE_T2       0.000         0.000         0.000         0.000         0.000
+ COMFORT_       0.000         0.000         0.000         0.000         0.000
+ AHT_T2         0.000         0.000         0.000         0.000         0.000
+ MDG_T2         0.000         0.000         0.000         0.000         0.000
+ PAIN_T2        0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              PAIN_T1       HELP_T2       SHARE_T2      COMFORT_      AHT_T2
+              ________      ________      ________      ________      ________
+ PAIN_T1        0.497
+ HELP_T2        0.000         0.496
+ SHARE_T2       0.000         0.000         0.497
+ COMFORT_       0.000         0.000         0.000         0.497
+ AHT_T2         0.000         0.000         0.000         0.000         0.496
+ MDG_T2         0.000         0.000         0.000         0.000         0.000
+ PAIN_T2        0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              MDG_T2        PAIN_T2
+              ________      ________
+ MDG_T2         0.497
+ PAIN_T2        0.000         0.497
+
+
+           ALPHA
+              PSB_T1        PSB_T2
+              ________      ________
+                0.000         0.000
+
+
+           BETA
+              PSB_T1        PSB_T2
+              ________      ________
+ PSB_T1         0.000         0.000
+ PSB_T2         0.000         0.000
+
+
+           PSI
+              PSB_T1        PSB_T2
+              ________      ________
+ PSB_T1         1.000
+ PSB_T2         0.000         1.000
+
+
+TECHNICAL 3 OUTPUT
+
+
+           ESTIMATED COVARIANCE MATRIX FOR PARAMETER ESTIMATES
+                  1             2             3             4             5
+              ________      ________      ________      ________      ________
+      1     0.580460D-02
+      2     0.292707D-03  0.656242D-02
+      3     0.101109D-02  0.308057D-02  0.608833D-02
+      4    -0.889146D-04 -0.154651D-03 -0.540300D-03  0.597316D-02
+      5     0.217851D-03  0.614260D-03  0.274368D-03 -0.305291D-03  0.557627D-02
+      6     0.179780D-02  0.200045D-03  0.106564D-02 -0.903218D-03  0.271862D-03
+      7     0.811093D-04  0.226900D-03 -0.186481D-04  0.878222D-04  0.687221D-03
+      8     0.174901D-02  0.139353D-02  0.170320D-02  0.412204D-03  0.496805D-03
+      9     0.131084D-02  0.749095D-03  0.643423D-03 -0.332916D-03 -0.357190D-03
+     10    -0.294352D-03  0.536031D-04 -0.164774D-03  0.952987D-03  0.643072D-03
+     11    -0.261187D-03 -0.175449D-03  0.559790D-03 -0.812336D-03  0.143522D-02
+     12     0.466126D-03  0.517277D-03  0.123546D-02 -0.824025D-04 -0.401567D-03
+     13    -0.598395D-02  0.344459D-02  0.259683D-02 -0.185871D-02  0.114579D-02
+     14    -0.243899D-03 -0.152396D-02 -0.133162D-02  0.567705D-03 -0.586458D-03
+     15     0.277597D-02 -0.745096D-02 -0.735461D-02  0.330898D-02 -0.879311D-03
+     16    -0.212783D-03  0.449388D-03 -0.223149D-03 -0.270702D-03  0.372827D-03
+     17     0.337745D-03  0.498209D-03  0.116556D-02 -0.988807D-04  0.353957D-03
+     18    -0.217374D-02  0.332852D-02  0.330125D-02 -0.149625D-02  0.506794D-03
+     19    -0.429592D-03  0.743626D-03  0.838347D-03 -0.112569D-02 -0.696501D-03
+     20    -0.195680D-02  0.150530D-02  0.117047D-02 -0.101422D-02 -0.386155D-03
+     21     0.154291D-02 -0.248657D-02 -0.291970D-02  0.201519D-02  0.998096D-03
+     22     0.877693D-03 -0.290340D-03  0.586214D-03  0.152486D-03 -0.568663D-03
+     23     0.533547D-03 -0.552594D-03 -0.266866D-03 -0.751928D-03  0.116097D-03
+     24    -0.320458D-03  0.167147D-02  0.204276D-02 -0.739839D-03 -0.474482D-03
+     25    -0.115098D-01 -0.326993D-02 -0.504215D-02 -0.264202D-03  0.178536D-03
+     26     0.667216D-03 -0.412440D-02 -0.956462D-03  0.532003D-03 -0.551438D-03
+     27    -0.541845D-02  0.105984D-01  0.901421D-02 -0.517964D-02  0.170364D-02
+     28    -0.411474D-03  0.372331D-03 -0.200025D-03  0.329600D-02 -0.332937D-03
+     29    -0.223787D-03  0.744066D-03  0.627279D-03 -0.157742D-03  0.479843D-03
+     30     0.206699D-02 -0.273298D-02 -0.148930D-02  0.914006D-03  0.201136D-03
+     31     0.122055D-03 -0.272632D-03 -0.325942D-03  0.256762D-03  0.104721D-03
+     32     0.502720D-03  0.130537D-02  0.724316D-03  0.450512D-03 -0.138280D-02
+     33     0.161043D-02 -0.204500D-02 -0.183887D-02  0.121259D-02 -0.320120D-04
+     34     0.573156D-03 -0.304482D-02 -0.238458D-02  0.161865D-02  0.526207D-03
+     35    -0.134398D-02  0.233564D-02  0.246942D-02 -0.164981D-02 -0.696474D-03
+     36    -0.461623D-02  0.467502D-02  0.488086D-02 -0.272119D-02 -0.832799D-03
+     37     0.653360D-03 -0.151812D-03  0.339167D-04 -0.629792D-03  0.281449D-03
+     38     0.624759D-03 -0.163257D-03 -0.277681D-03 -0.213474D-03  0.115422D-03
+     39    -0.573066D-03  0.205446D-03 -0.233783D-03  0.981732D-03  0.127559D-02
+     40     0.231449D-03  0.475667D-03  0.739528D-03 -0.272420D-03 -0.933649D-03
+     41     0.801304D-03 -0.109589D-02 -0.368690D-03  0.994081D-03 -0.457786D-03
+     42     0.360707D-03 -0.435868D-03  0.769166D-04  0.632524D-03  0.135961D-03
+     43    -0.272170D-02  0.341358D-02  0.303570D-02 -0.238092D-02  0.100738D-02
+
+
+           ESTIMATED COVARIANCE MATRIX FOR PARAMETER ESTIMATES
+                  6             7             8             9            10
+              ________      ________      ________      ________      ________
+      6     0.593040D-02
+      7     0.414047D-03  0.709057D-02
+      8     0.100336D-02  0.100199D-02  0.622705D-02
+      9     0.144784D-02  0.142772D-03  0.295314D-02  0.617541D-02
+     10    -0.607443D-03  0.495404D-03 -0.921958D-04 -0.727166D-03  0.700895D-02
+     11     0.456627D-03  0.972846D-03  0.191338D-03  0.231774D-03  0.870461D-04
+     12     0.141097D-02 -0.243532D-03  0.122082D-02  0.240308D-02  0.113011D-03
+     13    -0.239831D-02 -0.942719D-03 -0.399791D-03 -0.454751D-03  0.307321D-03
+     14    -0.194324D-03 -0.834154D-03 -0.386561D-03  0.123582D-04 -0.779461D-03
+     15     0.304402D-02  0.185212D-02 -0.211961D-02 -0.111002D-02  0.195463D-03
+     16     0.392591D-03 -0.280923D-03 -0.659971D-03 -0.376580D-03  0.260246D-03
+     17    -0.253565D-03 -0.104149D-02  0.309144D-03  0.688627D-03 -0.690424D-03
+     18    -0.905297D-03 -0.133191D-02  0.103385D-02  0.317260D-03  0.258619D-03
+     19    -0.929754D-03 -0.102291D-02 -0.110231D-02  0.188865D-03 -0.362715D-03
+     20    -0.104483D-02 -0.192770D-02 -0.209534D-02 -0.645470D-03  0.180507D-04
+     21     0.713447D-03  0.731106D-03 -0.217387D-02 -0.439564D-02  0.678162D-03
+     22     0.743273D-03 -0.106193D-03  0.534726D-03  0.533374D-03  0.458663D-03
+     23     0.228309D-03  0.104900D-02 -0.283654D-03 -0.753773D-03 -0.104631D-02
+     24    -0.528587D-04 -0.106655D-02  0.130259D-02  0.122519D-02  0.101528D-03
+     25    -0.161355D-02  0.566579D-03 -0.429188D-02 -0.214878D-02  0.263377D-03
+     26     0.633721D-03  0.399314D-03 -0.650374D-03 -0.154069D-03  0.937509D-04
+     27    -0.556634D-02 -0.299618D-02  0.307110D-02  0.109629D-02 -0.240449D-04
+     28    -0.679134D-03  0.494409D-03  0.661928D-03 -0.590437D-03 -0.106691D-03
+     29    -0.131794D-04  0.484883D-03  0.614852D-03 -0.275339D-03  0.459211D-03
+     30     0.603984D-02  0.436811D-03 -0.194588D-03  0.214420D-03 -0.383912D-03
+     31     0.440827D-03  0.693378D-03  0.139663D-03  0.258108D-03  0.398883D-03
+     32    -0.371337D-03 -0.125305D-01 -0.220528D-02 -0.117540D-02 -0.531540D-03
+     33     0.110659D-02  0.794507D-03 -0.169694D-02 -0.132710D-03 -0.699557D-03
+     34     0.326968D-03  0.293730D-03 -0.375156D-02 -0.223612D-02  0.208026D-05
+     35    -0.110279D-02 -0.220821D-02  0.130556D-03  0.199846D-02 -0.944269D-03
+     36    -0.275008D-02 -0.123591D-02  0.105023D-02  0.945279D-03 -0.251247D-03
+     37     0.654932D-03  0.157202D-03 -0.113017D-03  0.120142D-03 -0.668424D-03
+     38     0.645323D-03  0.714942D-03  0.831687D-03  0.435600D-03  0.777456D-03
+     39    -0.100260D-02  0.578083D-03  0.285581D-03 -0.197147D-03  0.709223D-03
+     40    -0.235581D-03 -0.861548D-03  0.292666D-03  0.444554D-03 -0.911636D-04
+     41     0.936055D-03 -0.782557D-03  0.485049D-04 -0.233503D-04  0.416005D-03
+     42     0.138341D-02  0.187483D-04  0.562345D-03  0.139076D-02  0.788589D-03
+     43    -0.145511D-02  0.458097D-03  0.214749D-02  0.120169D-02  0.159312D-02
+
+
+           ESTIMATED COVARIANCE MATRIX FOR PARAMETER ESTIMATES
+                 11            12            13            14            15
+              ________      ________      ________      ________      ________
+     11     0.605562D-02
+     12    -0.735438D-04  0.669335D-02
+     13     0.767009D-03 -0.539022D-03  0.430860D-01
+     14    -0.574187D-03 -0.215385D-03 -0.336687D-03  0.713000D-02
+     15     0.578176D-04  0.131347D-02 -0.582593D-01  0.329904D-02  0.103200D+00
+     16    -0.533523D-03 -0.262696D-04 -0.378524D-02 -0.209752D-03  0.755699D-02
+     17    -0.351846D-03 -0.584196D-03  0.748827D-02  0.219300D-02 -0.143407D-01
+     18     0.625086D-04 -0.143655D-03  0.343735D-01  0.126974D-03 -0.566932D-01
+     19     0.728256D-03 -0.853676D-03  0.101321D-01  0.198582D-02 -0.169621D-01
+     20    -0.288789D-03 -0.102940D-03  0.175482D-01  0.211247D-02 -0.253116D-01
+     21    -0.342907D-03  0.278684D-03 -0.273668D-01 -0.192806D-02  0.446544D-01
+     22    -0.979400D-03  0.590016D-03 -0.490302D-02  0.896356D-03  0.579258D-02
+     23     0.556869D-03 -0.728956D-03 -0.525800D-02  0.208221D-03  0.681793D-02
+     24    -0.406624D-03  0.284626D-02  0.117528D-01  0.494954D-03 -0.208285D-01
+     25     0.126751D-02 -0.551366D-03 -0.413406D-02  0.141624D-02  0.262820D-01
+     26    -0.238386D-03  0.469382D-04 -0.606089D-02 -0.301175D-02  0.782669D-02
+     27    -0.559392D-03 -0.266511D-02  0.987762D-01 -0.369946D-02 -0.171005D+00
+     28    -0.138461D-02 -0.247487D-03 -0.250871D-02  0.128952D-04  0.509814D-02
+     29     0.122403D-02  0.684677D-04  0.845151D-03 -0.622810D-03 -0.114701D-02
+     30    -0.102774D-03  0.111668D-02 -0.236627D-01 -0.254995D-03  0.405451D-01
+     31     0.314818D-03 -0.133522D-03 -0.162762D-02 -0.659949D-03  0.391312D-02
+     32    -0.272280D-02  0.109553D-02  0.149484D-02  0.206761D-02 -0.478971D-02
+     33    -0.247992D-03 -0.626290D-04 -0.169803D-01 -0.165420D-02  0.280972D-01
+     34     0.508796D-03 -0.369944D-03 -0.176854D-01 -0.162991D-02  0.292565D-01
+     35    -0.578469D-03 -0.298687D-03  0.248501D-01  0.420055D-02 -0.400911D-01
+     36     0.607770D-04 -0.153171D-02  0.497774D-01  0.324125D-02 -0.791844D-01
+     37     0.555506D-03  0.366316D-06 -0.183227D-02 -0.775758D-03  0.186040D-02
+     38    -0.727638D-03 -0.179893D-03 -0.119643D-02 -0.154003D-03  0.302582D-02
+     39    -0.803410D-03 -0.312758D-03  0.155159D-02  0.195667D-03 -0.832787D-03
+     40    -0.245106D-02  0.272343D-03  0.253774D-02  0.382168D-03 -0.365517D-02
+     41    -0.146125D-03  0.116575D-02 -0.676881D-02 -0.775733D-03  0.117790D-01
+     42     0.423327D-03  0.466583D-02 -0.980194D-02 -0.805413D-03  0.164559D-01
+     43     0.107676D-02  0.672344D-03  0.325302D-01 -0.418422D-02 -0.525684D-01
+
+
+           ESTIMATED COVARIANCE MATRIX FOR PARAMETER ESTIMATES
+                 16            17            18            19            20
+              ________      ________      ________      ________      ________
+     16     0.893814D-02
+     17    -0.249171D-02  0.791195D-02
+     18    -0.587120D-02  0.888482D-02  0.377200D-01
+     19    -0.644559D-03  0.346758D-02  0.921695D-02  0.138265D-01
+     20    -0.923610D-03  0.456527D-02  0.151746D-01  0.891554D-02  0.139982D-01
+     21     0.203631D-02 -0.855825D-02 -0.262729D-01 -0.111883D-01 -0.135210D-01
+     22     0.466167D-03 -0.129456D-03 -0.348249D-02  0.226068D-03 -0.132953D-02
+     23     0.387666D-03  0.552911D-03 -0.371896D-02 -0.126690D-02 -0.183041D-02
+     24    -0.214948D-02  0.401732D-02  0.127921D-01  0.476725D-02  0.636105D-02
+     25     0.512652D-02 -0.586352D-02 -0.134622D-01 -0.376391D-02 -0.346618D-02
+     26     0.741893D-05 -0.225332D-02 -0.521537D-02 -0.283868D-02 -0.415273D-02
+     27    -0.131581D-01  0.234683D-01  0.960719D-01  0.283027D-01  0.425800D-01
+     28     0.148017D-02 -0.148386D-02 -0.244962D-02 -0.141585D-02 -0.151209D-02
+     29    -0.145378D-04 -0.512668D-03  0.544172D-03  0.137395D-03 -0.200711D-03
+     30     0.410371D-02 -0.581101D-02 -0.244983D-01 -0.754868D-02 -0.108174D-01
+     31     0.688659D-03 -0.825150D-03 -0.265051D-02 -0.103263D-02 -0.762579D-03
+     32    -0.748776D-03  0.199582D-02  0.276743D-02  0.790940D-02  0.618330D-02
+     33     0.191335D-02 -0.478544D-02 -0.168109D-01 -0.659523D-02 -0.814318D-02
+     34     0.157749D-02 -0.555126D-02 -0.175840D-01 -0.639725D-02 -0.952082D-02
+     35    -0.307508D-02  0.853052D-02  0.235446D-01  0.120592D-01  0.155556D-01
+     36    -0.378174D-02  0.148064D-01  0.469441D-01  0.187476D-01  0.256250D-01
+     37    -0.123122D-02 -0.382481D-03 -0.653135D-04 -0.845973D-03 -0.100985D-02
+     38    -0.670360D-03 -0.164539D-02 -0.132020D-02  0.348059D-03 -0.147203D-02
+     39    -0.499600D-03  0.481448D-03  0.672962D-03 -0.451986D-03 -0.353230D-03
+     40     0.346250D-03  0.689254D-03  0.184322D-02  0.235369D-03  0.136251D-02
+     41     0.141326D-02 -0.282698D-02 -0.598812D-02 -0.362635D-02 -0.394310D-02
+     42     0.169213D-02 -0.333278D-02 -0.900048D-02 -0.519449D-02 -0.474986D-02
+     43    -0.251355D-02  0.479753D-02  0.312054D-01  0.388727D-02  0.106739D-01
+
+
+           ESTIMATED COVARIANCE MATRIX FOR PARAMETER ESTIMATES
+                 21            22            23            24            25
+              ________      ________      ________      ________      ________
+     21     0.336910D-01
+     22    -0.683750D-03  0.723447D-02
+     23     0.330782D-02  0.834674D-03  0.695382D-02
+     24    -0.125139D-01  0.752058D-03 -0.186010D-02  0.107397D-01
+     25     0.820135D-02  0.321788D-03  0.420158D-03 -0.558081D-02  0.424737D-01
+     26     0.508172D-02  0.132510D-03  0.536691D-03 -0.278886D-02  0.341014D-03
+     27    -0.749428D-01 -0.103685D-01 -0.117846D-01  0.349071D-01 -0.421025D-01
+     28     0.334492D-02 -0.634443D-03 -0.111100D-02 -0.132927D-02  0.136834D-02
+     29    -0.849858D-03  0.255733D-03  0.303192D-03  0.201004D-03 -0.296451D-03
+     30     0.186979D-01  0.252751D-02  0.313823D-02 -0.832792D-02  0.898155D-02
+     31     0.192285D-02  0.166009D-03  0.344087D-03 -0.109817D-02  0.812153D-03
+     32     0.592793D-03  0.354929D-03 -0.175180D-02  0.316088D-02 -0.417406D-02
+     33     0.143138D-01  0.114141D-02  0.189703D-02 -0.710833D-02  0.541604D-02
+     34     0.189062D-01  0.379494D-03  0.175991D-02 -0.847523D-02  0.719968D-02
+     35    -0.236774D-01 -0.173234D-02 -0.308196D-02  0.107705D-01 -0.937137D-02
+     36    -0.516799D-01 -0.894274D-03 -0.493528D-02  0.217188D-01 -0.126000D-01
+     37     0.939006D-03 -0.469368D-03  0.452903D-03 -0.256309D-03 -0.625143D-03
+     38     0.875007D-03  0.170579D-02 -0.514915D-03 -0.434023D-03 -0.344493D-03
+     39     0.140585D-03  0.840050D-03  0.504679D-03  0.762727D-04  0.247996D-03
+     40    -0.274276D-02  0.855040D-03 -0.118211D-02  0.146402D-02 -0.135649D-02
+     41     0.592515D-02  0.663403D-03  0.428234D-03 -0.271764D-02  0.193816D-02
+     42     0.984654D-02  0.931745D-03  0.847599D-03 -0.318074D-02  0.325005D-02
+     43    -0.243265D-01 -0.409373D-02 -0.434714D-02  0.100798D-01 -0.995755D-02
+
+
+           ESTIMATED COVARIANCE MATRIX FOR PARAMETER ESTIMATES
+                 26            27            28            29            30
+              ________      ________      ________      ________      ________
+     26     0.958531D-02
+     27    -0.130299D-01  0.288817D+00
+     28    -0.913732D-05 -0.809655D-02  0.927773D-02
+     29    -0.317967D-03  0.164266D-02 -0.143672D-04  0.426981D-02
+     30     0.466791D-02 -0.685110D-01  0.791351D-03 -0.651422D-03  0.271934D-01
+     31     0.844838D-03 -0.658745D-02  0.614216D-03 -0.647706D-04  0.201016D-02
+     32    -0.178070D-02  0.699904D-02 -0.828437D-03 -0.113970D-02 -0.129286D-02
+     33     0.437123D-02 -0.476468D-01  0.143788D-02 -0.499014D-03  0.120430D-01
+     34     0.494699D-02 -0.494210D-01  0.833933D-03 -0.999488D-03  0.121292D-01
+     35    -0.660272D-02  0.667888D-01 -0.250260D-02 -0.334727D-03 -0.172541D-01
+     36    -0.930518D-02  0.133699D+00 -0.457115D-02  0.130250D-02 -0.334160D-01
+     37     0.278133D-03 -0.369186D-02 -0.494223D-03 -0.558140D-03  0.389013D-03
+     38     0.242810D-03 -0.422572D-02  0.331585D-03  0.771845D-03  0.264085D-03
+     39     0.503240D-04  0.214319D-02  0.412062D-03  0.160596D-02 -0.349364D-03
+     40    -0.523389D-03  0.569406D-02  0.556281D-03  0.457614D-03 -0.177892D-02
+     41     0.234779D-02 -0.195988D-01  0.871139D-03  0.145731D-04  0.618694D-02
+     42     0.205370D-02 -0.281882D-01  0.993411D-03  0.326471D-04  0.834865D-02
+     43    -0.228038D-02  0.893500D-01 -0.257822D-02  0.123448D-02 -0.214530D-01
+
+
+           ESTIMATED COVARIANCE MATRIX FOR PARAMETER ESTIMATES
+                 31            32            33            34            35
+              ________      ________      ________      ________      ________
+     31     0.339049D-02
+     32    -0.971417D-03  0.408605D-01
+     33     0.142395D-02 -0.328403D-02  0.143806D-01
+     34     0.107128D-02  0.607759D-03  0.110064D-01  0.180874D-01
+     35    -0.215820D-02  0.542248D-02 -0.131207D-01 -0.154671D-01  0.282013D-01
+     36    -0.317533D-02  0.217074D-02 -0.257580D-01 -0.318274D-01  0.387453D-01
+     37     0.567688D-03  0.514836D-05  0.152978D-02  0.120216D-02 -0.981620D-03
+     38     0.190112D-03 -0.575076D-03  0.149860D-02  0.285324D-03 -0.547900D-03
+     39    -0.496373D-04 -0.690084D-03 -0.261573D-03  0.272038D-03 -0.118238D-02
+     40    -0.208502D-03  0.169897D-02 -0.110154D-02 -0.196869D-02  0.205333D-02
+     41     0.616247D-03  0.764881D-03  0.395040D-02  0.400024D-02 -0.695218D-02
+     42     0.762498D-03  0.266743D-03  0.527876D-02  0.611300D-02 -0.858655D-02
+     43    -0.193439D-02 -0.469773D-02 -0.140963D-01 -0.162041D-01  0.134023D-01
+
+
+           ESTIMATED COVARIANCE MATRIX FOR PARAMETER ESTIMATES
+                 36            37            38            39            40
+              ________      ________      ________      ________      ________
+     36     0.915101D-01
+     37    -0.260489D-02  0.854846D-02
+     38    -0.268230D-02  0.311443D-03  0.841860D-02
+     39     0.421336D-03 -0.152203D-02  0.578735D-03  0.630744D-02
+     40     0.505515D-02 -0.103012D-02  0.753124D-03  0.163649D-02  0.548166D-02
+     41    -0.106288D-01  0.777930D-04  0.180922D-03  0.527991D-03  0.441984D-03
+     42    -0.177085D-01  0.628727D-04 -0.591663D-04  0.577742D-03 -0.469060D-04
+     43     0.426348D-01 -0.141111D-02 -0.262285D-02  0.137568D-02  0.188738D-02
+
+
+           ESTIMATED COVARIANCE MATRIX FOR PARAMETER ESTIMATES
+                 41            42            43
+              ________      ________      ________
+     41     0.909921D-02
+     42     0.421613D-02  0.113736D-01
+     43    -0.395136D-02 -0.641860D-02  0.430496D-01
+
+
+           ESTIMATED CORRELATION MATRIX FOR PARAMETER ESTIMATES
+                  1             2             3             4             5
+              ________      ________      ________      ________      ________
+      1         1.000
+      2         0.047         1.000
+      3         0.170         0.487         1.000
+      4        -0.015        -0.025        -0.090         1.000
+      5         0.038         0.102         0.047        -0.053         1.000
+      6         0.306         0.032         0.177        -0.152         0.047
+      7         0.013         0.033        -0.003         0.013         0.109
+      8         0.291         0.218         0.277         0.068         0.084
+      9         0.219         0.118         0.105        -0.055        -0.061
+     10        -0.046         0.008        -0.025         0.147         0.103
+     11        -0.044        -0.028         0.092        -0.135         0.247
+     12         0.075         0.078         0.194        -0.013        -0.066
+     13        -0.378         0.205         0.160        -0.116         0.074
+     14        -0.038        -0.223        -0.202         0.087        -0.093
+     15         0.113        -0.286        -0.293         0.133        -0.037
+     16        -0.030         0.059        -0.030        -0.037         0.053
+     17         0.050         0.069         0.168        -0.014         0.053
+     18        -0.147         0.212         0.218        -0.100         0.035
+     19        -0.048         0.078         0.091        -0.124        -0.079
+     20        -0.217         0.157         0.127        -0.111        -0.044
+     21         0.110        -0.167        -0.204         0.142         0.073
+     22         0.135        -0.042         0.088         0.023        -0.090
+     23         0.084        -0.082        -0.041        -0.117         0.019
+     24        -0.041         0.199         0.253        -0.092        -0.061
+     25        -0.733        -0.196        -0.314        -0.017         0.012
+     26         0.089        -0.520        -0.125         0.070        -0.075
+     27        -0.132         0.243         0.215        -0.125         0.042
+     28        -0.056         0.048        -0.027         0.443        -0.046
+     29        -0.045         0.141         0.123        -0.031         0.098
+     30         0.165        -0.205        -0.116         0.072         0.016
+     31         0.028        -0.058        -0.072         0.057         0.024
+     32         0.033         0.080         0.046         0.029        -0.092
+     33         0.176        -0.211        -0.197         0.131        -0.004
+     34         0.056        -0.279        -0.227         0.156         0.052
+     35        -0.105         0.172         0.188        -0.127        -0.056
+     36        -0.200         0.191         0.207        -0.116        -0.037
+     37         0.093        -0.020         0.005        -0.088         0.041
+     38         0.089        -0.022        -0.039        -0.030         0.017
+     39        -0.095         0.032        -0.038         0.160         0.215
+     40         0.041         0.079         0.128        -0.048        -0.169
+     41         0.110        -0.142        -0.050         0.135        -0.064
+     42         0.044        -0.050         0.009         0.077         0.017
+     43        -0.172         0.203         0.188        -0.148         0.065
+
+
+           ESTIMATED CORRELATION MATRIX FOR PARAMETER ESTIMATES
+                  6             7             8             9            10
+              ________      ________      ________      ________      ________
+      6         1.000
+      7         0.064         1.000
+      8         0.165         0.151         1.000
+      9         0.239         0.022         0.476         1.000
+     10        -0.094         0.070        -0.014        -0.111         1.000
+     11         0.076         0.148         0.031         0.038         0.013
+     12         0.224        -0.035         0.189         0.374         0.016
+     13        -0.150        -0.054        -0.024        -0.028         0.018
+     14        -0.030        -0.117        -0.058         0.002        -0.110
+     15         0.123         0.068        -0.084        -0.044         0.007
+     16         0.054        -0.035        -0.088        -0.051         0.033
+     17        -0.037        -0.139         0.044         0.099        -0.093
+     18        -0.061        -0.081         0.067         0.021         0.016
+     19        -0.103        -0.103        -0.119         0.020        -0.037
+     20        -0.115        -0.193        -0.224        -0.069         0.002
+     21         0.050         0.047        -0.150        -0.305         0.044
+     22         0.113        -0.015         0.080         0.080         0.064
+     23         0.036         0.149        -0.043        -0.115        -0.150
+     24        -0.007        -0.122         0.159         0.150         0.012
+     25        -0.102         0.033        -0.264        -0.133         0.015
+     26         0.084         0.048        -0.084        -0.020         0.011
+     27        -0.134        -0.066         0.072         0.026        -0.001
+     28        -0.092         0.061         0.087        -0.078        -0.013
+     29        -0.003         0.088         0.119        -0.054         0.084
+     30         0.476         0.031        -0.015         0.017        -0.028
+     31         0.098         0.141         0.030         0.056         0.082
+     32        -0.024        -0.736        -0.138        -0.074        -0.031
+     33         0.120         0.079        -0.179        -0.014        -0.070
+     34         0.032         0.026        -0.353        -0.212         0.000
+     35        -0.085        -0.156         0.010         0.151        -0.067
+     36        -0.118        -0.049         0.044         0.040        -0.010
+     37         0.092         0.020        -0.015         0.017        -0.086
+     38         0.091         0.093         0.115         0.060         0.101
+     39        -0.164         0.086         0.046        -0.032         0.107
+     40        -0.041        -0.138         0.050         0.076        -0.015
+     41         0.127        -0.097         0.006        -0.003         0.052
+     42         0.168         0.002         0.067         0.166         0.088
+     43        -0.091         0.026         0.131         0.074         0.092
+
+
+           ESTIMATED CORRELATION MATRIX FOR PARAMETER ESTIMATES
+                 11            12            13            14            15
+              ________      ________      ________      ________      ________
+     11         1.000
+     12        -0.012         1.000
+     13         0.047        -0.032         1.000
+     14        -0.087        -0.031        -0.019         1.000
+     15         0.002         0.050        -0.874         0.122         1.000
+     16        -0.073        -0.003        -0.193        -0.026         0.249
+     17        -0.051        -0.080         0.406         0.292        -0.502
+     18         0.004        -0.009         0.853         0.008        -0.909
+     19         0.080        -0.089         0.415         0.200        -0.449
+     20        -0.031        -0.011         0.715         0.211        -0.666
+     21        -0.024         0.019        -0.718        -0.124         0.757
+     22        -0.148         0.085        -0.278         0.125         0.212
+     23         0.086        -0.107        -0.304         0.030         0.255
+     24        -0.050         0.336         0.546         0.057        -0.626
+     25         0.079        -0.033        -0.097         0.081         0.397
+     26        -0.031         0.006        -0.298        -0.364         0.249
+     27        -0.013        -0.061         0.885        -0.082        -0.991
+     28        -0.185        -0.031        -0.125         0.002         0.165
+     29         0.241         0.013         0.062        -0.113        -0.055
+     30        -0.008         0.083        -0.691        -0.018         0.765
+     31         0.069        -0.028        -0.135        -0.134         0.209
+     32        -0.173         0.066         0.036         0.121        -0.074
+     33        -0.027        -0.006        -0.682        -0.163         0.729
+     34         0.049        -0.034        -0.634        -0.144         0.677
+     35        -0.044        -0.022         0.713         0.296        -0.743
+     36         0.003        -0.062         0.793         0.127        -0.815
+     37         0.077         0.000        -0.095        -0.099         0.063
+     38        -0.102        -0.024        -0.063        -0.020         0.103
+     39        -0.130        -0.048         0.094         0.029        -0.033
+     40        -0.425         0.045         0.165         0.061        -0.154
+     41        -0.020         0.149        -0.342        -0.096         0.384
+     42         0.051         0.535        -0.443        -0.089         0.480
+     43         0.067         0.040         0.755        -0.239        -0.789
+
+
+           ESTIMATED CORRELATION MATRIX FOR PARAMETER ESTIMATES
+                 16            17            18            19            20
+              ________      ________      ________      ________      ________
+     16         1.000
+     17        -0.296         1.000
+     18        -0.320         0.514         1.000
+     19        -0.058         0.332         0.404         1.000
+     20        -0.083         0.434         0.660         0.641         1.000
+     21         0.117        -0.524        -0.737        -0.518        -0.623
+     22         0.058        -0.017        -0.211         0.023        -0.132
+     23         0.049         0.075        -0.230        -0.129        -0.186
+     24        -0.219         0.436         0.636         0.391         0.519
+     25         0.263        -0.320        -0.336        -0.155        -0.142
+     26         0.001        -0.259        -0.274        -0.247        -0.359
+     27        -0.259         0.491         0.920         0.448         0.670
+     28         0.163        -0.173        -0.131        -0.125        -0.133
+     29        -0.002        -0.088         0.043         0.018        -0.026
+     30         0.263        -0.396        -0.765        -0.389        -0.554
+     31         0.125        -0.159        -0.234        -0.151        -0.111
+     32        -0.039         0.111         0.070         0.333         0.259
+     33         0.169        -0.449        -0.722        -0.468        -0.574
+     34         0.124        -0.464        -0.673        -0.405        -0.598
+     35        -0.194         0.571         0.722         0.611         0.783
+     36        -0.132         0.550         0.799         0.527         0.716
+     37        -0.141        -0.047        -0.004        -0.078        -0.092
+     38        -0.077        -0.202        -0.074         0.032        -0.136
+     39        -0.067         0.068         0.044        -0.048        -0.038
+     40         0.049         0.105         0.128         0.027         0.156
+     41         0.157        -0.333        -0.323        -0.323        -0.349
+     42         0.168        -0.351        -0.435        -0.414        -0.376
+     43        -0.128         0.260         0.774         0.159         0.435
+
+
+           ESTIMATED CORRELATION MATRIX FOR PARAMETER ESTIMATES
+                 21            22            23            24            25
+              ________      ________      ________      ________      ________
+     21         1.000
+     22        -0.044         1.000
+     23         0.216         0.118         1.000
+     24        -0.658         0.085        -0.215         1.000
+     25         0.217         0.018         0.024        -0.261         1.000
+     26         0.283         0.016         0.066        -0.275         0.017
+     27        -0.760        -0.227        -0.263         0.627        -0.380
+     28         0.189        -0.077        -0.138        -0.133         0.069
+     29        -0.071         0.046         0.056         0.030        -0.022
+     30         0.618         0.180         0.228        -0.487         0.264
+     31         0.180         0.034         0.071        -0.182         0.068
+     32         0.016         0.021        -0.104         0.151        -0.100
+     33         0.650         0.112         0.190        -0.572         0.219
+     34         0.766         0.033         0.157        -0.608         0.260
+     35        -0.768        -0.121        -0.220         0.619        -0.271
+     36        -0.931        -0.035        -0.196         0.693        -0.202
+     37         0.055        -0.060         0.059        -0.027        -0.033
+     38         0.052         0.219        -0.067        -0.046        -0.018
+     39         0.010         0.124         0.076         0.009         0.015
+     40        -0.202         0.136        -0.191         0.191        -0.089
+     41         0.338         0.082         0.054        -0.275         0.099
+     42         0.503         0.103         0.095        -0.288         0.148
+     43        -0.639        -0.232        -0.251         0.469        -0.233
+
+
+           ESTIMATED CORRELATION MATRIX FOR PARAMETER ESTIMATES
+                 26            27            28            29            30
+              ________      ________      ________      ________      ________
+     26         1.000
+     27        -0.248         1.000
+     28        -0.001        -0.156         1.000
+     29        -0.050         0.047        -0.002         1.000
+     30         0.289        -0.773         0.050        -0.060         1.000
+     31         0.148        -0.211         0.110        -0.017         0.209
+     32        -0.090         0.064        -0.043        -0.086        -0.039
+     33         0.372        -0.739         0.124        -0.064         0.609
+     34         0.376        -0.684         0.064        -0.114         0.547
+     35        -0.402         0.740        -0.155        -0.031        -0.623
+     36        -0.314         0.822        -0.157         0.066        -0.670
+     37         0.031        -0.074        -0.055        -0.092         0.026
+     38         0.027        -0.086         0.038         0.129         0.017
+     39         0.006         0.050         0.054         0.309        -0.027
+     40        -0.072         0.143         0.078         0.095        -0.146
+     41         0.251        -0.382         0.095         0.002         0.393
+     42         0.197        -0.492         0.097         0.005         0.475
+     43        -0.112         0.801        -0.129         0.091        -0.627
+
+
+           ESTIMATED CORRELATION MATRIX FOR PARAMETER ESTIMATES
+                 31            32            33            34            35
+              ________      ________      ________      ________      ________
+     31         1.000
+     32        -0.083         1.000
+     33         0.204        -0.135         1.000
+     34         0.137         0.022         0.682         1.000
+     35        -0.221         0.160        -0.652        -0.685         1.000
+     36        -0.180         0.035        -0.710        -0.782         0.763
+     37         0.105         0.000         0.138         0.097        -0.063
+     38         0.036        -0.031         0.136         0.023        -0.036
+     39        -0.011        -0.043        -0.027         0.025        -0.089
+     40        -0.048         0.114        -0.124        -0.198         0.165
+     41         0.111         0.040         0.345         0.312        -0.434
+     42         0.123         0.012         0.413         0.426        -0.479
+     43        -0.160        -0.112        -0.567        -0.581         0.385
+
+
+           ESTIMATED CORRELATION MATRIX FOR PARAMETER ESTIMATES
+                 36            37            38            39            40
+              ________      ________      ________      ________      ________
+     36         1.000
+     37        -0.093         1.000
+     38        -0.097         0.037         1.000
+     39         0.018        -0.207         0.079         1.000
+     40         0.226        -0.150         0.111         0.278         1.000
+     41        -0.368         0.009         0.021         0.070         0.063
+     42        -0.549         0.006        -0.006         0.068        -0.006
+     43         0.679        -0.074        -0.138         0.083         0.123
+
+
+           ESTIMATED CORRELATION MATRIX FOR PARAMETER ESTIMATES
+                 41            42            43
+              ________      ________      ________
+     41         1.000
+     42         0.414         1.000
+     43        -0.200        -0.290         1.000
+
+
+TECHNICAL 4 OUTPUT
+
+
+     ESTIMATES DERIVED FROM THE MODEL
+
+
+           ESTIMATED MEANS FOR THE LATENT VARIABLES
+              PSB_T1        PSB_T2
+              ________      ________
+                0.000         0.000
+
+
+           S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              PSB_T1        PSB_T2
+              ________      ________
+                0.000         0.000
+
+
+           EST./S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              PSB_T1        PSB_T2
+              ________      ________
+                0.000         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              PSB_T1        PSB_T2
+              ________      ________
+                1.000         1.000
+
+
+           ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              PSB_T1        PSB_T2
+              ________      ________
+ PSB_T1         1.000
+ PSB_T2         0.618         1.000
+
+
+           S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              PSB_T1        PSB_T2
+              ________      ________
+ PSB_T1         0.000
+ PSB_T2         0.207         0.000
+
+
+           EST./S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              PSB_T1        PSB_T2
+              ________      ________
+ PSB_T1   ***********
+ PSB_T2         2.980   ***********
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              PSB_T1        PSB_T2
+              ________      ________
+ PSB_T1         0.000
+ PSB_T2         0.003         0.000
+
+
+           ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              PSB_T1        PSB_T2
+              ________      ________
+ PSB_T1         1.000
+ PSB_T2         0.618         1.000
+
+
+           S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              PSB_T1        PSB_T2
+              ________      ________
+ PSB_T1         0.000
+ PSB_T2         0.207         0.000
+
+
+           EST./S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              PSB_T1        PSB_T2
+              ________      ________
+ PSB_T1       999.000
+ PSB_T2         2.980       999.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              PSB_T1        PSB_T2
+              ________      ________
+ PSB_T1         0.000
+ PSB_T2         0.003         0.000
+
+
+DIAGRAM INFORMATION
+
+  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
+  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
+
+  Diagram output
+    g:\my drive\1. projects\seleste_replication_report\sb_replication_report\scripts\mplus\1.0_one-factor.dgm
+
+     Beginning Time:  08:45:23
+        Ending Time:  08:45:24
+       Elapsed Time:  00:00:01
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2023 Muthen & Muthen

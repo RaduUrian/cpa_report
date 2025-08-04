@@ -1,0 +1,45 @@
+TITLE:
+
+2.3 t1 cpa efa categorical wlsmv
+
+Data: 
+
+File = data_ora_cpa.csv; 
+
+VARIABLE: 
+
+NAMES = ID site gender age_t1 age_t2 cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+  cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+  cpa_12_t2;
+ 
+USEVARIABLES = cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1;
+
+MISSING = all (-999);
+
+IDVARIABLE = ID;
+
+CATEGORICAL = cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1;
+
+DEFINE:
+CUT cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1 (2 3 4);
+
+ANALYSIS:
+
+TYPE = General; 
+
+TYPE = EFA 1 4;
+
+ESTIMATOR = WLSMV; 
+
+ROTATION = GEOMIN (0.5);
+
+OUTPUT: 
+SAMPSTAT STANDARDIZED MODINDICES CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;

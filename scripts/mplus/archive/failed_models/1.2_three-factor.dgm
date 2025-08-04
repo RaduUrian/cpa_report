@@ -1,0 +1,290 @@
+VERSION 1.1.0
+INPUT
+TITLE:
+
+
+1.2 psb 3-factor model
+
+DATA:
+File = data_ora_ca_p2_clean.csv;
+VARIABLE:
+NAMES = ID gender age_t1 help_t1 share_t1 comfort_t1 aht_t1 mdg_t1 pain_t1
+age_t2 help_t2 share_t2 comfort_t2 aht_t2 mdg_t2 pain_t2;
+USEVARIABLES = help_t1 share_t1 comfort_t1 aht_t1 mdg_t1 pain_t1
+ help_t2 share_t2 comfort_t2 aht_t2 mdg_t2 pain_t2;
+MISSING = all (-999);
+IDVARIABLE = ID;
+ANALYSIS:
+TYPE = General;
+ESTIMATOR = MLR;
+OUTPUT:
+SAMPSTAT STANDARDIZED MODINDICES CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;
+MODEL:
+HE_T1 BY help_t1* aht_t1;
+[help_t1*  aht_t1];
+HE_T1@1;
+[HE_T1@0];
+SH_T1 BY share_t1* mdg_t1;
+[share_t1* mdg_t1];
+SH_T1@1;
+[SH_T1@0];
+CO_T1 BY comfort_t1* pain_t1;
+[comfort_t1* pain_t1];
+CO_T1@1;
+[CO_T1@0];
+HE_T2 BY help_t2* aht_t2;
+[help_t2*  aht_t2];
+HE_T2@1;
+[HE_T2@0];
+SH_T2 BY share_t2* mdg_t2;
+[share_t2* mdg_t2];
+SH_T2@1;
+[SH_T2@0];
+CO_T2 BY comfort_t2* pain_t2;
+[comfort_t2* pain_t2];
+CO_T2@1;
+[CO_T2@0];
+HE_T1 SH_T1 CO_T1 WITH HE_T2 SH_T2 CO_T2;
+HE_T1 WITH SH_T1 CO_T1;
+SH_T1 WITH CO_T1;
+HE_T2 WITH SH_T2 CO_T2;
+SH_T2 WITH CO_T2;
+help_t1 WITH help_t2;
+share_t1 WITH share_t2;
+comfort_t1 WITH comfort_t2;
+aht_t1 WITH aht_t2;
+mdg_t1 WITH mdg_t2;
+pain_t1 WITH pain_t2;
+INPUT_END
+1
+1
+1
+1
+MLR
+1
+GENERAL
+0
+12
+6
+0
+help_t1 share_t1 comfort_t1 aht_t1 mdg_t1 pain_t1 help_t2 share_t2 comfort_t2 aht_t2 mdg_t2 pain_t2 he_t1 sh_t1 co_t1 he_t2 sh_t2 co_t2
+1
+-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0
+0
+6
+he_t1
+help_t1 aht_t1
+sh_t1
+share_t1 mdg_t1
+co_t1
+comfort_t1 pain_t1
+he_t2
+help_t2 aht_t2
+sh_t2
+share_t2 mdg_t2
+co_t2
+comfort_t2 pain_t2
+1 1 he_t1 help_t1 0.233
+1 1 he_t1 aht_t1 -0.018
+1 1 sh_t1 share_t1 8.668
+1 1 sh_t1 mdg_t1 0.009
+1 1 co_t1 comfort_t1 0.704
+1 1 co_t1 pain_t1 0.328
+1 1 he_t2 help_t2 1.279
+1 1 he_t2 aht_t2 0.089
+1 1 sh_t2 share_t2 5.183
+1 1 sh_t2 mdg_t2 -0.005
+1 1 co_t2 comfort_t2 0.955
+1 1 co_t2 pain_t2 0.379
+2 1 help_t1 help_t2 0.188
+2 1 share_t1 share_t2 -89.180
+2 1 comfort_t1 comfort_t2 -0.400
+2 1 aht_t1 aht_t2 0.162
+2 1 mdg_t1 mdg_t2 0.245
+2 1 pain_t1 pain_t2 0.136
+2 1 he_t1 he_t2 -0.547
+2 1 he_t1 sh_t2 0.253
+2 1 he_t1 co_t2 0.919
+2 1 he_t1 sh_t1 0.040
+2 1 he_t1 co_t1 1.619
+2 1 sh_t1 he_t2 0.004
+2 1 sh_t1 sh_t2 1.991
+2 1 sh_t1 co_t2 0.020
+2 1 sh_t1 co_t1 0.074
+2 1 co_t1 he_t2 0.040
+2 1 co_t1 sh_t2 0.087
+2 1 co_t1 co_t2 0.767
+2 1 he_t2 sh_t2 0.026
+2 1 he_t2 co_t2 0.028
+2 1 sh_t2 co_t2 0.096
+4 1 help_t1 0.936
+4 1 share_t1 -74.118
+4 1 comfort_t1 0.498
+4 1 aht_t1 0.994
+4 1 mdg_t1 0.996
+4 1 pain_t1 0.888
+4 1 help_t2 -0.644
+4 1 share_t2 -25.874
+4 1 comfort_t2 0.065
+4 1 aht_t2 0.988
+4 1 mdg_t2 0.993
+4 1 pain_t2 0.844
+5 1 he_t1 1.000
+5 1 sh_t1 1.000
+5 1 co_t1 1.000
+5 1 he_t2 1.000
+5 1 sh_t2 1.000
+5 1 co_t2 1.000
+11 1 he_t1 help_t1 0.234
+11 1 he_t1 aht_t1 -0.018
+11 1 sh_t1 share_t1 8.588
+11 1 sh_t1 mdg_t1 0.009
+11 1 co_t1 comfort_t1 0.706
+11 1 co_t1 pain_t1 0.328
+11 1 he_t2 help_t2 1.285
+11 1 he_t2 aht_t2 0.089
+11 1 sh_t2 share_t2 5.213
+11 1 sh_t2 mdg_t2 -0.005
+11 1 co_t2 comfort_t2 0.966
+11 1 co_t2 pain_t2 0.381
+12 1 help_t1 help_t2 999.000
+12 1 share_t1 share_t2 999.000
+12 1 comfort_t1 comfort_t2 -2.218
+12 1 aht_t1 aht_t2 0.164
+12 1 mdg_t1 mdg_t2 0.246
+12 1 pain_t1 pain_t2 0.157
+12 1 he_t1 he_t2 -0.547
+12 1 he_t1 sh_t2 0.253
+12 1 he_t1 co_t2 0.919
+12 1 he_t1 sh_t1 0.040
+12 1 he_t1 co_t1 1.619
+12 1 sh_t1 he_t2 0.004
+12 1 sh_t1 sh_t2 1.991
+12 1 sh_t1 co_t2 0.020
+12 1 sh_t1 co_t1 0.074
+12 1 co_t1 he_t2 0.040
+12 1 co_t1 sh_t2 0.087
+12 1 co_t1 co_t2 0.767
+12 1 he_t2 sh_t2 0.026
+12 1 he_t2 co_t2 0.028
+12 1 sh_t2 co_t2 0.096
+14 1 help_t1 0.945
+14 1 share_t1 -72.752
+14 1 comfort_t1 0.501
+14 1 aht_t1 1.000
+14 1 mdg_t1 1.000
+14 1 pain_t1 0.892
+14 1 help_t2 -0.650
+14 1 share_t2 -26.175
+14 1 comfort_t2 0.067
+14 1 aht_t2 0.992
+14 1 mdg_t2 1.000
+14 1 pain_t2 0.855
+15 1 he_t1 1.000
+15 1 sh_t1 1.000
+15 1 co_t1 1.000
+15 1 he_t2 1.000
+15 1 sh_t2 1.000
+15 1 co_t2 1.000
+21 1 he_t1 help_t1 0.234
+21 1 he_t1 aht_t1 -0.018
+21 1 sh_t1 share_t1 8.588
+21 1 sh_t1 mdg_t1 0.009
+21 1 co_t1 comfort_t1 0.706
+21 1 co_t1 pain_t1 0.328
+21 1 he_t2 help_t2 1.285
+21 1 he_t2 aht_t2 0.089
+21 1 sh_t2 share_t2 5.213
+21 1 sh_t2 mdg_t2 -0.005
+21 1 co_t2 comfort_t2 0.966
+21 1 co_t2 pain_t2 0.381
+22 1 help_t1 help_t2 999.000
+22 1 share_t1 share_t2 999.000
+22 1 comfort_t1 comfort_t2 -2.218
+22 1 aht_t1 aht_t2 0.164
+22 1 mdg_t1 mdg_t2 0.246
+22 1 pain_t1 pain_t2 0.157
+22 1 he_t1 he_t2 -0.547
+22 1 he_t1 sh_t2 0.253
+22 1 he_t1 co_t2 0.919
+22 1 he_t1 sh_t1 0.040
+22 1 he_t1 co_t1 1.619
+22 1 sh_t1 he_t2 0.004
+22 1 sh_t1 sh_t2 1.991
+22 1 sh_t1 co_t2 0.020
+22 1 sh_t1 co_t1 0.074
+22 1 co_t1 he_t2 0.040
+22 1 co_t1 sh_t2 0.087
+22 1 co_t1 co_t2 0.767
+22 1 he_t2 sh_t2 0.026
+22 1 he_t2 co_t2 0.028
+22 1 sh_t2 co_t2 0.096
+24 1 help_t1 0.945
+24 1 share_t1 999.000
+24 1 comfort_t1 0.501
+24 1 aht_t1 1.000
+24 1 mdg_t1 1.000
+24 1 pain_t1 0.892
+24 1 help_t2 999.000
+24 1 share_t2 999.000
+24 1 comfort_t2 0.067
+24 1 aht_t2 0.992
+24 1 mdg_t2 1.000
+24 1 pain_t2 0.855
+25 1 he_t1 1.000
+25 1 sh_t1 1.000
+25 1 co_t1 1.000
+25 1 he_t2 1.000
+25 1 sh_t2 1.000
+25 1 co_t2 1.000
+31 1 he_t1 help_t1 0.233
+31 1 he_t1 aht_t1 -0.018
+31 1 sh_t1 share_t1 8.668
+31 1 sh_t1 mdg_t1 0.009
+31 1 co_t1 comfort_t1 0.704
+31 1 co_t1 pain_t1 0.328
+31 1 he_t2 help_t2 1.279
+31 1 he_t2 aht_t2 0.089
+31 1 sh_t2 share_t2 5.183
+31 1 sh_t2 mdg_t2 -0.005
+31 1 co_t2 comfort_t2 0.955
+31 1 co_t2 pain_t2 0.379
+32 1 help_t1 help_t2 999.000
+32 1 share_t1 share_t2 999.000
+32 1 comfort_t1 comfort_t2 -0.400
+32 1 aht_t1 aht_t2 0.162
+32 1 mdg_t1 mdg_t2 0.245
+32 1 pain_t1 pain_t2 0.136
+32 1 he_t1 he_t2 -0.547
+32 1 he_t1 sh_t2 0.253
+32 1 he_t1 co_t2 0.919
+32 1 he_t1 sh_t1 0.040
+32 1 he_t1 co_t1 1.619
+32 1 sh_t1 he_t2 0.004
+32 1 sh_t1 sh_t2 1.991
+32 1 sh_t1 co_t2 0.020
+32 1 sh_t1 co_t1 0.074
+32 1 co_t1 he_t2 0.040
+32 1 co_t1 sh_t2 0.087
+32 1 co_t1 co_t2 0.767
+32 1 he_t2 sh_t2 0.026
+32 1 he_t2 co_t2 0.028
+32 1 sh_t2 co_t2 0.096
+34 1 help_t1 0.936
+34 1 share_t1 999.000
+34 1 comfort_t1 0.498
+34 1 aht_t1 0.994
+34 1 mdg_t1 0.996
+34 1 pain_t1 0.888
+34 1 help_t2 999.000
+34 1 share_t2 999.000
+34 1 comfort_t2 0.065
+34 1 aht_t2 0.988
+34 1 mdg_t2 0.993
+34 1 pain_t2 0.844
+35 1 he_t1 1.000
+35 1 sh_t1 1.000
+35 1 co_t1 1.000
+35 1 he_t2 1.000
+35 1 sh_t2 1.000
+35 1 co_t2 1.000

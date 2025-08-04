@@ -1,0 +1,29 @@
+TITLE:
+
+2.4 t1 cpa efa bayes
+
+DATA:
+  FILE = data_ora_cpa.csv;
+
+VARIABLE:
+  NAMES = ID site gender age_t1 age_t2
+          cpa_1_t1 cpa_2_t1 cpa_3_rs_t1 cpa_4_t1 cpa_5_rs_t1 cpa_6_t1
+          cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1 cpa_11_rs_t1 cpa_12_t1;
+  USEVARIABLES =
+          cpa_1_t1 cpa_2_t1 cpa_3_rs_t1 cpa_4_t1 cpa_5_rs_t1 cpa_6_t1
+          cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1 cpa_11_rs_t1 cpa_12_t1;
+  MISSING = ALL (-999);
+
+ANALYSIS:
+  ESTIMATOR   = BAYES;          ! MCMC with Gibbs + Metropolis steps
+  TYPE        = EFA 1 4;        ! change to 4 4 for the 4-factor run
+  ROTATION    = GEOMIN (0.5);   ! same rotation you used with ML
+  CHAINS      = 2;              ! =2 allows convergence diagnostics
+  PROCESSORS  = 12;              ! parallel • optional
+  BITERATIONS = (20000);        ! burn-in 10 000 + 10 000 samples
+  THIN        = 10;             ! keeps every 10th draw ? 1 000 per chain
+
+OUTPUT:
+  TECH1          ! parameter list & priors actually assigned
+  TECH8          ! posterior predictive p-value & 95 % PP intervals
+  TECH10;        ! potential scale-reduction (PSR) for convergence

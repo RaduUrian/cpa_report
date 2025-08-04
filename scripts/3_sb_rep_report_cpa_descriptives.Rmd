@@ -1,0 +1,556 @@
+---
+title: "3_sb_rep_report_cpa_descriptives"
+output: html_document
+---
+
+#1. Setup
+
+```{r Setup, include=FALSE}
+# Sets pseudo random number generator seed to fixed value for reproducibility
+set.seed(1)
+
+# Check if package 'here' is installed; if not, install. 
+if (!require("here")) install.packages("here")
+
+# Load 'here' package
+library(here)
+
+# Check if renv file exists in project directory
+if (file.exists(here("renv.lock")))
+
+{
+  
+  if (!require("renv")) {
+    
+    install.packages("renv")
+    renv::init(project = here())
+    here()
+  }
+  
+  else {
+  # If renv file exists, restore stored packages
+  renv::restore(project = here(),
+                clean = TRUE,
+                prompt = FALSE)
+  
+  }  
+    
+} else {
+  
+  # If renv file doesn't exist, check if pacman is not installed;
+  # if yes, install & load, if not, just load.
+  if (!require("pacman")) install.packages("pacman")
+  library(pacman)
+  
+}
+
+snapshot()
+
+# Increase timeout for downloading packages in case of slow download speed
+options(timeout = 300)
+
+# Load all required packages
+pacman::p_load(
+  psych,
+  osfr,
+  tidyverse,
+  skimr,
+  naniar,
+  ggpubr,
+  rstatix,
+  modelbased,
+  performance,
+  haven,
+  MVN,
+  ggrepel,
+  see,
+  lavaan,
+  EFAtools,
+  olsrr,
+  random.polychor.pa
+)
+
+# Remove scientific notations
+options(scipen = 999) 
+
+```
+
+#2. Data Load
+
+```{r load clean data}
+data <- read.csv(here("data","data_clean", "data_ora_cpa.csv"), 
+                 col.names = c(
+                   "id",
+                   "site",
+                   "gender",
+                   "age_months_t1",
+                   "age_group_t1",
+                   "age_months_t2",
+                   "age_group_t2",
+                   "cpa_1_t1",
+                   "cpa_2_t1",
+                   "cpa_3_rs_t1",
+                   "cpa_4_t1",
+                   "cpa_5_rs_t1",
+                   "cpa_6_t1",
+                   "cpa_7_t1",
+                   "cpa_8_t1",
+                   "cpa_9_t1",
+                   "cpa_10_t1",
+                   "cpa_11_rs_t1",
+                   "cpa_12_t1",
+                   "cpa_1_v2_t2",
+                   "cpa_2_t2",
+                   "cpa_3_rs_t2",
+                   "cpa_4_t2",
+                   "cpa_5_v2_t2",
+                   "cpa_6_t2",
+                   "cpa_7_t2",
+                   "cpa_8_t2",
+                   "cpa_9_t2",
+                   "cpa_10_t2",
+                   "cpa_11_t2",
+                   "cpa_12_t2",
+                   "language"
+                   
+                 )
+                   )
+
+```
+
+#3. Wrangling
+
+```{r select variables}
+data <- data %>% 
+  select(c(id,
+           site,
+           gender,
+           age_months_t1,
+           age_months_t2,
+           cpa_1_t1:cpa_12_t1,
+           cpa_1_v2_t2:cpa_12_t2))
+```
+
+```{r fix gender}
+data <- data %>% 
+  mutate(gender = case_when(
+    gender == "girl" ~ 1,
+    gender == "boy" ~ 0
+  )) 
+```
+
+```{r fix site}
+data <- data %>% 
+  mutate(site = case_when(
+    site == "CA" ~ 1,
+    site == "GE" ~ 2,
+    site == "UK" ~ 3
+  )) 
+```
+
+```{r fix variable types}
+# coerce into numeric format
+data <- data %>% 
+  mutate(
+    across(
+      .cols = site:cpa_12_t2,
+      .fns = ~ as.numeric(.)
+    )
+  )
+```
+
+```{r fix age}
+# turn all age = 0 in T2 into NAs (attrition kids)
+data <- data %>% 
+  mutate(
+    across(
+      .cols = c(age_months_t1, age_months_t2),
+      .fns = ~ if_else(.x == 0, NA_integer_, as.numeric(.))
+    )
+  )
+```
+
+```{r age group}
+# create an age group factor
+data <- data %>% 
+  mutate(
+    age_group_t1 = case_when(
+      age_months_t1 >= 42 & age_months_t1 < 54 ~ "4",
+      age_months_t1 >= 54 & age_months_t1 < 66 ~ "5",
+      age_months_t1 >= 66 ~ "6"
+    )
+  ) %>% 
+  relocate(age_group_t1, .after = age_months_t1) %>% 
+  mutate(age_group_t1 = as.factor(age_group_t1))
+
+data <- data %>% 
+  mutate(
+    age_group_t2 = case_when(
+      age_months_t2 >= 42 & age_months_t2 < 54 ~ "4",
+      age_months_t2 >= 54 & age_months_t2 < 66 ~ "5",
+      age_months_t2 >= 66 & age_months_t2 < 78 ~ "6",
+      age_months_t2 >= 78 ~ "7"
+    )
+  ) %>% 
+  relocate(age_group_t2, .after = age_months_t2) %>% 
+  mutate(age_group_t2 = as.factor(age_group_t2))
+```
+
+```{r language groups}
+data <- data %>% 
+  mutate(
+    language = case_when(
+      site == 1 | site == 3 ~ "1", #eng
+      site == 2 ~ "2" #ger
+    )
+  )
+```
+
+#3. Descriptives
+
+## Basic Descriptives
+
+```{r turn cpa to categorical variables}
+data <- data %>% 
+  mutate(
+    across(
+      .cols = cpa_1_t1:cpa_12_t2,
+      .fns = ~ as.factor(.)
+    )
+  ) %>% 
+  mutate(
+    across(
+      .cols = c(age_group_t1, age_group_t2),
+      .fns = ~ as.factor(.)
+    )
+  )
+```
+
+```{r basic descriptives}
+skim(data)
+
+describe(data)
+```
+
+```{r}
+age_bins_t1 <- data %>% 
+  count(age_group_t1, name = "Frequency") %>%
+  mutate(Proportion = Frequency / sum(Frequency))
+
+age_bins_t2 <- data %>% 
+  count(age_group_t2, name = "Frequency") %>%
+  mutate(Proportion = Frequency / sum(Frequency))
+```
+
+
+```{r frequency tables}
+freq_prop <- data %>%
+  pivot_longer(cols = c(cpa_1_t1:cpa_12_t2), names_to = "item", values_to = "response") %>%
+  group_by(item, response) %>%
+  summarise(Frequency = n(), .groups = "drop") %>%
+  group_by(item) %>%
+  mutate(Proportion = Frequency / sum(Frequency)) %>%
+  arrange(item, response)
+```
+
+```{r fix cpa coding}
+# turn all '6' values (not seen) into NAs
+data <- data %>% 
+  mutate(
+    across(
+      .cols = cpa_1_t1:cpa_12_t2,
+      .fns = ~ if_else(.x == 6, NA_integer_, as.numeric(.))
+    )
+  )
+```
+
+```{r collapse age bins}
+data <- data %>%
+  mutate(age_group_t1 = fct_collapse(age_group_t1,
+                                     "6" = c("6", "7")))
+
+data <- data %>%
+  mutate(age_group_t2 = fct_collapse(age_group_t2,
+                                     "7" = c("7", "8")))
+```
+
+```{r collapse cpa levels}
+data <- data %>%                         
+  mutate(across(
+    c(CPA_1:CPA_3_RS_t2,CPA_5_V2:CPA_12_t2),
+    ~ case_when(
+        . <= 2        ~ 1,     
+        . == 3        ~ 2,     
+        . == 4        ~ 3,     
+        . >= 5        ~ 4,     
+        TRUE          ~ NA_real_
+      )
+  ))
+```
+
+## Missing Data
+
+```{r}
+data %>% 
+  select(cpa_1_t1:cpa_12_t2) %>% 
+  naniar::vis_miss()
+```
+
+```{r case-wise missing data prop}
+miss_case_table(data)
+```
+
+```{r shadow matrix}
+# create shadow matrix
+data_missing_full_shadow <- bind_shadow(data,
+                                        only_miss = TRUE)
+
+# turn variable type into factor with 1 = NA, 0 = not NA
+data_missing_full_shadow <- data_missing_full_shadow %>%
+  mutate(across(
+      .cols = c(cpa_1_t1:cpa_12_t2_NA),
+      ~case_when(.x == "!NA" ~ 0,
+                          .x == "NA" ~ 1)))
+
+```
+
+```{r NA correlation plot}
+jpeg(file = here("output", "NA_correlation.jpeg"),   # The directory you want to save the file in
+    width = 700, # The width of the plot in inches
+    height = 700) # The height of the plot in inches
+
+# create correlation plot of missingness
+data_missing_full_shadow %>% 
+  dplyr::select(cpa_1_t1:cpa_12_t2_NA) %>%
+  cor(method = "spearman") %>% 
+  corrplot::corrplot(addCoef.col = 'black',
+                   type = "lower",
+                   diag = FALSE)
+
+# Step 3: Run dev.off() to create the file!
+dev.off()
+
+```
+
+```{r overall missingness pattern}
+# open picture save interface
+jpeg(file = here("output", "all_correlations.jpeg"),
+    width = 800, # The width of the plot in inches
+    height = 800) # The height of the plot in inches
+
+# create plot
+data_missing_full_shadow %>% 
+  mutate(across(c(cpa_1_t1_NA:cpa_12_t2_NA), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .))) %>% 
+  select(-c(id, site, age_group_t1, age_group_t2, language)) %>% 
+  cor(use = "pairwise.complete.obs", 
+      method = "spearman") %>% 
+  corrplot::corrplot(addCoef.col = 'black',
+                   type = "lower",
+                   diag = FALSE)
+
+# run dev.off() to create the file
+dev.off()
+```
+
+```{r mean imputation}
+data_imputed <- data %>%
+  mutate(across(c(cpa_1_t1:cpa_12_t2), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .)))
+```
+
+## MVN
+
+```{r mvn}
+
+data_imputed %>% 
+  dplyr::select(-c(id, site, gender, age_months_t1, age_months_t2, language, age_group_t1, age_group_t2)) %>% 
+  mvn(mvn_test = "mardia" )
+
+```
+
+## Outliers
+
+```{r fake regression model}
+# build fake regression of id on all predictors
+lm_id <- lm(id ~ cpa_1_t1 + cpa_2_t1 + cpa_3_rs_t1 + cpa_4_t1 + cpa_5_t1 + cpa_6_t1 +
+    cpa_7_t1 + cpa_8_t1 + cpa_9_t1 + cpa_10_t1 + cpa_11_RS_t1 + cpa_12_t1 
+    + cpa_1_v2_t2 + cpa_2_t2 + cpa_3_rs_t2 + cpa_4_t2 + cpa_5_v2_t2 + cpa_6_t2 +
+    cpa_7_t2 + cpa_8_t2 + cpa_9_t2 + cpa_10_t2 + cpa_11_RS_t2 + cpa_12_t2,
+            data = data_imputed)
+
+summary(lm_id)
+```
+
+```{r Cook's and Mahalanobis distance}
+# calculate cook's & mahalanobis distances
+outliers <- performance::check_outliers(lm_id,
+                            method = c("cook",
+                                       "mahalanobis")
+                            )
+
+# save outliers output as data frame
+outliers <- as.data.frame(outliers)
+
+```
+
+```{r merge distances to dataset}
+# create a row identifier to allow merging with the outliers dataframe
+data_outliers <- data_imputed %>% 
+  tibble::rowid_to_column("Row")
+
+# merge dataframe based on row number
+data_outliers <- full_join(data_outliers, outliers, by = "Row")
+```
+
+```{r plot distance metrics}
+# add a column to identify points that exceed the thresholds
+data_outliers <- data_outliers %>%
+  mutate(
+    across(
+      .cols = c(Distance_Mahalanobis, Distance_Cook),
+      .fns = ~ scale(.)
+    )
+  ) 
+
+data_outliers <- data_outliers %>% 
+  mutate(outlier = ifelse(Distance_Mahalanobis > 3.29 & Distance_Cook > 3.29, as.character(id), NA))
+
+# standardize distance metrics and then scatter plot with cutoff lines at 3.29
+mv_outliers_hist <- data_outliers %>%
+  ggplot(aes(x = Distance_Mahalanobis, 
+             y = Distance_Cook)) +
+  geom_point() +
+  geom_text_repel(aes(label = outlier), color = "red", na.rm = TRUE, max.overlaps = 20) +
+  geom_hline(yintercept = 3.29 , linetype = "dashed", color = "red") +
+  geom_vline(xintercept = 3.29, linetype = "dashed", color = "red") +
+  labs(
+    x = "Standardized Mahalanobis Distance",
+    y = "Standardized Cook's Distance"
+  ) +
+  theme_minimal()
+
+ggsave(here("output", "mv_outiers_hist.jpeg"),
+       mv_outliers_hist,
+       units = "in",
+       height = 7,
+       width = 9)
+```
+
+## Variance Ratio
+
+```{r variance ratios}
+data_imputed_numeric <- data_imputed %>% 
+  select(-c(id, gender, age_months_t1, age_months_t2))
+
+# Calculate variances for all variables
+variances <- sapply(data_imputed_numeric, var)
+
+# Create a matrix to store variance ratios
+variance_ratios <- outer(variances, variances, FUN = "/")
+
+# Convert to a dataframe for better readability (optional)
+variance_ratios_df <- as.data.frame(variance_ratios)
+rownames(variance_ratios_df) <- colnames(data_imputed_numeric)
+colnames(variance_ratios_df) <- colnames(data_imputed_numeric)
+
+# Display the result
+print(variance_ratios_df)
+
+descriptives <- describe(variance_ratios_df)
+
+describe(descriptives)
+```
+
+## Multicollinearity
+
+```{r vif}
+# calculate vif
+check_collinearity(lm_id)
+
+#plot(performance::check_collinearity(lm_id))
+
+```
+
+```{r collinearity diagnostics}
+ols_coll_diag(lm_id)
+```
+
+## Correlations
+
+```{r}
+# open picture save interface
+jpeg(file = here("output", "all_correlations.jpeg"),
+    width = 1200, # The width of the plot in inches
+    height = 1200) # The height of the plot in inches
+
+data_imputed %>% 
+  dplyr::select(cpa_1_t1:cpa_12_t2) %>% 
+  mutate(across(c(cpa_1_t1:cpa_12_t2), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .))) %>% 
+  cor() %>% 
+  corrplot::corrplot(addCoef.col = 'black',
+                   type = "lower",
+                   diag = FALSE)
+
+# run dev.off() to create the file
+dev.off()
+```
+
+## Positive Definiteness
+
+```{r}
+cov_matrix <- data %>% 
+  select(cpa_1_t1:cpa_12_t2) %>% 
+  mutate(across(c(cpa_1_t1:cpa_12_t2), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .))) %>%
+  cov()
+eigen(cov_matrix) 
+det(cov_matrix) 
+solve(cov_matrix) 
+cov2cor(cov_matrix)
+```
+
+## Factorability
+
+```{r kmo & bartlett}
+# calculate KMO from imputed data
+kmo <- KMO(data_imputed_numeric)
+
+# calculate Bartlett's from imputed data
+# bartlett <- BARTLETT(data_imputed_numeric)
+```
+## Parallel Analysis
+
+```{r}
+data_pa_t1 <- data %>% 
+  select(cpa_1_t1:cpa_12_t1) %>% 
+  mutate(across(c(cpa_1_t1:cpa_12_t1), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .)))
+
+data_pa_t2 <- data %>% 
+  select(cpa_1_v2_t2:cpa_12_t2) %>% 
+  mutate(across(c(cpa_1_v2_t2:cpa_12_t2), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .)))
+
+pa_t1 <- random.polychor.pa(data.matrix = data_pa_t1, nrep = 1000, q.eigen = .95)
+```
+
+
+#5. Export
+
+```{r export}
+# export data as csv file and remove column names for MPlus
+write.table(data,
+          here("scripts", "mplus", "data_ora_cpa.csv"),
+          sep = ",",
+          row.names = FALSE,
+          qmethod = "double",
+          col.names = FALSE,
+          na = "-999"
+          )
+
+write.csv(data,
+          here("data", "data_clean", "data_cpa_clean.csv"),
+          row.names = FALSE,)
+```
+
+
+
+
+
+

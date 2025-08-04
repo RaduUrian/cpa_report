@@ -1,0 +1,2740 @@
+Mplus VERSION 8.10
+MUTHEN & MUTHEN
+07/28/2025  10:36 AM
+
+INPUT INSTRUCTIONS
+
+  DATA:
+
+  File = data_ora_cpa.csv;
+
+  VARIABLE:
+
+  NAMES = ID site gender age_t1 age_group_t1 age_t2 age_group_t2
+  cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+    cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+    cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+    cpa_12_t2;
+
+  USEVARIABLES = age_group_t1 cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_9_t1 cpa_10_t1
+     cpa_12_t1;
+
+    CATEGORICAL =
+  cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_9_t1 cpa_10_t1
+     cpa_12_t1;
+
+    MISSING     = ALL (-999);
+    IDVARIABLE  = ID;
+
+  GROUPING = age_group_t1 (4 = 4yo 5 = 5yo 6 = 6yo);
+
+  DEFINE:
+
+  CUT cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_9_t1 cpa_10_t1
+     cpa_12_t1 (2 3 4);
+
+  ANALYSIS:
+
+  TYPE = General;
+  ESTIMATOR = WLSMV;
+  PARAMETERIZATION = THETA;
+  ITERATIONS = 10000;
+  DIFFTEST = conf.dat;
+
+  MODEL:
+  !--------------------T1------------------------------------
+
+  !help t1
+  HE_T1 BY cpa_3_rs_t1* cpa_6_t1 (L1-L2);
+
+  !share t1
+  SH_T1 BY cpa_5_rs_t1* cpa_7_t1 cpa_9_t1 (L3-L5);
+
+  !comfort t1
+  CO_T1 BY cpa_2_t1* cpa_4_t1 cpa_10_t1 cpa_12_t1 (L6-L9);
+
+  !factor means
+  [HE_T1@0];
+  [SH_T1@0];
+  [CO_T1@0];
+
+  !factor variances
+  HE_T1@1;
+  SH_T1@1;
+  CO_T1@1;
+
+  cpa_2_t1-cpa_12_t1@1;
+
+    !---- CPA-2  ------------------------------------------
+    [cpa_2_t1$1] (t2);
+    [cpa_2_t1$2] (t2_2);
+    [cpa_2_t1$3];  ! (t2_3);
+
+    !---- CPA-3 ------------------------------------------
+    [cpa_3_rs_t1$1] (t3);
+    [cpa_3_rs_t1$2];! (t3_2);
+    [cpa_3_rs_t1$3];  ! (t3_3);
+
+    !---- CPA-4 ------------------------------------------
+    [cpa_4_t1$1] (t4);
+    [cpa_4_t1$2];! (t4_2);
+    [cpa_4_t1$3];  ! (t4_3);
+
+    !---- CPA-5 ------------------------------------------
+    [cpa_5_rs_t1$1] (t5);
+    [cpa_5_rs_t1$2];  ! (t5_2);
+    [cpa_5_rs_t1$3];  ! (t5_3);
+
+    !---- CPA-6 ------------------------------------------
+    [cpa_6_t1$1] (t6);
+    [cpa_6_t1$2] (t6_2);
+    [cpa_6_t1$3];  ! (t6_3);
+
+    !---- CPA-7 ------------------------------------------
+    [cpa_7_t1$1] (t7);
+    [cpa_7_t1$2] (t7_2);
+    [cpa_7_t1$3];  ! (t7_3);
+
+    !---- CPA-9 ------------------------------------------
+    [cpa_9_t1$1] (t9);
+    [cpa_9_t1$2];  ! (t9_2);
+    [cpa_9_t1$3];  ! (t9_3);
+
+    !---- CPA-10 -----------------------------------------
+    [cpa_10_t1$1] (t10);
+    [cpa_10_t1$2];! (t10_2);
+    [cpa_10_t1$3]; ! (t10_3);
+
+    !---- CPA-12 -----------------------------------------
+    [cpa_12_t1$1] (t12);
+    [cpa_12_t1$2]; ! (t12_2);
+    [cpa_12_t1$3]; ! (t12_3);
+
+  !-------------------------------------------------
+
+  MODEL 5YO:
+  !help t1
+  HE_T1 BY cpa_3_rs_t1* cpa_6_t1 (L1-L2);
+
+  !share t1
+  SH_T1 BY cpa_5_rs_t1* cpa_7_t1 cpa_9_t1 (L3-L5);
+
+  !comfort t1
+  CO_T1 BY cpa_2_t1* cpa_4_t1 cpa_10_t1 cpa_12_t1 (L6-L9);
+
+  !factor means
+  [HE_T1*];
+  [SH_T1*];
+  [CO_T1*];
+
+  !factor variances
+  HE_T1*;
+  SH_T1*;
+  CO_T1*;
+
+  cpa_2_t1-cpa_12_t1*;
+  cpa_6_t1@.1;
+
+    !---- CPA-2  ------------------------------------------
+    [cpa_2_t1$1] (t2);
+    [cpa_2_t1$2] (t2_2);
+    [cpa_2_t1$3];  ! (t2_3);
+
+    !---- CPA-3 ------------------------------------------
+    [cpa_3_rs_t1$1] (t3);
+    [cpa_3_rs_t1$2];! (t3_2);
+    [cpa_3_rs_t1$3];  ! (t3_3);
+
+    !---- CPA-4 ------------------------------------------
+    [cpa_4_t1$1] (t4);
+    [cpa_4_t1$2];! (t4_2);
+    [cpa_4_t1$3];  ! (t4_3);
+
+    !---- CPA-5 ------------------------------------------
+    [cpa_5_rs_t1$1] (t5);
+    [cpa_5_rs_t1$2];  ! (t5_2);
+    [cpa_5_rs_t1$3];  ! (t5_3);
+
+    !---- CPA-6 ------------------------------------------
+    [cpa_6_t1$1] (t6);
+    [cpa_6_t1$2] (t6_2);
+    [cpa_6_t1$3];  ! (t6_3);
+
+    !---- CPA-7 ------------------------------------------
+    [cpa_7_t1$1] (t7);
+    [cpa_7_t1$2] (t7_2);
+    [cpa_7_t1$3];  ! (t7_3);
+
+    !---- CPA-9 ------------------------------------------
+    [cpa_9_t1$1] (t9);
+    [cpa_9_t1$2];  ! (t9_2);
+    [cpa_9_t1$3];  ! (t9_3);
+
+    !---- CPA-10 -----------------------------------------
+    [cpa_10_t1$1] (t10);
+    [cpa_10_t1$2];! (t10_2);
+    [cpa_10_t1$3]; ! (t10_3);
+
+    !---- CPA-12 -----------------------------------------
+    [cpa_12_t1$1] (t12);
+    [cpa_12_t1$2]; ! (t12_2);
+    [cpa_12_t1$3]; ! (t12_3);
+
+    MODEL 6YO:
+  !help t1
+  HE_T1 BY cpa_3_rs_t1* cpa_6_t1 (L1-L2);
+
+  !share t1
+  SH_T1 BY cpa_5_rs_t1* cpa_7_t1 cpa_9_t1 (L3-L5);
+
+  !comfort t1
+  CO_T1 BY cpa_2_t1* cpa_4_t1 cpa_10_t1 cpa_12_t1 (L6-L9);
+
+  !factor means
+  [HE_T1*];
+  [SH_T1*];
+  [CO_T1*];
+
+  !factor variances
+  HE_T1*;
+  SH_T1*;
+  CO_T1*;
+
+  cpa_2_t1-cpa_12_t1*;
+  cpa_6_t1@.1;
+
+    !---- CPA-2  ------------------------------------------
+    [cpa_2_t1$1] (t2);
+    [cpa_2_t1$2] (t2_2);
+    [cpa_2_t1$3];  ! (t2_3);
+
+    !---- CPA-3 ------------------------------------------
+    [cpa_3_rs_t1$1] (t3);
+    [cpa_3_rs_t1$2];! (t3_2);
+    [cpa_3_rs_t1$3];  ! (t3_3);
+
+    !---- CPA-4 ------------------------------------------
+    [cpa_4_t1$1] (t4);
+    [cpa_4_t1$2];! (t4_2);
+    [cpa_4_t1$3];  ! (t4_3);
+
+    !---- CPA-5 ------------------------------------------
+    [cpa_5_rs_t1$1] (t5);
+    [cpa_5_rs_t1$2];  ! (t5_2);
+    [cpa_5_rs_t1$3];  ! (t5_3);
+
+    !---- CPA-6 ------------------------------------------
+    [cpa_6_t1$1] (t6);
+    [cpa_6_t1$2] (t6_2);
+    [cpa_6_t1$3];  ! (t6_3);
+
+    !---- CPA-7 ------------------------------------------
+    [cpa_7_t1$1] (t7);
+    [cpa_7_t1$2] (t7_2);
+    [cpa_7_t1$3];  ! (t7_3);
+
+    !---- CPA-9 ------------------------------------------
+    [cpa_9_t1$1] (t9);
+    [cpa_9_t1$2];  ! (t9_2);
+    [cpa_9_t1$3];  ! (t9_3);
+
+    !---- CPA-10 -----------------------------------------
+    [cpa_10_t1$1] (t10);
+    [cpa_10_t1$2];! (t10_2);
+    [cpa_10_t1$3]; ! (t10_3);
+
+    !---- CPA-12 -----------------------------------------
+    [cpa_12_t1$1] (t12);
+    [cpa_12_t1$2]; ! (t12_2);
+    [cpa_12_t1$3]; ! (t12_3);
+
+  OUTPUT:
+  SAMPSTAT STANDARDIZED MODINDICES CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;
+
+  SAVEDATA:
+  DIFFTEST = weak.dat;
+
+
+
+*** WARNING in VARIABLE command
+  Note that only the first 8 characters of variable names are used in the output.
+  Shorten variable names to avoid any confusion.
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  18
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 3
+Number of observations
+   Group 4YO                                                   147
+   Group 5YO                                                   142
+   Group 6YO                                                   173
+   Total sample size                                           462
+
+Number of dependent variables                                    9
+Number of independent variables                                  0
+Number of continuous latent variables                            3
+
+Observed dependent variables
+
+  Binary and ordered categorical (ordinal)
+   CPA_2_T1    CPA_3_RS    CPA_4_T1    CPA_5_RS    CPA_6_T1    CPA_7_T1
+   CPA_9_T1    CPA_10_T    CPA_12_T
+
+Continuous latent variables
+   HE_T1       SH_T1       CO_T1
+
+Variables with special functions
+
+  Grouping variable     AGE_GROU
+  ID variable           ID
+
+Estimator                                                    WLSMV
+Maximum number of iterations                                 10000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Parameterization                                             THETA
+Link                                                        PROBIT
+
+Input data file(s)
+  data_ora_cpa.csv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group 4YO
+     Number of missing data patterns            23
+
+   Group 5YO
+     Number of missing data patterns            20
+
+   Group 6YO
+     Number of missing data patterns            19
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR 4YO
+
+
+           Covariance Coverage
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1       0.925
+ CPA_3_RS       0.864         0.932
+ CPA_4_T1       0.891         0.884         0.939
+ CPA_5_RS       0.918         0.925         0.932         0.993
+ CPA_6_T1       0.905         0.918         0.925         0.973         0.980
+ CPA_7_T1       0.884         0.891         0.912         0.946         0.932
+ CPA_9_T1       0.918         0.925         0.925         0.980         0.966
+ CPA_10_T       0.755         0.776         0.762         0.803         0.796
+ CPA_12_T       0.741         0.748         0.762         0.776         0.769
+
+
+           Covariance Coverage
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_7_T1       0.952
+ CPA_9_T1       0.946         0.986
+ CPA_10_T       0.769         0.796         0.803
+ CPA_12_T       0.748         0.776         0.680         0.776
+
+
+     PROPORTION OF DATA PRESENT FOR 5YO
+
+
+           Covariance Coverage
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1       0.915
+ CPA_3_RS       0.887         0.951
+ CPA_4_T1       0.915         0.915         0.965
+ CPA_5_RS       0.908         0.944         0.958         0.993
+ CPA_6_T1       0.887         0.930         0.937         0.965         0.972
+ CPA_7_T1       0.915         0.951         0.965         0.993         0.972
+ CPA_9_T1       0.894         0.930         0.944         0.972         0.951
+ CPA_10_T       0.845         0.838         0.859         0.859         0.838
+ CPA_12_T       0.761         0.761         0.775         0.768         0.768
+
+
+           Covariance Coverage
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_7_T1       1.000
+ CPA_9_T1       0.979         0.979
+ CPA_10_T       0.866         0.852         0.866
+ CPA_12_T       0.775         0.754         0.725         0.775
+
+
+     PROPORTION OF DATA PRESENT FOR 6YO
+
+
+           Covariance Coverage
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1       0.908
+ CPA_3_RS       0.890         0.965
+ CPA_4_T1       0.902         0.948         0.971
+ CPA_5_RS       0.908         0.965         0.971         1.000
+ CPA_6_T1       0.908         0.965         0.971         1.000         1.000
+ CPA_7_T1       0.896         0.948         0.954         0.977         0.977
+ CPA_9_T1       0.896         0.954         0.960         0.988         0.988
+ CPA_10_T       0.815         0.844         0.861         0.873         0.873
+ CPA_12_T       0.832         0.855         0.855         0.879         0.879
+
+
+           Covariance Coverage
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_7_T1       0.977
+ CPA_9_T1       0.965         0.988
+ CPA_10_T       0.855         0.867         0.873
+ CPA_12_T       0.861         0.873         0.798         0.879
+
+
+UNIVARIATE PROPORTIONS AND COUNTS FOR CATEGORICAL VARIABLES
+
+  Group 4YO
+    CPA_2_T1
+      Category 1    0.169           23.000
+      Category 2    0.390           53.000
+      Category 3    0.279           38.000
+      Category 4    0.162           22.000
+    CPA_3_RS
+      Category 1    0.190           26.000
+      Category 2    0.336           46.000
+      Category 3    0.350           48.000
+      Category 4    0.124           17.000
+    CPA_4_T1
+      Category 1    0.058            8.000
+      Category 2    0.290           40.000
+      Category 3    0.428           59.000
+      Category 4    0.225           31.000
+    CPA_5_RS
+      Category 1    0.116           17.000
+      Category 2    0.226           33.000
+      Category 3    0.329           48.000
+      Category 4    0.329           48.000
+    CPA_6_T1
+      Category 1    0.174           25.000
+      Category 2    0.438           63.000
+      Category 3    0.243           35.000
+      Category 4    0.146           21.000
+    CPA_7_T1
+      Category 1    0.229           32.000
+      Category 2    0.407           57.000
+      Category 3    0.271           38.000
+      Category 4    0.093           13.000
+    CPA_9_T1
+      Category 1    0.034            5.000
+      Category 2    0.241           35.000
+      Category 3    0.434           63.000
+      Category 4    0.290           42.000
+    CPA_10_T
+      Category 1    0.110           13.000
+      Category 2    0.458           54.000
+      Category 3    0.331           39.000
+      Category 4    0.102           12.000
+    CPA_12_T
+      Category 1    0.342           39.000
+      Category 2    0.351           40.000
+      Category 3    0.254           29.000
+      Category 4    0.053            6.000
+
+  Group 5YO
+    CPA_2_T1
+      Category 1    0.108           14.000
+      Category 2    0.377           49.000
+      Category 3    0.377           49.000
+      Category 4    0.138           18.000
+    CPA_3_RS
+      Category 1    0.156           21.000
+      Category 2    0.326           44.000
+      Category 3    0.407           55.000
+      Category 4    0.111           15.000
+    CPA_4_T1
+      Category 1    0.095           13.000
+      Category 2    0.234           32.000
+      Category 3    0.358           49.000
+      Category 4    0.314           43.000
+    CPA_5_RS
+      Category 1    0.113           16.000
+      Category 2    0.184           26.000
+      Category 3    0.284           40.000
+      Category 4    0.418           59.000
+    CPA_6_T1
+      Category 1    0.159           22.000
+      Category 2    0.384           53.000
+      Category 3    0.326           45.000
+      Category 4    0.130           18.000
+    CPA_7_T1
+      Category 1    0.204           29.000
+      Category 2    0.437           62.000
+      Category 3    0.225           32.000
+      Category 4    0.134           19.000
+    CPA_9_T1
+      Category 1    0.094           13.000
+      Category 2    0.173           24.000
+      Category 3    0.360           50.000
+      Category 4    0.374           52.000
+    CPA_10_T
+      Category 1    0.122           15.000
+      Category 2    0.341           42.000
+      Category 3    0.398           49.000
+      Category 4    0.138           17.000
+    CPA_12_T
+      Category 1    0.373           41.000
+      Category 2    0.309           34.000
+      Category 3    0.255           28.000
+      Category 4    0.064            7.000
+
+  Group 6YO
+    CPA_2_T1
+      Category 1    0.070           11.000
+      Category 2    0.363           57.000
+      Category 3    0.427           67.000
+      Category 4    0.140           22.000
+    CPA_3_RS
+      Category 1    0.138           23.000
+      Category 2    0.371           62.000
+      Category 3    0.335           56.000
+      Category 4    0.156           26.000
+    CPA_4_T1
+      Category 1    0.030            5.000
+      Category 2    0.232           39.000
+      Category 3    0.429           72.000
+      Category 4    0.310           52.000
+    CPA_5_RS
+      Category 1    0.052            9.000
+      Category 2    0.150           26.000
+      Category 3    0.335           58.000
+      Category 4    0.462           80.000
+    CPA_6_T1
+      Category 1    0.185           32.000
+      Category 2    0.393           68.000
+      Category 3    0.283           49.000
+      Category 4    0.139           24.000
+    CPA_7_T1
+      Category 1    0.213           36.000
+      Category 2    0.396           67.000
+      Category 3    0.260           44.000
+      Category 4    0.130           22.000
+    CPA_9_T1
+      Category 1    0.053            9.000
+      Category 2    0.228           39.000
+      Category 3    0.409           70.000
+      Category 4    0.310           53.000
+    CPA_10_T
+      Category 1    0.053            8.000
+      Category 2    0.311           47.000
+      Category 3    0.510           77.000
+      Category 4    0.126           19.000
+    CPA_12_T
+      Category 1    0.257           39.000
+      Category 2    0.375           57.000
+      Category 3    0.296           45.000
+      Category 4    0.072           11.000
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS FOR 4YO
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_2_T1      CPA_2_T1      CPA_2_T1      CPA_3_RS      CPA_3_RS
+              ________      ________      ________      ________      ________
+               -0.958         0.148         0.987        -0.879         0.064
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_3_RS      CPA_4_T1      CPA_4_T1      CPA_4_T1      CPA_5_RS
+              ________      ________      ________      ________      ________
+                1.155        -1.572        -0.391         0.757        -1.193
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_5_RS      CPA_5_RS      CPA_6_T1      CPA_6_T1      CPA_6_T1
+              ________      ________      ________      ________      ________
+               -0.406         0.443        -0.940         0.282         1.054
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_7_T1      CPA_7_T1      CPA_7_T1      CPA_9_T1      CPA_9_T1
+              ________      ________      ________      ________      ________
+               -0.744         0.347         1.323        -1.819        -0.595
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_9_T1      CPA_10_T      CPA_10_T      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________      ________
+                0.554        -1.226         0.171         1.272        -0.407
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_12_T      CPA_12_T
+              ________      ________
+                0.504         1.620
+
+
+           CORRELATION MATRIX (WITH VARIANCES ON THE DIAGONAL)
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1
+ CPA_3_RS       0.042
+ CPA_4_T1       0.656         0.138
+ CPA_5_RS      -0.023         0.062        -0.064
+ CPA_6_T1       0.074         0.351         0.021        -0.046
+ CPA_7_T1       0.079         0.019         0.003         0.239         0.153
+ CPA_9_T1       0.249         0.098         0.227         0.391         0.221
+ CPA_10_T       0.371         0.100         0.500         0.077        -0.045
+ CPA_12_T       0.571         0.119         0.724        -0.096        -0.007
+
+
+           CORRELATION MATRIX (WITH VARIANCES ON THE DIAGONAL)
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_9_T1       0.651
+ CPA_10_T       0.176         0.328
+ CPA_12_T       0.105         0.356         0.492
+
+
+     ESTIMATED SAMPLE STATISTICS FOR 5YO
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_2_T1      CPA_2_T1      CPA_2_T1      CPA_3_RS      CPA_3_RS
+              ________      ________      ________      ________      ________
+               -1.239        -0.039         1.087        -1.013        -0.046
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_3_RS      CPA_4_T1      CPA_4_T1      CPA_4_T1      CPA_5_RS
+              ________      ________      ________      ________      ________
+                1.221        -1.311        -0.444         0.485        -1.208
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_5_RS      CPA_5_RS      CPA_6_T1      CPA_6_T1      CPA_6_T1
+              ________      ________      ________      ________      ________
+               -0.531         0.206        -0.997         0.109         1.124
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_7_T1      CPA_7_T1      CPA_7_T1      CPA_9_T1      CPA_9_T1
+              ________      ________      ________      ________      ________
+               -0.827         0.361         1.109        -1.319        -0.624
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_9_T1      CPA_10_T      CPA_10_T      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________      ________
+                0.321        -1.165        -0.092         1.088        -0.325
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_12_T      CPA_12_T
+              ________      ________
+                0.473         1.525
+
+
+           CORRELATION MATRIX (WITH VARIANCES ON THE DIAGONAL)
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1
+ CPA_3_RS       0.179
+ CPA_4_T1       0.640         0.084
+ CPA_5_RS       0.169         0.256         0.104
+ CPA_6_T1       0.357         0.488         0.273         0.212
+ CPA_7_T1       0.476         0.099         0.333         0.332         0.280
+ CPA_9_T1       0.428         0.226         0.297         0.365         0.277
+ CPA_10_T       0.490         0.166         0.621         0.273         0.283
+ CPA_12_T       0.524         0.132         0.595         0.203         0.346
+
+
+           CORRELATION MATRIX (WITH VARIANCES ON THE DIAGONAL)
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_9_T1       0.580
+ CPA_10_T       0.486         0.519
+ CPA_12_T       0.475         0.318         0.533
+
+
+     ESTIMATED SAMPLE STATISTICS FOR 6YO
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_2_T1      CPA_2_T1      CPA_2_T1      CPA_3_RS      CPA_3_RS
+              ________      ________      ________      ________      ________
+               -1.475        -0.168         1.080        -1.091         0.023
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_3_RS      CPA_4_T1      CPA_4_T1      CPA_4_T1      CPA_5_RS
+              ________      ________      ________      ________      ________
+                1.012        -1.884        -0.637         0.497        -1.626
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_5_RS      CPA_5_RS      CPA_6_T1      CPA_6_T1      CPA_6_T1
+              ________      ________      ________      ________      ________
+               -0.833         0.094        -0.897         0.197         1.086
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_7_T1      CPA_7_T1      CPA_7_T1      CPA_9_T1      CPA_9_T1
+              ________      ________      ________      ________      ________
+               -0.796         0.278         1.126        -1.620        -0.581
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_9_T1      CPA_10_T      CPA_10_T      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________      ________
+                0.496        -1.617        -0.347         1.146        -0.654
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_12_T      CPA_12_T
+              ________      ________
+                0.336         1.458
+
+
+           CORRELATION MATRIX (WITH VARIANCES ON THE DIAGONAL)
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1
+ CPA_3_RS      -0.050
+ CPA_4_T1       0.711        -0.003
+ CPA_5_RS       0.050         0.205         0.118
+ CPA_6_T1       0.387         0.314         0.124         0.114
+ CPA_7_T1       0.053        -0.019         0.119         0.334         0.218
+ CPA_9_T1       0.147         0.112         0.213         0.399         0.154
+ CPA_10_T       0.420         0.122         0.467         0.057         0.198
+ CPA_12_T       0.663         0.080         0.584         0.152         0.373
+
+
+           CORRELATION MATRIX (WITH VARIANCES ON THE DIAGONAL)
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_9_T1       0.641
+ CPA_10_T       0.031         0.121
+ CPA_12_T       0.052         0.151         0.375
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE CHI-SQUARE COMPUTATION FOR DIFFTEST COULD NOT BE COMPLETED
+     BECAUSE OF A SINGULAR MATRIX. VERIFY THAT THE MODELS ARE NESTED USING THE NESTED OPTION.
+     PROBLEM INVOLVING THE FOLLOWING PARAMETER: Parameter 79, Group 6YO: [ CPA_6_T1$3 ]
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES COULD NOT BE
+     COMPUTED.  THE MODEL MAY NOT BE IDENTIFIED.  CHECK YOUR MODEL.
+     PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 79, Group 6YO: [ CPA_6_T1$3 ]
+
+     THE CONDITION NUMBER IS       0.124D-10.
+
+
+
+MODEL RESULTS
+
+                    Estimate
+
+Group 4YO
+
+ HE_T1    BY
+    CPA_3_RS_T         0.361
+    CPA_6_T1         102.334
+
+ SH_T1    BY
+    CPA_5_RS_T         0.369
+    CPA_7_T1           0.831
+    CPA_9_T1          23.058
+
+ CO_T1    BY
+    CPA_2_T1           1.028
+    CPA_4_T1           1.787
+    CPA_10_T1          0.767
+    CPA_12_T1          1.448
+
+ SH_T1    WITH
+    HE_T1              0.204
+
+ CO_T1    WITH
+    HE_T1              0.061
+    SH_T1              0.277
+
+ Means
+    HE_T1              0.000
+    SH_T1              0.000
+    CO_T1              0.000
+
+ Thresholds
+    CPA_2_T1$1        -1.413
+    CPA_2_T1$2         0.182
+    CPA_2_T1$3         1.416
+    CPA_3_RS$1        -0.961
+    CPA_3_RS$2         0.068
+    CPA_3_RS$3         1.228
+    CPA_4_T1$1        -3.253
+    CPA_4_T1$2        -0.801
+    CPA_4_T1$3         1.550
+    CPA_5_RS$1        -1.256
+    CPA_5_RS$2        -0.433
+    CPA_5_RS$3         0.473
+    CPA_6_T1$1       -94.512
+    CPA_6_T1$2        26.411
+    CPA_6_T1$3       107.329
+    CPA_7_T1$1        -0.951
+    CPA_7_T1$2         0.449
+    CPA_7_T1$3         1.720
+    CPA_9_T1$1       -42.721
+    CPA_9_T1$2       -13.815
+    CPA_9_T1$3        12.756
+    CPA_10_T$1        -1.513
+    CPA_10_T$2         0.215
+    CPA_10_T$3         1.603
+    CPA_12_T$1        -0.643
+    CPA_12_T$2         0.888
+    CPA_12_T$3         2.851
+
+ Variances
+    HE_T1              1.000
+    SH_T1              1.000
+    CO_T1              1.000
+
+ Residual Variances
+    CPA_2_T1           1.000
+    CPA_3_RS_T         1.000
+    CPA_4_T1           1.000
+    CPA_5_RS_T         1.000
+    CPA_6_T1           1.000
+    CPA_7_T1           1.000
+    CPA_9_T1           1.000
+    CPA_10_T1          1.000
+    CPA_12_T1          1.000
+
+Group 5YO
+
+ HE_T1    BY
+    CPA_3_RS_T         0.361
+    CPA_6_T1         102.334
+
+ SH_T1    BY
+    CPA_5_RS_T         0.369
+    CPA_7_T1           0.831
+    CPA_9_T1          23.058
+
+ CO_T1    BY
+    CPA_2_T1           1.028
+    CPA_4_T1           1.787
+    CPA_10_T1          0.767
+    CPA_12_T1          1.448
+
+ SH_T1    WITH
+    HE_T1              0.564
+
+ CO_T1    WITH
+    HE_T1              0.605
+    SH_T1              1.019
+
+ Means
+    HE_T1              0.161
+    SH_T1              0.031
+    CO_T1              0.235
+
+ Thresholds
+    CPA_2_T1$1        -1.413
+    CPA_2_T1$2         0.182
+    CPA_2_T1$3         1.985
+    CPA_3_RS$1        -0.961
+    CPA_3_RS$2         0.015
+    CPA_3_RS$3         1.193
+    CPA_4_T1$1        -3.253
+    CPA_4_T1$2        -0.854
+    CPA_4_T1$3         1.810
+    CPA_5_RS$1        -1.256
+    CPA_5_RS$2        -0.524
+    CPA_5_RS$3         0.219
+    CPA_6_T1$1       -94.512
+    CPA_6_T1$2        26.411
+    CPA_6_T1$3       152.228
+    CPA_7_T1$1        -0.951
+    CPA_7_T1$2         0.449
+    CPA_7_T1$3         1.362
+    CPA_9_T1$1       -42.721
+    CPA_9_T1$2       -20.419
+    CPA_9_T1$3        11.506
+    CPA_10_T$1        -1.513
+    CPA_10_T$2         0.063
+    CPA_10_T$3         1.571
+    CPA_12_T$1        -0.643
+    CPA_12_T$2         1.524
+    CPA_12_T$3         4.156
+
+ Variances
+    HE_T1              1.413
+    SH_T1              1.268
+    CO_T1              1.522
+
+ Residual Variances
+    CPA_2_T1           0.965
+    CPA_3_RS_T         0.680
+    CPA_4_T1           3.355
+    CPA_5_RS_T         0.845
+    CPA_6_T1           0.100
+    CPA_7_T1           0.577
+    CPA_9_T1         460.541
+    CPA_10_T1          0.739
+    CPA_12_T1          3.072
+
+Group 6YO
+
+ HE_T1    BY
+    CPA_3_RS_T         0.361
+    CPA_6_T1         102.334
+
+ SH_T1    BY
+    CPA_5_RS_T         0.369
+    CPA_7_T1           0.831
+    CPA_9_T1          23.058
+
+ CO_T1    BY
+    CPA_2_T1           1.028
+    CPA_4_T1           1.787
+    CPA_10_T1          0.767
+    CPA_12_T1          1.448
+
+ SH_T1    WITH
+    HE_T1              0.253
+
+ CO_T1    WITH
+    HE_T1              0.307
+    SH_T1              0.203
+
+ Means
+    HE_T1              0.031
+    SH_T1              0.104
+    CO_T1              0.345
+
+ Thresholds
+    CPA_2_T1$1        -1.413
+    CPA_2_T1$2         0.182
+    CPA_2_T1$3         1.548
+    CPA_3_RS$1        -0.961
+    CPA_3_RS$2         0.033
+    CPA_3_RS$3         1.004
+    CPA_4_T1$1        -3.253
+    CPA_4_T1$2        -0.682
+    CPA_4_T1$3         1.630
+    CPA_5_RS$1        -1.256
+    CPA_5_RS$2        -0.640
+    CPA_5_RS$3         0.115
+    CPA_6_T1$1       -94.512
+    CPA_6_T1$2        26.411
+    CPA_6_T1$3       112.421
+    CPA_7_T1$1        -0.951
+    CPA_7_T1$2         0.449
+    CPA_7_T1$3         1.510
+    CPA_9_T1$1       -42.721
+    CPA_9_T1$2       -13.768
+    CPA_9_T1$3        16.237
+    CPA_10_T$1        -1.513
+    CPA_10_T$2        -0.164
+    CPA_10_T$3         1.678
+    CPA_12_T$1        -0.643
+    CPA_12_T$2         1.091
+    CPA_12_T$3         3.066
+
+ Variances
+    HE_T1              0.967
+    SH_T1              1.144
+    CO_T1              0.842
+
+ Residual Variances
+    CPA_2_T1           0.333
+    CPA_3_RS_T         0.836
+    CPA_4_T1           1.460
+    CPA_5_RS_T         0.506
+    CPA_6_T1           0.100
+    CPA_7_T1           0.809
+    CPA_9_T1         167.645
+    CPA_10_T1          1.026
+    CPA_12_T1          1.331
+
+
+STANDARDIZED MODEL RESULTS
+
+                      StdYX       StdY        Std
+                    Estimate   Estimate   Estimate
+
+Group 4YO
+
+ HE_T1    BY
+    CPA_3_RS_T         0.340      0.340      0.361
+    CPA_6_T1           1.000      1.000    102.334
+
+ SH_T1    BY
+    CPA_5_RS_T         0.346      0.346      0.369
+    CPA_7_T1           0.639      0.639      0.831
+    CPA_9_T1           0.999      0.999     23.058
+
+ CO_T1    BY
+    CPA_2_T1           0.717      0.717      1.028
+    CPA_4_T1           0.873      0.873      1.787
+    CPA_10_T1          0.608      0.608      0.767
+    CPA_12_T1          0.823      0.823      1.448
+
+ SH_T1    WITH
+    HE_T1              0.204      0.204      0.204
+
+ CO_T1    WITH
+    HE_T1              0.061      0.061      0.061
+    SH_T1              0.277      0.277      0.277
+
+ Means
+    HE_T1              0.000      0.000      0.000
+    SH_T1              0.000      0.000      0.000
+    CO_T1              0.000      0.000      0.000
+
+ Thresholds
+    CPA_2_T1$1        -0.985     -0.985     -1.413
+    CPA_2_T1$2         0.127      0.127      0.182
+    CPA_2_T1$3         0.987      0.987      1.416
+    CPA_3_RS$1        -0.904     -0.904     -0.961
+    CPA_3_RS$2         0.064      0.064      0.068
+    CPA_3_RS$3         1.155      1.155      1.228
+    CPA_4_T1$1        -1.589     -1.589     -3.253
+    CPA_4_T1$2        -0.391     -0.391     -0.801
+    CPA_4_T1$3         0.757      0.757      1.550
+    CPA_5_RS$1        -1.178     -1.178     -1.256
+    CPA_5_RS$2        -0.406     -0.406     -0.433
+    CPA_5_RS$3         0.443      0.443      0.473
+    CPA_6_T1$1        -0.924     -0.924    -94.512
+    CPA_6_T1$2         0.258      0.258     26.411
+    CPA_6_T1$3         1.049      1.049    107.329
+    CPA_7_T1$1        -0.731     -0.731     -0.951
+    CPA_7_T1$2         0.346      0.346      0.449
+    CPA_7_T1$3         1.323      1.323      1.720
+    CPA_9_T1$1        -1.851     -1.851    -42.721
+    CPA_9_T1$2        -0.599     -0.599    -13.815
+    CPA_9_T1$3         0.553      0.553     12.756
+    CPA_10_T$1        -1.200     -1.200     -1.513
+    CPA_10_T$2         0.171      0.171      0.215
+    CPA_10_T$3         1.272      1.272      1.603
+    CPA_12_T$1        -0.365     -0.365     -0.643
+    CPA_12_T$2         0.504      0.504      0.888
+    CPA_12_T$3         1.620      1.620      2.851
+
+ Variances
+    HE_T1              1.000      1.000      1.000
+    SH_T1              1.000      1.000      1.000
+    CO_T1              1.000      1.000      1.000
+
+ Residual Variances
+    CPA_2_T1           0.486      0.486      1.000
+    CPA_3_RS_T         0.885      0.885      1.000
+    CPA_4_T1           0.238      0.238      1.000
+    CPA_5_RS_T         0.880      0.880      1.000
+    CPA_6_T1           0.000      0.000      1.000
+    CPA_7_T1           0.592      0.592      1.000
+    CPA_9_T1           0.002      0.002      1.000
+    CPA_10_T1          0.630      0.630      1.000
+    CPA_12_T1          0.323      0.323      1.000
+
+Group 5YO
+
+ HE_T1    BY
+    CPA_3_RS_T         0.462      0.462      0.429
+    CPA_6_T1           1.000      1.000    121.654
+
+ SH_T1    BY
+    CPA_5_RS_T         0.412      0.412      0.416
+    CPA_7_T1           0.776      0.776      0.935
+    CPA_9_T1           0.771      0.771     25.962
+
+ CO_T1    BY
+    CPA_2_T1           0.791      0.791      1.268
+    CPA_4_T1           0.769      0.769      2.205
+    CPA_10_T1          0.740      0.740      0.946
+    CPA_12_T1          0.714      0.714      1.787
+
+ SH_T1    WITH
+    HE_T1              0.421      0.421      0.421
+
+ CO_T1    WITH
+    HE_T1              0.413      0.413      0.413
+    SH_T1              0.734      0.734      0.734
+
+ Means
+    HE_T1              0.135      0.135      0.135
+    SH_T1              0.028      0.028      0.028
+    CO_T1              0.190      0.190      0.190
+
+ Thresholds
+    CPA_2_T1$1        -0.881     -0.881     -1.413
+    CPA_2_T1$2         0.114      0.114      0.182
+    CPA_2_T1$3         1.238      1.238      1.985
+    CPA_3_RS$1        -1.034     -1.034     -0.961
+    CPA_3_RS$2         0.016      0.016      0.015
+    CPA_3_RS$3         1.283      1.283      1.193
+    CPA_4_T1$1        -1.135     -1.135     -3.253
+    CPA_4_T1$2        -0.298     -0.298     -0.854
+    CPA_4_T1$3         0.631      0.631      1.810
+    CPA_5_RS$1        -1.245     -1.245     -1.256
+    CPA_5_RS$2        -0.519     -0.519     -0.524
+    CPA_5_RS$3         0.217      0.217      0.219
+    CPA_6_T1$1        -0.777     -0.777    -94.512
+    CPA_6_T1$2         0.217      0.217     26.411
+    CPA_6_T1$3         1.251      1.251    152.228
+    CPA_7_T1$1        -0.789     -0.789     -0.951
+    CPA_7_T1$2         0.373      0.373      0.449
+    CPA_7_T1$3         1.130      1.130      1.362
+    CPA_9_T1$1        -1.268     -1.268    -42.721
+    CPA_9_T1$2        -0.606     -0.606    -20.419
+    CPA_9_T1$3         0.342      0.342     11.506
+    CPA_10_T$1        -1.183     -1.183     -1.513
+    CPA_10_T$2         0.049      0.049      0.063
+    CPA_10_T$3         1.229      1.229      1.571
+    CPA_12_T$1        -0.257     -0.257     -0.643
+    CPA_12_T$2         0.609      0.609      1.524
+    CPA_12_T$3         1.661      1.661      4.156
+
+ Variances
+    HE_T1              1.000      1.000      1.000
+    SH_T1              1.000      1.000      1.000
+    CO_T1              1.000      1.000      1.000
+
+ Residual Variances
+    CPA_2_T1           0.375      0.375      0.965
+    CPA_3_RS_T         0.787      0.787      0.680
+    CPA_4_T1           0.408      0.408      3.355
+    CPA_5_RS_T         0.830      0.830      0.845
+    CPA_6_T1           0.000      0.000      0.100
+    CPA_7_T1           0.397      0.397      0.577
+    CPA_9_T1           0.406      0.406    460.541
+    CPA_10_T1          0.453      0.453      0.739
+    CPA_12_T1          0.490      0.490      3.072
+
+Group 6YO
+
+ HE_T1    BY
+    CPA_3_RS_T         0.362      0.362      0.355
+    CPA_6_T1           1.000      1.000    100.647
+
+ SH_T1    BY
+    CPA_5_RS_T         0.486      0.486      0.395
+    CPA_7_T1           0.703      0.703      0.889
+    CPA_9_T1           0.885      0.885     24.666
+
+ CO_T1    BY
+    CPA_2_T1           0.853      0.853      0.943
+    CPA_4_T1           0.805      0.805      1.640
+    CPA_10_T1          0.570      0.570      0.703
+    CPA_12_T1          0.755      0.755      1.329
+
+ SH_T1    WITH
+    HE_T1              0.241      0.241      0.241
+
+ CO_T1    WITH
+    HE_T1              0.340      0.340      0.340
+    SH_T1              0.207      0.207      0.207
+
+ Means
+    HE_T1              0.032      0.032      0.032
+    SH_T1              0.097      0.097      0.097
+    CO_T1              0.376      0.376      0.376
+
+ Thresholds
+    CPA_2_T1$1        -1.277     -1.277     -1.413
+    CPA_2_T1$2         0.165      0.165      0.182
+    CPA_2_T1$3         1.400      1.400      1.548
+    CPA_3_RS$1        -0.980     -0.980     -0.961
+    CPA_3_RS$2         0.034      0.034      0.033
+    CPA_3_RS$3         1.024      1.024      1.004
+    CPA_4_T1$1        -1.597     -1.597     -3.253
+    CPA_4_T1$2        -0.335     -0.335     -0.682
+    CPA_4_T1$3         0.800      0.800      1.630
+    CPA_5_RS$1        -1.544     -1.544     -1.256
+    CPA_5_RS$2        -0.786     -0.786     -0.640
+    CPA_5_RS$3         0.142      0.142      0.115
+    CPA_6_T1$1        -0.939     -0.939    -94.512
+    CPA_6_T1$2         0.262      0.262     26.411
+    CPA_6_T1$3         1.117      1.117    112.421
+    CPA_7_T1$1        -0.752     -0.752     -0.951
+    CPA_7_T1$2         0.355      0.355      0.449
+    CPA_7_T1$3         1.194      1.194      1.510
+    CPA_9_T1$1        -1.534     -1.534    -42.721
+    CPA_9_T1$2        -0.494     -0.494    -13.768
+    CPA_9_T1$3         0.583      0.583     16.237
+    CPA_10_T$1        -1.227     -1.227     -1.513
+    CPA_10_T$2        -0.133     -0.133     -0.164
+    CPA_10_T$3         1.361      1.361      1.678
+    CPA_12_T$1        -0.365     -0.365     -0.643
+    CPA_12_T$2         0.620      0.620      1.091
+    CPA_12_T$3         1.742      1.742      3.066
+
+ Variances
+    HE_T1              1.000      1.000      1.000
+    SH_T1              1.000      1.000      1.000
+    CO_T1              1.000      1.000      1.000
+
+ Residual Variances
+    CPA_2_T1           0.273      0.273      0.333
+    CPA_3_RS_T         0.869      0.869      0.836
+    CPA_4_T1           0.352      0.352      1.460
+    CPA_5_RS_T         0.764      0.764      0.506
+    CPA_6_T1           0.000      0.000      0.100
+    CPA_7_T1           0.506      0.506      0.809
+    CPA_9_T1           0.216      0.216    167.645
+    CPA_10_T1          0.675      0.675      1.026
+    CPA_12_T1          0.430      0.430      1.331
+
+
+MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
+
+     he_t1 BY cpa_3_rs_t1;
+     he_t1 BY cpa_6_t1;
+     sh_t1 BY cpa_5_rs_t1;
+     sh_t1 BY cpa_7_t1;
+     sh_t1 BY cpa_9_t1;
+     co_t1 BY cpa_2_t1;
+     co_t1 BY cpa_4_t1;
+     co_t1 BY cpa_10_t1;
+     co_t1 BY cpa_12_t1;
+
+  MODEL 4YO:
+
+     he_t1 BY cpa_3_rs_t1*0.36114 (l1);
+     he_t1 BY cpa_6_t1*102.33431 (l2);
+     sh_t1 BY cpa_5_rs_t1*0.36926 (l3);
+     sh_t1 BY cpa_7_t1*0.83062 (l4);
+     sh_t1 BY cpa_9_t1*23.05810 (l5);
+     co_t1 BY cpa_2_t1*1.02776 (l6);
+     co_t1 BY cpa_4_t1*1.78725 (l7);
+     co_t1 BY cpa_10_t1*0.76671 (l8);
+     co_t1 BY cpa_12_t1*1.44834 (l9);
+
+     sh_t1 WITH he_t1*0.20443;
+     co_t1 WITH he_t1*0.06140;
+     co_t1 WITH sh_t1*0.27689;
+
+     [ he_t1@0 ];
+     [ sh_t1@0 ];
+     [ co_t1@0 ];
+
+     [ cpa_2_t1$1*-1.41251 ] (t2);
+     [ cpa_2_t1$2*0.18247 ] (t2_2);
+     [ cpa_2_t1$3*1.41563 ];
+     [ cpa_3_rs$1*-0.96145 ] (t3);
+     [ cpa_3_rs$2*0.06811 ];
+     [ cpa_3_rs$3*1.22780 ];
+     [ cpa_4_t1$1*-3.25327 ] (t4);
+     [ cpa_4_t1$2*-0.80118 ];
+     [ cpa_4_t1$3*1.54955 ];
+     [ cpa_5_rs$1*-1.25571 ] (t5);
+     [ cpa_5_rs$2*-0.43253 ];
+     [ cpa_5_rs$3*0.47260 ];
+     [ cpa_6_t1$1*-94.51206 ] (t6);
+     [ cpa_6_t1$2*26.41075 ] (t6_2);
+     [ cpa_6_t1$3*107.32901 ];
+     [ cpa_7_t1$1*-0.95053 ] (t7);
+     [ cpa_7_t1$2*0.44939 ] (t7_2);
+     [ cpa_7_t1$3*1.72031 ];
+     [ cpa_9_t1$1*-42.72062 ] (t9);
+     [ cpa_9_t1$2*-13.81471 ];
+     [ cpa_9_t1$3*12.75609 ];
+     [ cpa_10_t$1*-1.51269 ] (t10);
+     [ cpa_10_t$2*0.21518 ];
+     [ cpa_10_t$3*1.60274 ];
+     [ cpa_12_t$1*-0.64281 ] (t12);
+     [ cpa_12_t$2*0.88762 ];
+     [ cpa_12_t$3*2.85074 ];
+
+     cpa_2_t1@1;
+     cpa_3_rs_t1@1;
+     cpa_4_t1@1;
+     cpa_5_rs_t1@1;
+     cpa_6_t1@1;
+     cpa_7_t1@1;
+     cpa_9_t1@1;
+     cpa_10_t1@1;
+     cpa_12_t1@1;
+     he_t1@1;
+     sh_t1@1;
+     co_t1@1;
+
+  MODEL 5YO:
+
+     he_t1 BY cpa_3_rs_t1*0.36114 (l1);
+     he_t1 BY cpa_6_t1*102.33431 (l2);
+     sh_t1 BY cpa_5_rs_t1*0.36926 (l3);
+     sh_t1 BY cpa_7_t1*0.83062 (l4);
+     sh_t1 BY cpa_9_t1*23.05810 (l5);
+     co_t1 BY cpa_2_t1*1.02776 (l6);
+     co_t1 BY cpa_4_t1*1.78725 (l7);
+     co_t1 BY cpa_10_t1*0.76671 (l8);
+     co_t1 BY cpa_12_t1*1.44834 (l9);
+
+     sh_t1 WITH he_t1*0.56396;
+     co_t1 WITH he_t1*0.60499;
+     co_t1 WITH sh_t1*1.01887;
+
+     [ he_t1*0.16089 ];
+     [ sh_t1*0.03146 ];
+     [ co_t1*0.23472 ];
+
+     [ cpa_2_t1$1*-1.41251 ] (t2);
+     [ cpa_2_t1$2*0.18247 ] (t2_2);
+     [ cpa_2_t1$3*1.98495 ];
+     [ cpa_3_rs$1*-0.96145 ] (t3);
+     [ cpa_3_rs$2*0.01493 ];
+     [ cpa_3_rs$3*1.19292 ];
+     [ cpa_4_t1$1*-3.25327 ] (t4);
+     [ cpa_4_t1$2*-0.85380 ];
+     [ cpa_4_t1$3*1.80971 ];
+     [ cpa_5_rs$1*-1.25571 ] (t5);
+     [ cpa_5_rs$2*-0.52365 ];
+     [ cpa_5_rs$3*0.21933 ];
+     [ cpa_6_t1$1*-94.51206 ] (t6);
+     [ cpa_6_t1$2*26.41075 ] (t6_2);
+     [ cpa_6_t1$3*152.22797 ];
+     [ cpa_7_t1$1*-0.95053 ] (t7);
+     [ cpa_7_t1$2*0.44939 ] (t7_2);
+     [ cpa_7_t1$3*1.36158 ];
+     [ cpa_9_t1$1*-42.72062 ] (t9);
+     [ cpa_9_t1$2*-20.41890 ];
+     [ cpa_9_t1$3*11.50567 ];
+     [ cpa_10_t$1*-1.51269 ] (t10);
+     [ cpa_10_t$2*0.06259 ];
+     [ cpa_10_t$3*1.57122 ];
+     [ cpa_12_t$1*-0.64281 ] (t12);
+     [ cpa_12_t$2*1.52354 ];
+     [ cpa_12_t$3*4.15643 ];
+
+     cpa_2_t1*0.96466;
+     cpa_3_rs_t1*0.68001;
+     cpa_4_t1*3.35497;
+     cpa_5_rs_t1*0.84507;
+     cpa_6_t1@0.10000;
+     cpa_7_t1*0.57656;
+     cpa_9_t1*460.54123;
+     cpa_10_t1*0.73946;
+     cpa_12_t1*3.07209;
+     he_t1*1.41323;
+     sh_t1*1.26773;
+     co_t1*1.52154;
+
+  MODEL 6YO:
+
+     he_t1 BY cpa_3_rs_t1*0.36114 (l1);
+     he_t1 BY cpa_6_t1*102.33431 (l2);
+     sh_t1 BY cpa_5_rs_t1*0.36926 (l3);
+     sh_t1 BY cpa_7_t1*0.83062 (l4);
+     sh_t1 BY cpa_9_t1*23.05810 (l5);
+     co_t1 BY cpa_2_t1*1.02776 (l6);
+     co_t1 BY cpa_4_t1*1.78725 (l7);
+     co_t1 BY cpa_10_t1*0.76671 (l8);
+     co_t1 BY cpa_12_t1*1.44834 (l9);
+
+     sh_t1 WITH he_t1*0.25325;
+     co_t1 WITH he_t1*0.30721;
+     co_t1 WITH sh_t1*0.20337;
+
+     [ he_t1*0.03111 ];
+     [ sh_t1*0.10398 ];
+     [ co_t1*0.34501 ];
+
+     [ cpa_2_t1$1*-1.41251 ] (t2);
+     [ cpa_2_t1$2*0.18247 ] (t2_2);
+     [ cpa_2_t1$3*1.54848 ];
+     [ cpa_3_rs$1*-0.96145 ] (t3);
+     [ cpa_3_rs$2*0.03332 ];
+     [ cpa_3_rs$3*1.00399 ];
+     [ cpa_4_t1$1*-3.25327 ] (t4);
+     [ cpa_4_t1$2*-0.68198 ];
+     [ cpa_4_t1$3*1.62959 ];
+     [ cpa_5_rs$1*-1.25571 ] (t5);
+     [ cpa_5_rs$2*-0.63952 ];
+     [ cpa_5_rs$3*0.11512 ];
+     [ cpa_6_t1$1*-94.51206 ] (t6);
+     [ cpa_6_t1$2*26.41075 ] (t6_2);
+     [ cpa_6_t1$3*112.42124 ];
+     [ cpa_7_t1$1*-0.95053 ] (t7);
+     [ cpa_7_t1$2*0.44939 ] (t7_2);
+     [ cpa_7_t1$3*1.50962 ];
+     [ cpa_9_t1$1*-42.72062 ] (t9);
+     [ cpa_9_t1$2*-13.76752 ];
+     [ cpa_9_t1$3*16.23665 ];
+     [ cpa_10_t$1*-1.51269 ] (t10);
+     [ cpa_10_t$2*-0.16356 ];
+     [ cpa_10_t$3*1.67814 ];
+     [ cpa_12_t$1*-0.64281 ] (t12);
+     [ cpa_12_t$2*1.09107 ];
+     [ cpa_12_t$3*3.06604 ];
+
+     cpa_2_t1*0.33337;
+     cpa_3_rs_t1*0.83551;
+     cpa_4_t1*1.46044;
+     cpa_5_rs_t1*0.50565;
+     cpa_6_t1@0.10000;
+     cpa_7_t1*0.80943;
+     cpa_9_t1*167.64487;
+     cpa_10_t1*1.02578;
+     cpa_12_t1*1.33096;
+     he_t1*0.96730;
+     sh_t1*1.14435;
+     co_t1*0.84188;
+
+
+
+RESIDUAL OUTPUT
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED) FOR 4YO
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_2_T1      CPA_2_T1      CPA_2_T1      CPA_3_RS      CPA_3_RS
+              ________      ________      ________      ________      ________
+               -0.985         0.127         0.987        -0.904         0.064
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_3_RS      CPA_4_T1      CPA_4_T1      CPA_4_T1      CPA_5_RS
+              ________      ________      ________      ________      ________
+                1.155        -1.589        -0.391         0.757        -1.178
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_5_RS      CPA_5_RS      CPA_6_T1      CPA_6_T1      CPA_6_T1
+              ________      ________      ________      ________      ________
+               -0.406         0.443        -0.924         0.258         1.049
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_7_T1      CPA_7_T1      CPA_7_T1      CPA_9_T1      CPA_9_T1
+              ________      ________      ________      ________      ________
+               -0.731         0.346         1.323        -1.851        -0.599
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_9_T1      CPA_10_T      CPA_10_T      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________      ________
+                0.553        -1.200         0.171         1.272        -0.365
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_12_T      CPA_12_T
+              ________      ________
+                0.504         1.620
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_2_T1      CPA_2_T1      CPA_2_T1      CPA_3_RS      CPA_3_RS
+              ________      ________      ________      ________      ________
+                0.027         0.021         0.000         0.026         0.000
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_3_RS      CPA_4_T1      CPA_4_T1      CPA_4_T1      CPA_5_RS
+              ________      ________      ________      ________      ________
+                0.000         0.016         0.000         0.000        -0.015
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_5_RS      CPA_5_RS      CPA_6_T1      CPA_6_T1      CPA_6_T1
+              ________      ________      ________      ________      ________
+                0.000         0.000        -0.016         0.024         0.006
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_7_T1      CPA_7_T1      CPA_7_T1      CPA_9_T1      CPA_9_T1
+              ________      ________      ________      ________      ________
+               -0.012         0.001         0.000         0.032         0.003
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_9_T1      CPA_10_T      CPA_10_T      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________      ________
+                0.002        -0.025         0.000         0.000        -0.041
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_12_T      CPA_12_T
+              ________      ________
+                0.000         0.000
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1
+ CPA_3_RS       0.015
+ CPA_4_T1       0.625         0.018
+ CPA_5_RS       0.069         0.024         0.084
+ CPA_6_T1       0.044         0.340         0.054         0.071
+ CPA_7_T1       0.127         0.044         0.154         0.221         0.131
+ CPA_9_T1       0.198         0.069         0.241         0.346         0.204
+ CPA_10_T       0.436         0.013         0.531         0.058         0.037
+ CPA_12_T       0.590         0.017         0.718         0.079         0.051
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_9_T1       0.638
+ CPA_10_T       0.108         0.168
+ CPA_12_T       0.146         0.228         0.501
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1
+ CPA_3_RS       0.027
+ CPA_4_T1       0.031         0.120
+ CPA_5_RS      -0.091         0.038        -0.148
+ CPA_6_T1       0.030         0.011        -0.033        -0.116
+ CPA_7_T1      -0.048        -0.026        -0.152         0.018         0.022
+ CPA_9_T1       0.050         0.028        -0.014         0.045         0.016
+ CPA_10_T      -0.066         0.087        -0.031         0.019        -0.082
+ CPA_12_T      -0.019         0.101         0.006        -0.175        -0.057
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_9_T1       0.013
+ CPA_10_T       0.068         0.160
+ CPA_12_T      -0.041         0.129        -0.008
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED) FOR 5YO
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_2_T1      CPA_2_T1      CPA_2_T1      CPA_3_RS      CPA_3_RS
+              ________      ________      ________      ________      ________
+               -1.031        -0.037         1.087        -1.097        -0.046
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_3_RS      CPA_4_T1      CPA_4_T1      CPA_4_T1      CPA_5_RS
+              ________      ________      ________      ________      ________
+                1.221        -1.281        -0.444         0.485        -1.256
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_5_RS      CPA_5_RS      CPA_6_T1      CPA_6_T1      CPA_6_T1
+              ________      ________      ________      ________      ________
+               -0.531         0.206        -0.912         0.082         1.116
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_7_T1      CPA_7_T1      CPA_7_T1      CPA_9_T1      CPA_9_T1
+              ________      ________      ________      ________      ________
+               -0.811         0.351         1.109        -1.290        -0.628
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_9_T1      CPA_10_T      CPA_10_T      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________      ________
+                0.320        -1.324        -0.092         1.088        -0.393
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_12_T      CPA_12_T
+              ________      ________
+                0.473         1.525
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_2_T1      CPA_2_T1      CPA_2_T1      CPA_3_RS      CPA_3_RS
+              ________      ________      ________      ________      ________
+               -0.208        -0.002         0.000         0.084         0.000
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_3_RS      CPA_4_T1      CPA_4_T1      CPA_4_T1      CPA_5_RS
+              ________      ________      ________      ________      ________
+                0.000        -0.030         0.000         0.000         0.048
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_5_RS      CPA_5_RS      CPA_6_T1      CPA_6_T1      CPA_6_T1
+              ________      ________      ________      ________      ________
+                0.000         0.000        -0.085         0.027         0.008
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_7_T1      CPA_7_T1      CPA_7_T1      CPA_9_T1      CPA_9_T1
+              ________      ________      ________      ________      ________
+               -0.016         0.009         0.000        -0.030         0.003
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_9_T1      CPA_10_T      CPA_10_T      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________      ________
+                0.001         0.159         0.000         0.000         0.068
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_12_T      CPA_12_T
+              ________      ________
+                0.000         0.000
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1
+ CPA_3_RS       0.151
+ CPA_4_T1       0.608         0.147
+ CPA_5_RS       0.239         0.080         0.233
+ CPA_6_T1       0.326         0.462         0.317         0.174
+ CPA_7_T1       0.450         0.151         0.438         0.320         0.327
+ CPA_9_T1       0.447         0.150         0.435         0.318         0.325
+ CPA_10_T       0.585         0.141         0.569         0.224         0.305
+ CPA_12_T       0.564         0.136         0.549         0.216         0.295
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_9_T1       0.598
+ CPA_10_T       0.421         0.418
+ CPA_12_T       0.407         0.404         0.528
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1
+ CPA_3_RS       0.029
+ CPA_4_T1       0.032        -0.063
+ CPA_5_RS      -0.070         0.176        -0.128
+ CPA_6_T1       0.031         0.026        -0.044         0.038
+ CPA_7_T1       0.026        -0.052        -0.105         0.012        -0.047
+ CPA_9_T1      -0.019         0.076        -0.138         0.048        -0.047
+ CPA_10_T      -0.095         0.025         0.052         0.049        -0.022
+ CPA_12_T      -0.040        -0.004         0.046        -0.013         0.052
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_9_T1      -0.019
+ CPA_10_T       0.064         0.100
+ CPA_12_T       0.068        -0.086         0.005
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED) FOR 6YO
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_2_T1      CPA_2_T1      CPA_2_T1      CPA_3_RS      CPA_3_RS
+              ________      ________      ________      ________      ________
+               -1.598        -0.156         1.080        -0.992         0.023
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_3_RS      CPA_4_T1      CPA_4_T1      CPA_4_T1      CPA_5_RS
+              ________      ________      ________      ________      ________
+                1.012        -1.900        -0.637         0.497        -1.591
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_5_RS      CPA_5_RS      CPA_6_T1      CPA_6_T1      CPA_6_T1
+              ________      ________      ________      ________      ________
+               -0.833         0.094        -0.971         0.231         1.085
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_7_T1      CPA_7_T1      CPA_7_T1      CPA_9_T1      CPA_9_T1
+              ________      ________      ________      ________      ________
+               -0.820         0.287         1.126        -1.620        -0.580
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_9_T1      CPA_10_T      CPA_10_T      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________      ________
+                0.497        -1.441        -0.347         1.146        -0.649
+
+
+           Model Estimated Means/Intercepts/Thresholds
+              CPA_12_T      CPA_12_T
+              ________      ________
+                0.336         1.458
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_2_T1      CPA_2_T1      CPA_2_T1      CPA_3_RS      CPA_3_RS
+              ________      ________      ________      ________      ________
+                0.123        -0.013         0.000        -0.099         0.000
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_3_RS      CPA_4_T1      CPA_4_T1      CPA_4_T1      CPA_5_RS
+              ________      ________      ________      ________      ________
+                0.000         0.015         0.000         0.000        -0.035
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_5_RS      CPA_5_RS      CPA_6_T1      CPA_6_T1      CPA_6_T1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.074        -0.034         0.001
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_7_T1      CPA_7_T1      CPA_7_T1      CPA_9_T1      CPA_9_T1
+              ________      ________      ________      ________      ________
+                0.024        -0.009         0.000         0.000         0.000
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_9_T1      CPA_10_T      CPA_10_T      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________      ________
+               -0.001        -0.175         0.000         0.000        -0.005
+
+
+           Residuals for Means/Intercepts/Thresholds
+              CPA_12_T      CPA_12_T
+              ________      ________
+                0.000         0.000
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1
+ CPA_3_RS       0.105
+ CPA_4_T1       0.687         0.099
+ CPA_5_RS       0.086         0.042         0.081
+ CPA_6_T1       0.290         0.362         0.274         0.117
+ CPA_7_T1       0.124         0.061         0.117         0.341         0.169
+ CPA_9_T1       0.156         0.077         0.148         0.430         0.213
+ CPA_10_T       0.487         0.070         0.459         0.057         0.194
+ CPA_12_T       0.644         0.093         0.608         0.076         0.257
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_9_T1       0.622
+ CPA_10_T       0.083         0.105
+ CPA_12_T       0.110         0.139         0.431
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1
+ CPA_3_RS      -0.156
+ CPA_4_T1       0.024        -0.102
+ CPA_5_RS      -0.036         0.162         0.037
+ CPA_6_T1       0.097        -0.049        -0.150        -0.003
+ CPA_7_T1      -0.071        -0.081         0.002        -0.007         0.048
+ CPA_9_T1      -0.009         0.035         0.066        -0.031        -0.059
+ CPA_10_T      -0.067         0.052         0.008         0.000         0.004
+ CPA_12_T       0.019        -0.013        -0.024         0.076         0.115
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_9_T1       0.019
+ CPA_10_T      -0.053         0.017
+ CPA_12_T      -0.058         0.013        -0.056
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR 4YO
+
+
+           TAU
+              CPA_2_T1      CPA_2_T1      CPA_2_T1      CPA_3_RS      CPA_3_RS
+              ________      ________      ________      ________      ________
+                  1             2             3             4             5
+
+
+           TAU
+              CPA_3_RS      CPA_4_T1      CPA_4_T1      CPA_4_T1      CPA_5_RS
+              ________      ________      ________      ________      ________
+                  6             7             8             9            10
+
+
+           TAU
+              CPA_5_RS      CPA_5_RS      CPA_6_T1      CPA_6_T1      CPA_6_T1
+              ________      ________      ________      ________      ________
+                 11            12            13            14            15
+
+
+           TAU
+              CPA_7_T1      CPA_7_T1      CPA_7_T1      CPA_9_T1      CPA_9_T1
+              ________      ________      ________      ________      ________
+                 16            17            18            19            20
+
+
+           TAU
+              CPA_9_T1      CPA_10_T      CPA_10_T      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________      ________
+                 21            22            23            24            25
+
+
+           TAU
+              CPA_12_T      CPA_12_T
+              ________      ________
+                 26            27
+
+
+           NU
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+                  0             0             0             0
+
+
+           LAMBDA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ CPA_2_T1           0             0            28
+ CPA_3_RS          29             0             0
+ CPA_4_T1           0             0            30
+ CPA_5_RS           0            31             0
+ CPA_6_T1          32             0             0
+ CPA_7_T1           0            33             0
+ CPA_9_T1           0            34             0
+ CPA_10_T           0             0            35
+ CPA_12_T           0             0            36
+
+
+           THETA
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1           0
+ CPA_3_RS           0             0
+ CPA_4_T1           0             0             0
+ CPA_5_RS           0             0             0             0
+ CPA_6_T1           0             0             0             0             0
+ CPA_7_T1           0             0             0             0             0
+ CPA_9_T1           0             0             0             0             0
+ CPA_10_T           0             0             0             0             0
+ CPA_12_T           0             0             0             0             0
+
+
+           THETA
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_7_T1           0
+ CPA_9_T1           0             0
+ CPA_10_T           0             0             0
+ CPA_12_T           0             0             0             0
+
+
+           ALPHA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                  0             0             0
+
+
+           BETA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1              0             0             0
+ SH_T1              0             0             0
+ CO_T1              0             0             0
+
+
+           PSI
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1              0
+ SH_T1             37             0
+ CO_T1             38            39             0
+
+
+     PARAMETER SPECIFICATION FOR 5YO
+
+
+           TAU
+              CPA_2_T1      CPA_2_T1      CPA_2_T1      CPA_3_RS      CPA_3_RS
+              ________      ________      ________      ________      ________
+                  1             2            40             4            41
+
+
+           TAU
+              CPA_3_RS      CPA_4_T1      CPA_4_T1      CPA_4_T1      CPA_5_RS
+              ________      ________      ________      ________      ________
+                 42             7            43            44            10
+
+
+           TAU
+              CPA_5_RS      CPA_5_RS      CPA_6_T1      CPA_6_T1      CPA_6_T1
+              ________      ________      ________      ________      ________
+                 45            46            13            14            47
+
+
+           TAU
+              CPA_7_T1      CPA_7_T1      CPA_7_T1      CPA_9_T1      CPA_9_T1
+              ________      ________      ________      ________      ________
+                 16            17            48            19            49
+
+
+           TAU
+              CPA_9_T1      CPA_10_T      CPA_10_T      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________      ________
+                 50            22            51            52            25
+
+
+           TAU
+              CPA_12_T      CPA_12_T
+              ________      ________
+                 53            54
+
+
+           NU
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+                  0             0             0             0
+
+
+           LAMBDA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ CPA_2_T1           0             0            28
+ CPA_3_RS          29             0             0
+ CPA_4_T1           0             0            30
+ CPA_5_RS           0            31             0
+ CPA_6_T1          32             0             0
+ CPA_7_T1           0            33             0
+ CPA_9_T1           0            34             0
+ CPA_10_T           0             0            35
+ CPA_12_T           0             0            36
+
+
+           THETA
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1          55
+ CPA_3_RS           0            56
+ CPA_4_T1           0             0            57
+ CPA_5_RS           0             0             0            58
+ CPA_6_T1           0             0             0             0             0
+ CPA_7_T1           0             0             0             0             0
+ CPA_9_T1           0             0             0             0             0
+ CPA_10_T           0             0             0             0             0
+ CPA_12_T           0             0             0             0             0
+
+
+           THETA
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_7_T1          59
+ CPA_9_T1           0            60
+ CPA_10_T           0             0            61
+ CPA_12_T           0             0             0            62
+
+
+           ALPHA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                 63            64            65
+
+
+           BETA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1              0             0             0
+ SH_T1              0             0             0
+ CO_T1              0             0             0
+
+
+           PSI
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1             66
+ SH_T1             67            68
+ CO_T1             69            70            71
+
+
+     PARAMETER SPECIFICATION FOR 6YO
+
+
+           TAU
+              CPA_2_T1      CPA_2_T1      CPA_2_T1      CPA_3_RS      CPA_3_RS
+              ________      ________      ________      ________      ________
+                  1             2            72             4            73
+
+
+           TAU
+              CPA_3_RS      CPA_4_T1      CPA_4_T1      CPA_4_T1      CPA_5_RS
+              ________      ________      ________      ________      ________
+                 74             7            75            76            10
+
+
+           TAU
+              CPA_5_RS      CPA_5_RS      CPA_6_T1      CPA_6_T1      CPA_6_T1
+              ________      ________      ________      ________      ________
+                 77            78            13            14            79
+
+
+           TAU
+              CPA_7_T1      CPA_7_T1      CPA_7_T1      CPA_9_T1      CPA_9_T1
+              ________      ________      ________      ________      ________
+                 16            17            80            19            81
+
+
+           TAU
+              CPA_9_T1      CPA_10_T      CPA_10_T      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________      ________
+                 82            22            83            84            25
+
+
+           TAU
+              CPA_12_T      CPA_12_T
+              ________      ________
+                 85            86
+
+
+           NU
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+                  0             0             0             0
+
+
+           LAMBDA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ CPA_2_T1           0             0            28
+ CPA_3_RS          29             0             0
+ CPA_4_T1           0             0            30
+ CPA_5_RS           0            31             0
+ CPA_6_T1          32             0             0
+ CPA_7_T1           0            33             0
+ CPA_9_T1           0            34             0
+ CPA_10_T           0             0            35
+ CPA_12_T           0             0            36
+
+
+           THETA
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1          87
+ CPA_3_RS           0            88
+ CPA_4_T1           0             0            89
+ CPA_5_RS           0             0             0            90
+ CPA_6_T1           0             0             0             0             0
+ CPA_7_T1           0             0             0             0             0
+ CPA_9_T1           0             0             0             0             0
+ CPA_10_T           0             0             0             0             0
+ CPA_12_T           0             0             0             0             0
+
+
+           THETA
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_7_T1          91
+ CPA_9_T1           0            92
+ CPA_10_T           0             0            93
+ CPA_12_T           0             0             0            94
+
+
+           ALPHA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                 95            96            97
+
+
+           BETA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1              0             0             0
+ SH_T1              0             0             0
+ CO_T1              0             0             0
+
+
+           PSI
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1             98
+ SH_T1             99           100
+ CO_T1            101           102           103
+
+
+     STARTING VALUES FOR 4YO
+
+
+           TAU
+              CPA_2_T1      CPA_2_T1      CPA_2_T1      CPA_3_RS      CPA_3_RS
+              ________      ________      ________      ________      ________
+               -0.958         0.148         0.987        -0.879         0.064
+
+
+           TAU
+              CPA_3_RS      CPA_4_T1      CPA_4_T1      CPA_4_T1      CPA_5_RS
+              ________      ________      ________      ________      ________
+                1.155        -1.572        -0.391         0.757        -1.193
+
+
+           TAU
+              CPA_5_RS      CPA_5_RS      CPA_6_T1      CPA_6_T1      CPA_6_T1
+              ________      ________      ________      ________      ________
+               -0.406         0.443        -0.940         0.282         1.054
+
+
+           TAU
+              CPA_7_T1      CPA_7_T1      CPA_7_T1      CPA_9_T1      CPA_9_T1
+              ________      ________      ________      ________      ________
+               -0.744         0.347         1.323        -1.819        -0.595
+
+
+           TAU
+              CPA_9_T1      CPA_10_T      CPA_10_T      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________      ________
+                0.554        -1.226         0.171         1.272        -0.407
+
+
+           TAU
+              CPA_12_T      CPA_12_T
+              ________      ________
+                0.504         1.620
+
+
+           NU
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+                0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ CPA_2_T1       0.000         0.000         0.715
+ CPA_3_RS       1.000         0.000         0.000
+ CPA_4_T1       0.000         0.000         0.914
+ CPA_5_RS       0.000         0.379         0.000
+ CPA_6_T1       0.351         0.000         0.000
+ CPA_7_T1       0.000         0.632         0.000
+ CPA_9_T1       0.000         1.031         0.000
+ CPA_10_T       0.000         0.000         0.563
+ CPA_12_T       0.000         0.000         0.796
+
+
+           THETA
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1       1.000
+ CPA_3_RS       0.000         1.000
+ CPA_4_T1       0.000         0.000         1.000
+ CPA_5_RS       0.000         0.000         0.000         1.000
+ CPA_6_T1       0.000         0.000         0.000         0.000         1.000
+ CPA_7_T1       0.000         0.000         0.000         0.000         0.000
+ CPA_9_T1       0.000         0.000         0.000         0.000         0.000
+ CPA_10_T       0.000         0.000         0.000         0.000         0.000
+ CPA_12_T       0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_7_T1       1.000
+ CPA_9_T1       0.000         1.000
+ CPA_10_T       0.000         0.000         1.000
+ CPA_12_T       0.000         0.000         0.000         1.000
+
+
+           ALPHA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           BETA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          0.000         0.000         0.000
+ SH_T1          0.000         0.000         0.000
+ CO_T1          0.000         0.000         0.000
+
+
+           PSI
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          1.000
+ SH_T1          0.000         1.000
+ CO_T1          0.000         0.000         1.000
+
+
+     STARTING VALUES FOR 5YO
+
+
+           TAU
+              CPA_2_T1      CPA_2_T1      CPA_2_T1      CPA_3_RS      CPA_3_RS
+              ________      ________      ________      ________      ________
+               -1.098         0.055         1.087        -0.946        -0.046
+
+
+           TAU
+              CPA_3_RS      CPA_4_T1      CPA_4_T1      CPA_4_T1      CPA_5_RS
+              ________      ________      ________      ________      ________
+                1.221        -1.442        -0.444         0.485        -1.201
+
+
+           TAU
+              CPA_5_RS      CPA_5_RS      CPA_6_T1      CPA_6_T1      CPA_6_T1
+              ________      ________      ________      ________      ________
+               -0.531         0.206        -0.968         0.196         1.124
+
+
+           TAU
+              CPA_7_T1      CPA_7_T1      CPA_7_T1      CPA_9_T1      CPA_9_T1
+              ________      ________      ________      ________      ________
+               -0.785         0.354         1.109        -1.569        -0.624
+
+
+           TAU
+              CPA_9_T1      CPA_10_T      CPA_10_T      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________      ________
+                0.321        -1.195        -0.092         1.088        -0.366
+
+
+           TAU
+              CPA_12_T      CPA_12_T
+              ________      ________
+                0.473         1.525
+
+
+           NU
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+                0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ CPA_2_T1       0.000         0.000         0.730
+ CPA_3_RS       1.000         0.000         0.000
+ CPA_4_T1       0.000         0.000         0.870
+ CPA_5_RS       0.000         0.458         0.000
+ CPA_6_T1       0.488         0.000         0.000
+ CPA_7_T1       0.000         0.726         0.000
+ CPA_9_T1       0.000         0.798         0.000
+ CPA_10_T       0.000         0.000         0.717
+ CPA_12_T       0.000         0.000         0.699
+
+
+           THETA
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1       1.000
+ CPA_3_RS       0.000         1.000
+ CPA_4_T1       0.000         0.000         1.000
+ CPA_5_RS       0.000         0.000         0.000         1.000
+ CPA_6_T1       0.000         0.000         0.000         0.000         0.100
+ CPA_7_T1       0.000         0.000         0.000         0.000         0.000
+ CPA_9_T1       0.000         0.000         0.000         0.000         0.000
+ CPA_10_T       0.000         0.000         0.000         0.000         0.000
+ CPA_12_T       0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_7_T1       1.000
+ CPA_9_T1       0.000         1.000
+ CPA_10_T       0.000         0.000         1.000
+ CPA_12_T       0.000         0.000         0.000         1.000
+
+
+           ALPHA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           BETA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          0.000         0.000         0.000
+ SH_T1          0.000         0.000         0.000
+ CO_T1          0.000         0.000         0.000
+
+
+           PSI
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          1.000
+ SH_T1          0.000         1.000
+ CO_T1          0.000         0.000         1.000
+
+
+     STARTING VALUES FOR 6YO
+
+
+           TAU
+              CPA_2_T1      CPA_2_T1      CPA_2_T1      CPA_3_RS      CPA_3_RS
+              ________      ________      ________      ________      ________
+               -1.224        -0.020         1.080        -0.994         0.023
+
+
+           TAU
+              CPA_3_RS      CPA_4_T1      CPA_4_T1      CPA_4_T1      CPA_5_RS
+              ________      ________      ________      ________      ________
+                1.012        -1.589        -0.637         0.497        -1.342
+
+
+           TAU
+              CPA_5_RS      CPA_5_RS      CPA_6_T1      CPA_6_T1      CPA_6_T1
+              ________      ________      ________      ________      ________
+               -0.833         0.094        -0.944         0.196         1.086
+
+
+           TAU
+              CPA_7_T1      CPA_7_T1      CPA_7_T1      CPA_9_T1      CPA_9_T1
+              ________      ________      ________      ________      ________
+               -0.789         0.329         1.126        -1.586        -0.581
+
+
+           TAU
+              CPA_9_T1      CPA_10_T      CPA_10_T      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________      ________
+                0.496        -1.336        -0.347         1.146        -0.462
+
+
+           TAU
+              CPA_12_T      CPA_12_T
+              ________      ________
+                0.336         1.458
+
+
+           NU
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+                0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ CPA_2_T1       0.000         0.000         0.876
+ CPA_3_RS       1.000         0.000         0.000
+ CPA_4_T1       0.000         0.000         0.807
+ CPA_5_RS       0.000         0.456         0.000
+ CPA_6_T1       0.314         0.000         0.000
+ CPA_7_T1       0.000         0.734         0.000
+ CPA_9_T1       0.000         0.874         0.000
+ CPA_10_T       0.000         0.000         0.542
+ CPA_12_T       0.000         0.000         0.725
+
+
+           THETA
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1       1.000
+ CPA_3_RS       0.000         1.000
+ CPA_4_T1       0.000         0.000         1.000
+ CPA_5_RS       0.000         0.000         0.000         1.000
+ CPA_6_T1       0.000         0.000         0.000         0.000         0.100
+ CPA_7_T1       0.000         0.000         0.000         0.000         0.000
+ CPA_9_T1       0.000         0.000         0.000         0.000         0.000
+ CPA_10_T       0.000         0.000         0.000         0.000         0.000
+ CPA_12_T       0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              CPA_7_T1      CPA_9_T1      CPA_10_T      CPA_12_T
+              ________      ________      ________      ________
+ CPA_7_T1       1.000
+ CPA_9_T1       0.000         1.000
+ CPA_10_T       0.000         0.000         1.000
+ CPA_12_T       0.000         0.000         0.000         1.000
+
+
+           ALPHA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           BETA
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          0.000         0.000         0.000
+ SH_T1          0.000         0.000         0.000
+ CO_T1          0.000         0.000         0.000
+
+
+           PSI
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          1.000
+ SH_T1          0.000         1.000
+ CO_T1          0.000         0.000         1.000
+
+
+TECHNICAL 4 OUTPUT
+
+
+     ESTIMATES DERIVED FROM THE MODEL FOR 4YO
+
+
+           ESTIMATED MEANS FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          1.000
+ SH_T1          0.204         1.000
+ CO_T1          0.061         0.277         1.000
+
+
+           ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          1.000
+ SH_T1          0.204         1.000
+ CO_T1          0.061         0.277         1.000
+
+
+     ESTIMATES DERIVED FROM THE MODEL FOR 5YO
+
+
+           ESTIMATED MEANS FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                0.161         0.031         0.235
+
+
+           ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          1.413
+ SH_T1          0.564         1.268
+ CO_T1          0.605         1.019         1.522
+
+
+           ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          1.000
+ SH_T1          0.421         1.000
+ CO_T1          0.413         0.734         1.000
+
+
+     ESTIMATES DERIVED FROM THE MODEL FOR 6YO
+
+
+           ESTIMATED MEANS FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                0.031         0.104         0.345
+
+
+           ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          0.967
+ SH_T1          0.253         1.144
+ CO_T1          0.307         0.203         0.842
+
+
+           ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          1.000
+ SH_T1          0.241         1.000
+ CO_T1          0.340         0.207         1.000
+
+
+     ESTIMATES DERIVED FROM THE MODEL FOR 4YO
+
+
+           S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           EST./S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                1.000         1.000         1.000
+
+
+           S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          0.000
+ SH_T1          0.044         0.000
+ CO_T1          0.059         0.089         0.000
+
+
+           EST./S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1    ***********
+ SH_T1          4.621   ***********
+ CO_T1          1.037         3.117   ***********
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          0.000
+ SH_T1          0.000         0.000
+ CO_T1          0.300         0.002         0.000
+
+
+           S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          0.000
+ SH_T1          0.044         0.000
+ CO_T1          0.059         0.089         0.000
+
+
+           EST./S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1        999.000
+ SH_T1          4.621       999.000
+ CO_T1          1.037         3.117       999.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          0.000
+ SH_T1          0.000         0.000
+ CO_T1          0.300         0.002         0.000
+
+
+     ESTIMATES DERIVED FROM THE MODEL FOR 5YO
+
+
+           S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                0.042         0.057         0.072
+
+
+           EST./S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                3.835         0.557         3.282
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                0.000         0.578         0.001
+
+
+           S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          0.013
+ SH_T1          0.032         0.017
+ CO_T1          0.043         0.064         0.026
+
+
+           EST./S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1        107.152
+ SH_T1         17.613        74.908
+ CO_T1         14.026        16.006        59.378
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          0.000
+ SH_T1          0.000         0.000
+ CO_T1          0.000         0.000         0.000
+
+
+           S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          0.000
+ SH_T1          0.025         0.000
+ CO_T1          0.031         0.048         0.000
+
+
+           EST./S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1        999.000
+ SH_T1         16.547       999.000
+ CO_T1         13.310        15.347       999.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          0.000
+ SH_T1          0.000         0.000
+ CO_T1          0.000         0.000         0.000
+
+
+     ESTIMATES DERIVED FROM THE MODEL FOR 6YO
+
+
+           S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                0.053         0.066         0.098
+
+
+           EST./S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                0.583         1.581         3.535
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+                0.560         0.114         0.000
+
+
+           S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          0.018
+ SH_T1          0.051         0.023
+ CO_T1          0.076         0.101         0.053
+
+
+           EST./S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1         54.613
+ SH_T1          4.991        49.270
+ CO_T1          4.045         2.022        15.882
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          0.000
+ SH_T1          0.000         0.000
+ CO_T1          0.000         0.043         0.000
+
+
+           S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          0.000
+ SH_T1          0.049         0.000
+ CO_T1          0.084         0.103         0.000
+
+
+           EST./S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1        999.000
+ SH_T1          4.929       999.000
+ CO_T1          4.048         2.006       999.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              HE_T1         SH_T1         CO_T1
+              ________      ________      ________
+ HE_T1          0.000
+ SH_T1          0.000         0.000
+ CO_T1          0.000         0.045         0.000
+
+
+SAVEDATA INFORMATION
+
+
+  Difference testing
+
+    Model estimation did not terminate normally.  The file for difference testing
+    was not saved.
+
+     Beginning Time:  10:36:15
+        Ending Time:  10:36:18
+       Elapsed Time:  00:00:03
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2023 Muthen & Muthen

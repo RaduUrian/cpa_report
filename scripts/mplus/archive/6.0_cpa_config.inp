@@ -1,0 +1,149 @@
+TITLE:
+  6.0 CPA – Configural model
+
+DATA:
+  FILE = data_ora_cpa.csv;
+
+VARIABLE:
+  NAMES =
+      ID site gender age_t1 age_t2
+      cpa_1_t1 cpa_2_t1 cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1
+      cpa_8_t1 cpa_9_t1 cpa_10_t1 cpa_11_rs_t1 cpa_12_t1
+      cpa_1_v2_t2 cpa_2_t2 cpa_4_t2 cpa_5_v2_t2 cpa_6_t2 cpa_7_t2
+      cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2 cpa_12_t2 ;
+
+  USEVARIABLES =
+      cpa_1_t1 cpa_2_t1 cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1
+      cpa_8_t1 cpa_9_t1 cpa_10_t1 cpa_11_rs_t1 cpa_12_t1
+      cpa_1_v2_t2 cpa_2_t2 cpa_4_t2 cpa_5_v2_t2 cpa_6_t2 cpa_7_t2
+      cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2 cpa_12_t2 ;
+
+  CATEGORICAL = cpa_1_t1 cpa_2_t1 cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1
+      cpa_8_t1 cpa_9_t1 cpa_10_t1 cpa_11_rs_t1 cpa_12_t1
+      cpa_1_v2_t2 cpa_2_t2 cpa_4_t2 cpa_5_v2_t2 cpa_6_t2 cpa_7_t2
+      cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2 cpa_12_t2 ;
+  MISSING     = ALL (-999);
+  IDVARIABLE  = ID;
+
+ANALYSIS:
+  ESTIMATOR        = WLSMV;
+  PARAMETERIZATION = THETA;
+
+MODEL:
+
+  !---------------- latent factors ----------------------
+  cpa_t1 BY
+        cpa_1_t1*  cpa_2_t1*  cpa_4_t1*  cpa_5_rs_t1*
+        cpa_6_t1*  cpa_7_t1*  cpa_8_t1*  cpa_9_t1*
+        cpa_10_t1* cpa_11_rs_t1* cpa_12_t1* ;
+
+  cpa_t2 BY
+        cpa_1_v2_t2*  cpa_2_t2*  cpa_4_t2*  cpa_5_v2_t2*
+        cpa_6_t2*     cpa_7_t2*  cpa_8_t2*  cpa_9_t2*
+        cpa_10_t2*    cpa_11_rs_t2* cpa_12_t2* ;
+
+  !------------- factor variances & means ---------------
+  cpa_t1@1;     cpa_t2@1;
+  [cpa_t1@0];   [cpa_t2*];
+  cpa_t1 WITH cpa_t2 (phi);
+
+  !======================================================
+  !  THRESHOLDS – 4 per item (5-category scale)
+  !  ----------------------------------------------------
+  !  • Threshold 1 of every item constrained equal
+  !  • Threshold 2 of anchor item (CPA-1) also constrained
+  !  • All other thresholds free now, but each has a
+  !    *commented* label ready for equality later.
+  !======================================================
+
+  !---- CPA-1  ----------------------------
+  [cpa_1_t1$1] (t1);        [cpa_1_v2_t2$1] (t1);
+  [cpa_1_t1$2];       [cpa_1_v2_t2$2];
+  [cpa_1_t1$3];  ! (t1_3)
+  [cpa_1_v2_t2$3];  ! (t1_3)
+  [cpa_1_t1$4];  ! (t1_4)
+  [cpa_1_v2_t2$4];  ! (t1_4)
+
+  !---- CPA-2 anchor item ------------------------------------------
+  [cpa_2_t1$1] (t2);        [cpa_2_t2$1] (t2);
+  [cpa_2_t1$2] (t2_2);   [cpa_2_t2$2] (t2_2);
+  [cpa_2_t1$3];  ! (t2_3)   [cpa_2_t2$3];  ! (t2_3)
+  [cpa_2_t1$4];  ! (t2_4)   [cpa_2_t2$4];  ! (t2_4)
+
+  !---- CPA-4 ------------------------------------------
+  [cpa_4_t1$1] (t3);        [cpa_4_t2$1] (t3);
+  [cpa_4_t1$2];  ! (t4_2)   [cpa_4_t2$2];  ! (t4_2)
+  [cpa_4_t1$3];  ! (t4_3)   [cpa_4_t2$3];  ! (t4_3)
+  [cpa_4_t1$4];  ! (t4_4)   [cpa_4_t2$4];  ! (t4_4)
+
+  !---- CPA-5 (rev-scored) ------------------------------
+  [cpa_5_rs_t1$1] (t4);     [cpa_5_v2_t2$1] (t4);
+  [cpa_5_rs_t1$2];  ! (t5_2)   [cpa_5_v2_t2$2];  ! (t5_2)
+  [cpa_5_rs_t1$3];  ! (t5_3)   [cpa_5_v2_t2$3];  ! (t5_3)
+  [cpa_5_rs_t1$4];  ! (t5_4)   [cpa_5_v2_t2$4];  ! (t5_4)
+
+  !---- CPA-6 ------------------------------------------
+  [cpa_6_t1$1] (t5);        [cpa_6_t2$1] (t5);
+  [cpa_6_t1$2];  ! (t6_2)   [cpa_6_t2$2];  ! (t6_2)
+  [cpa_6_t1$3];  ! (t6_3)   [cpa_6_t2$3];  ! (t6_3)
+  [cpa_6_t1$4];  ! (t6_4)   [cpa_6_t2$4];  ! (t6_4)
+
+  !---- CPA-7 ------------------------------------------
+  [cpa_7_t1$1] (t6);        [cpa_7_t2$1] (t6);
+  [cpa_7_t1$2];  ! (t7_2)   [cpa_7_t2$2];  ! (t7_2)
+  [cpa_7_t1$3];  ! (t7_3)   [cpa_7_t2$3];  ! (t7_3)
+  [cpa_7_t1$4];  ! (t7_4)   [cpa_7_t2$4];  ! (t7_4)
+
+  !---- CPA-8 ------------------------------------------
+  [cpa_8_t1$1] (t7);        [cpa_8_t2$1] (t7);
+  [cpa_8_t1$2];  ! (t8_2)   [cpa_8_t2$2];  ! (t8_2)
+  [cpa_8_t1$3];  ! (t8_3)   [cpa_8_t2$3];  ! (t8_3)
+  [cpa_8_t1$4];  ! (t8_4)   [cpa_8_t2$4];  ! (t8_4)
+
+  !---- CPA-9 ------------------------------------------
+  [cpa_9_t1$1] (t8);        [cpa_9_t2$1] (t8);
+  [cpa_9_t1$2];  ! (t9_2)   [cpa_9_t2$2];  ! (t9_2)
+  [cpa_9_t1$3];  ! (t9_3)   [cpa_9_t2$3];  ! (t9_3)
+  [cpa_9_t1$4];  ! (t9_4)   [cpa_9_t2$4];  ! (t9_4)
+
+  !---- CPA-10 -----------------------------------------
+  [cpa_10_t1$1] (t9);       [cpa_10_t2$1] (t9);
+  [cpa_10_t1$2]; ! (t10_2)  [cpa_10_t2$2]; ! (t10_2)
+  [cpa_10_t1$3]; ! (t10_3)  [cpa_10_t2$3]; ! (t10_3)
+  [cpa_10_t1$4]; ! (t10_4)  [cpa_10_t2$4]; ! (t10_4)
+
+  !---- CPA-11 (rev-scored) -----------------------------
+  [cpa_11_rs_t1$1] (t10);   [cpa_11_rs_t2$1] (t10);
+  [cpa_11_rs_t1$2]; ! (t11_2) [cpa_11_rs_t2$2]; ! (t11_2)
+  [cpa_11_rs_t1$3]; ! (t11_3) [cpa_11_rs_t2$3]; ! (t11_3)
+  [cpa_11_rs_t1$4]; ! (t11_4) [cpa_11_rs_t2$4]; ! (t11_4)
+
+  !---- CPA-12 -----------------------------------------
+  [cpa_12_t1$1] (t11);      [cpa_12_t2$1] (t11);
+  [cpa_12_t1$2]; ! (t12_2)  [cpa_12_t2$2]; ! (t12_2)
+  [cpa_12_t1$3]; ! (t12_3)  [cpa_12_t2$3]; ! (t12_3)
+  [cpa_12_t1$4]; ! (t12_4)  [cpa_12_t2$4]; ! (t12_4)
+
+  !================ residual variances & covs ===========
+  ! Fix all uniquenesses to 1  (unit-variance ID)
+  cpa_1_t1@1  cpa_2_t1@1  cpa_4_t1@1  cpa_5_rs_t1@1  cpa_6_t1@1
+  cpa_7_t1@1  cpa_8_t1@1  cpa_9_t1@1  cpa_10_t1@1     cpa_11_rs_t1@1  cpa_12_t1@1
+  cpa_1_v2_t2 cpa_2_t2 cpa_4_t2 cpa_5_v2_t2 cpa_6_t2
+  cpa_7_t2  cpa_8_t2 cpa_9_t2  cpa_10_t2     cpa_11_rs_t2  cpa_12_t2 ;
+
+  ! Correlated uniqueness (same item across waves)
+  !cpa_1_t1 WITH cpa_1_v2_t2;
+  cpa_2_t1 WITH cpa_2_t2;
+  cpa_4_t1 WITH cpa_4_t2;
+  !cpa_5_rs_t1 WITH cpa_5_v2_t2;
+  cpa_6_t1 WITH cpa_6_t2;
+  cpa_7_t1 WITH cpa_7_t2;
+  cpa_8_t1 WITH cpa_8_t2;
+  cpa_9_t1 WITH cpa_9_t2;
+  cpa_10_t1 WITH cpa_10_t2;
+  cpa_11_rs_t1 WITH cpa_11_rs_t2;
+  cpa_12_t1 WITH cpa_12_t2;
+
+OUTPUT:
+  SAMPSTAT STANDARDIZED MODINDICES (ALL)
+  CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;

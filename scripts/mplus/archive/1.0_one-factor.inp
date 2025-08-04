@@ -1,0 +1,79 @@
+TITLE:
+
+1.0 psb 1-factor esem model
+
+Data: 
+
+File = data_ora_ca_p2_clean.csv; 
+
+VARIABLE: 
+
+NAMES = ID gender age_t1 help_t1 share_t1 comfort_t1 pain_t1 
+age_t2 help_t2 share_t2 comfort_t2 pain_t2 cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2 
+cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+cpa_12_t2;
+ 
+USEVARIABLES = help_t1 share_t1 comfort_t1 pain_t1 
+age_t2 help_t2 share_t2 comfort_t2 pain_t2 cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2 
+cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+cpa_12_t2;
+
+MISSING = all (-999);
+
+IDVARIABLE = ID;
+
+ANALYSIS:
+
+TYPE = General; 
+
+ESTIMATOR = MLR; 
+
+MODEL: 
+
+!---------------------t1--------------------------------
+
+!psb t1
+
+PSB_T1 BY help_t1* share_t1 comfort_t1 aht_t1 mdg_t1 pain_t1;
+
+[help_t1* share_t1 comfort_t1 aht_t1 mdg_t1 pain_t1];
+
+PSB_T1@1;
+
+[PSB_T1@0];
+
+!---------------------t2--------------------------------
+
+!psb t2
+
+PSB_T2 BY help_t2* share_t2 comfort_t2 aht_t2 mdg_t2 pain_t2;
+
+[help_t2* share_t2 comfort_t2 aht_t2 mdg_t2 pain_t2];
+
+PSB_T2@1;
+
+[PSB_T2@0];
+
+!----------------------across-time----------------------
+
+!latent covariances
+
+psb_t1 WITH psb_t2;
+
+! cross-time residual covariances
+help_t1 WITH help_t2;
+share_t1 WITH share_t2;
+comfort_t1 WITH comfort_t2 (r1);
+aht_t1 WITH aht_t2;
+mdg_t1 WITH mdg_t2;
+pain_t1 WITH pain_t2;
+
+MODEL CONSTRAINT:
+r1 < .5;
+
+OUTPUT: 
+SAMPSTAT STANDARDIZED MODINDICES CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;

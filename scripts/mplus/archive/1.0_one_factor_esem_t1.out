@@ -1,0 +1,806 @@
+Mplus VERSION 8.10
+MUTHEN & MUTHEN
+06/18/2025   4:00 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE:
+
+  1.0 psb 1-factor esem model T1
+
+  Data:
+
+  File = data_ora_ca_p2_clean.csv;
+
+  VARIABLE:
+
+  NAMES = ID gender age_t1 help_t1 share_t1 comfort_t1 pain_t1
+  age_t2 help_t2 share_t2 comfort_t2 pain_t2 cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+  cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+  cpa_12_t2;
+
+  USEVARIABLES = help_t1 share_t1 comfort_t1 pain_t1 cpa_1_t1
+  cpa_2_t1 cpa_3_rs_t1 cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1
+  cpa_8_t1 cpa_9_t1 cpa_10_t1 cpa_11_rs_t1 cpa_12_t1;
+
+  MISSING = all (-999);
+
+  IDVARIABLE = ID;
+
+  ANALYSIS:
+
+  TYPE = General;
+
+  ESTIMATOR = MLR;
+
+  MODEL:
+
+  !---------------------t1--------------------------------
+
+  !psb t1
+
+  PSB_T1 BY help_t1* share_t1 comfort_t1 pain_t1 cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1;
+
+  [help_t1* share_t1 comfort_t1 pain_t1 cpa_1_t1
+  cpa_2_t1 cpa_3_rs_t1 cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1
+  cpa_8_t1 cpa_9_t1 cpa_10_t1 cpa_11_rs_t1 cpa_12_t1];
+
+  PSB_T1@1;
+
+  [PSB_T1@0];
+
+  !child behavior mf
+
+  !CHILD_MF BY help_t1* share_t1 comfort_t1 pain_t1;
+
+  !parent mf
+
+  PARENT_MF BY cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1;
+
+  !covariances
+  PSB_T1 WITH PARENT_MF@0;
+
+  OUTPUT:
+  SAMPSTAT STANDARDIZED MODINDICES CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;
+
+
+
+*** WARNING in VARIABLE command
+  Note that only the first 8 characters of variable names are used in the output.
+  Shorten variable names to avoid any confusion.
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+
+
+1.0 psb 1-factor esem model T1
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         186
+
+Number of dependent variables                                   16
+Number of independent variables                                  0
+Number of continuous latent variables                            2
+
+Observed dependent variables
+
+  Continuous
+   HELP_T1     SHARE_T1    COMFORT_T1  PAIN_T1     CPA_1_T1    CPA_2_T1
+   CPA_3_RS_T  CPA_4_T1    CPA_5_RS_T  CPA_6_T1    CPA_7_T1    CPA_8_T1
+   CPA_9_T1    CPA_10_T1   CPA_11_RS_  CPA_12_T1
+
+Continuous latent variables
+   PSB_T1      PARENT_M
+
+Variables with special functions
+
+  ID variable           ID
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  data_ora_ca_p2_clean.csv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            10
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              HELP_T1       SHARE_T1      COMFORT_      PAIN_T1       CPA_1_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        0.914
+ SHARE_T1       0.823         0.892
+ COMFORT_       0.849         0.876         0.914
+ PAIN_T1        0.828         0.806         0.828         0.898
+ CPA_1_T1       0.898         0.871         0.892         0.876         0.978
+ CPA_2_T1       0.898         0.871         0.892         0.876         0.978
+ CPA_3_RS       0.898         0.871         0.892         0.876         0.978
+ CPA_4_T1       0.898         0.871         0.892         0.876         0.978
+ CPA_5_RS       0.898         0.871         0.892         0.876         0.978
+ CPA_6_T1       0.898         0.871         0.892         0.876         0.978
+ CPA_7_T1       0.898         0.871         0.892         0.876         0.978
+ CPA_8_T1       0.898         0.871         0.892         0.876         0.978
+ CPA_9_T1       0.898         0.871         0.892         0.876         0.978
+ CPA_10_T       0.898         0.871         0.892         0.876         0.978
+ CPA_11_R       0.898         0.871         0.892         0.876         0.978
+ CPA_12_T       0.898         0.871         0.892         0.876         0.978
+
+
+           Covariance Coverage
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1       0.978
+ CPA_3_RS       0.978         0.978
+ CPA_4_T1       0.978         0.978         0.978
+ CPA_5_RS       0.978         0.978         0.978         0.978
+ CPA_6_T1       0.978         0.978         0.978         0.978         0.978
+ CPA_7_T1       0.978         0.978         0.978         0.978         0.978
+ CPA_8_T1       0.978         0.978         0.978         0.978         0.978
+ CPA_9_T1       0.978         0.978         0.978         0.978         0.978
+ CPA_10_T       0.978         0.978         0.978         0.978         0.978
+ CPA_11_R       0.978         0.978         0.978         0.978         0.978
+ CPA_12_T       0.978         0.978         0.978         0.978         0.978
+
+
+           Covariance Coverage
+              CPA_7_T1      CPA_8_T1      CPA_9_T1      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T1       0.978
+ CPA_8_T1       0.978         0.978
+ CPA_9_T1       0.978         0.978         0.978
+ CPA_10_T       0.978         0.978         0.978         0.978
+ CPA_11_R       0.978         0.978         0.978         0.978         0.978
+ CPA_12_T       0.978         0.978         0.978         0.978         0.978
+
+
+           Covariance Coverage
+              CPA_12_T
+              ________
+ CPA_12_T       0.978
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              HELP_T1       SHARE_T1      COMFORT_      PAIN_T1       CPA_1_T1
+              ________      ________      ________      ________      ________
+                0.015        -0.027        -0.010        -0.013        -0.001
+
+
+           Means
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+                0.001         0.000         0.001         0.000        -0.001
+
+
+           Means
+              CPA_7_T1      CPA_8_T1      CPA_9_T1      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+               -0.001         0.000         0.000         0.001        -0.001
+
+
+           Means
+              CPA_12_T
+              ________
+                0.000
+
+
+           Covariances
+              HELP_T1       SHARE_T1      COMFORT_      PAIN_T1       CPA_1_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        1.016
+ SHARE_T1       0.088         1.003
+ COMFORT_       0.196         0.443         1.000
+ PAIN_T1        0.353         0.097         0.136         1.009
+ CPA_1_T1      -0.045         0.021         0.038         0.098         0.995
+ CPA_2_T1       0.220        -0.016        -0.046         0.041         0.141
+ CPA_3_RS       0.069        -0.091        -0.017         0.019         0.046
+ CPA_4_T1       0.084         0.062         0.055         0.048         0.181
+ CPA_5_RS      -0.005         0.052         0.034        -0.002         0.026
+ CPA_6_T1      -0.005        -0.059        -0.078         0.090         0.237
+ CPA_7_T1       0.024         0.031         0.010         0.178         0.155
+ CPA_8_T1      -0.004         0.051        -0.056         0.012         0.285
+ CPA_9_T1      -0.003         0.070        -0.024         0.034         0.163
+ CPA_10_T      -0.048         0.003         0.134        -0.061         0.053
+ CPA_11_R      -0.084        -0.057        -0.072         0.000         0.190
+ CPA_12_T       0.079        -0.041         0.035         0.045         0.034
+
+
+           Covariances
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1       0.994
+ CPA_3_RS       0.141         0.994
+ CPA_4_T1       0.437         0.146         0.995
+ CPA_5_RS      -0.034         0.106        -0.028         0.994
+ CPA_6_T1       0.259         0.386         0.104         0.117         0.995
+ CPA_7_T1       0.100         0.030         0.064         0.206         0.233
+ CPA_8_T1       0.328         0.078         0.356         0.197         0.265
+ CPA_9_T1       0.163        -0.020         0.051         0.283         0.152
+ CPA_10_T       0.312         0.193         0.359         0.085         0.033
+ CPA_11_R       0.123         0.112         0.137         0.044         0.130
+ CPA_12_T       0.344         0.108         0.389         0.070         0.098
+
+
+           Covariances
+              CPA_7_T1      CPA_8_T1      CPA_9_T1      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T1       0.995
+ CPA_8_T1       0.342         0.994
+ CPA_9_T1       0.525         0.343         0.994
+ CPA_10_T       0.016         0.145         0.071         0.994
+ CPA_11_R      -0.014         0.036         0.073         0.162         0.995
+ CPA_12_T       0.001         0.220         0.049         0.413         0.113
+
+
+           Covariances
+              CPA_12_T
+              ________
+ CPA_12_T       0.994
+
+
+           Correlations
+              HELP_T1       SHARE_T1      COMFORT_      PAIN_T1       CPA_1_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        1.000
+ SHARE_T1       0.087         1.000
+ COMFORT_       0.194         0.443         1.000
+ PAIN_T1        0.348         0.097         0.135         1.000
+ CPA_1_T1      -0.044         0.021         0.038         0.098         1.000
+ CPA_2_T1       0.219        -0.016        -0.046         0.041         0.142
+ CPA_3_RS       0.069        -0.092        -0.017         0.019         0.046
+ CPA_4_T1       0.083         0.063         0.055         0.047         0.182
+ CPA_5_RS      -0.005         0.052         0.034        -0.002         0.026
+ CPA_6_T1      -0.005        -0.059        -0.078         0.090         0.239
+ CPA_7_T1       0.024         0.031         0.010         0.178         0.156
+ CPA_8_T1      -0.004         0.051        -0.056         0.012         0.286
+ CPA_9_T1      -0.003         0.070        -0.024         0.034         0.164
+ CPA_10_T      -0.047         0.003         0.135        -0.060         0.054
+ CPA_11_R      -0.083        -0.057        -0.072         0.000         0.191
+ CPA_12_T       0.079        -0.041         0.035         0.045         0.034
+
+
+           Correlations
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1       1.000
+ CPA_3_RS       0.142         1.000
+ CPA_4_T1       0.440         0.147         1.000
+ CPA_5_RS      -0.035         0.106        -0.028         1.000
+ CPA_6_T1       0.260         0.388         0.105         0.118         1.000
+ CPA_7_T1       0.100         0.031         0.064         0.207         0.234
+ CPA_8_T1       0.330         0.078         0.358         0.198         0.267
+ CPA_9_T1       0.164        -0.021         0.052         0.285         0.153
+ CPA_10_T       0.314         0.194         0.361         0.086         0.034
+ CPA_11_R       0.124         0.112         0.138         0.044         0.131
+ CPA_12_T       0.346         0.108         0.391         0.071         0.099
+
+
+           Correlations
+              CPA_7_T1      CPA_8_T1      CPA_9_T1      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T1       1.000
+ CPA_8_T1       0.344         1.000
+ CPA_9_T1       0.528         0.345         1.000
+ CPA_10_T       0.017         0.146         0.072         1.000
+ CPA_11_R      -0.014         0.036         0.074         0.163         1.000
+ CPA_12_T       0.001         0.221         0.049         0.415         0.114
+
+
+           Correlations
+              CPA_12_T
+              ________
+ CPA_12_T       1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3801.581
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     HELP_T1               0.000      -2.609      -4.518    0.59%      -0.353      0.480      0.480
+             170.000       0.994       6.801       0.480   72.35%       0.480      0.480
+     SHARE_T1              0.000      -0.772      -1.996   10.84%      -1.044     -0.092      0.384
+             166.000       0.994      -0.578       1.337    6.63%       0.384      0.860
+     COMFORT_T1            0.000      -0.258      -1.380   25.29%      -1.380     -0.585      0.211
+             170.000       0.994      -1.482       1.404    7.65%       0.608      1.006
+     PAIN_T1               0.000       0.919      -0.833   52.10%      -0.833     -0.833     -0.833
+             167.000       0.994      -0.047       2.997    1.80%       0.443      0.443
+     CPA_1_T1              0.000      -0.727      -2.823    1.65%      -0.371     -0.371      0.243
+             182.000       0.995      -0.444       2.082    0.55%       0.856      0.856
+     CPA_2_T1              0.000       0.035      -2.421    2.75%      -0.690     -0.690      0.176
+             182.000       0.995      -0.251       1.908    8.24%       0.176      1.042
+     CPA_3_RS_T1           0.000       0.097      -2.554    2.20%      -0.563     -0.563      0.432
+             182.000       0.995       0.331       2.423    3.85%       0.432      0.432
+     CPA_4_T1              0.000       0.003      -2.275    2.75%      -1.174     -0.073     -0.073
+             182.000       0.995      -0.531       2.130    4.40%      -0.073      1.029
+     CPA_5_RS_T1           0.000      -0.733      -2.695    3.85%      -0.851      0.071      0.071
+             182.000       0.995       0.125       1.915    1.10%       0.071      0.993
+     CPA_6_T1              0.000      -0.023      -2.433    2.75%      -0.456     -0.456     -0.456
+             182.000       0.995      -0.332       2.509    0.55%       0.532      0.532
+     CPA_7_T1              0.000       0.000      -2.109    5.49%      -1.189     -0.268     -0.268
+             182.000       0.995      -0.274       2.494    1.10%      -0.268      0.653
+     CPA_8_T1              0.000      -0.647      -2.538    3.85%      -1.409     -0.279     -0.279
+             182.000       0.995      -0.175       1.980    2.20%       0.850      0.850
+     CPA_9_T1              0.000      -0.275      -2.410    2.75%      -1.240     -0.071     -0.071
+             182.000       0.995      -0.697       2.268    1.10%      -0.071      1.099
+     CPA_10_T1             0.000       0.407      -1.723    7.14%      -0.814     -0.814      0.095
+             182.000       0.995      -0.513       1.913   11.54%       0.095      1.004
+     CPA_11_RS_T1          0.000      -0.011      -2.687    1.10%      -0.824      0.107      0.107
+             182.000       0.995      -0.234       1.971    7.14%       0.107      1.039
+     CPA_12_T1             0.000       0.339      -1.784    4.95%      -1.087     -0.390     -0.390
+             182.000       0.995      -0.754       1.700   16.48%       0.306      1.003
+
+
+     THIS ANALYSIS MAY HAVE MULTIPLE SOLUTIONS.  EXPLORE THIS USING RANDOM STARTS,
+     FOR EXAMPLE, STARTS = 20.  USE A LARGE ENOUGH NUMBER OF STARTS SO THAT THE
+     BEST FIT FUNCTION VALUE IS REPLICATED SEVERAL TIMES.
+
+
+     NO CONVERGENCE.  NUMBER OF ITERATIONS EXCEEDED.
+
+
+
+MODEL RESULTS
+
+                    Estimate
+
+ PSB_T1   BY
+    HELP_T1           -0.001
+    SHARE_T1          -0.004
+    COMFORT_T1         0.003
+    PAIN_T1            0.017
+    CPA_1_T1           0.389
+    CPA_2_T1           0.866
+    CPA_3_RS_T         0.368
+    CPA_4_T1           0.875
+    CPA_5_RS_T         0.160
+    CPA_6_T1           0.450
+    CPA_7_T1           9.277
+    CPA_8_T1           0.699
+    CPA_9_T1           0.300
+    CPA_10_T1          0.675
+    CPA_11_RS_         0.320
+    CPA_12_T1          0.731
+
+ PARENT_M BY
+    CPA_1_T1           1.000
+    CPA_2_T1           2.235
+    CPA_3_RS_T         0.951
+    CPA_4_T1           2.246
+    CPA_5_RS_T         0.400
+    CPA_6_T1           1.125
+    CPA_7_T1          51.456
+    CPA_8_T1           1.763
+    CPA_9_T1           0.652
+    CPA_10_T1          1.734
+    CPA_11_RS_         0.839
+    CPA_12_T1          1.892
+
+ PSB_T1   WITH
+    PARENT_MF          0.000
+
+ Means
+    PSB_T1             0.000
+
+ Intercepts
+    HELP_T1            0.000
+    SHARE_T1           0.001
+    COMFORT_T1        -0.002
+    PAIN_T1           -0.003
+    CPA_1_T1           0.000
+    CPA_2_T1           0.000
+    CPA_3_RS_T         0.000
+    CPA_4_T1           0.000
+    CPA_5_RS_T         0.000
+    CPA_6_T1           0.000
+    CPA_7_T1          -0.001
+    CPA_8_T1           0.000
+    CPA_9_T1           0.000
+    CPA_10_T1          0.000
+    CPA_11_RS_         0.000
+    CPA_12_T1          0.000
+
+ Variances
+    PSB_T1             1.000
+    PARENT_MF         -0.069
+
+ Residual Variances
+    HELP_T1            0.994
+    SHARE_T1           0.994
+    COMFORT_T1         0.994
+    PAIN_T1            0.992
+    CPA_1_T1           0.912
+    CPA_2_T1           0.589
+    CPA_3_RS_T         0.921
+    CPA_4_T1           0.578
+    CPA_5_RS_T         0.980
+    CPA_6_T1           0.879
+    CPA_7_T1          97.747
+    CPA_8_T1           0.720
+    CPA_9_T1           0.934
+    CPA_10_T1          0.747
+    CPA_11_RS_         0.941
+    CPA_12_T1          0.708
+
+
+MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
+
+     psb_t1 BY help_t1*-0.00116;
+     psb_t1 BY share_t1*-0.00434;
+     psb_t1 BY comfort_t1*0.00336;
+     psb_t1 BY pain_t1*0.01659;
+     psb_t1 BY cpa_1_t1*0.38948;
+     psb_t1 BY cpa_2_t1*0.86634;
+     psb_t1 BY cpa_3_rs_t1*0.36822;
+     psb_t1 BY cpa_4_t1*0.87461;
+     psb_t1 BY cpa_5_rs_t1*0.15976;
+     psb_t1 BY cpa_6_t1*0.45009;
+     psb_t1 BY cpa_7_t1*9.27676;
+     psb_t1 BY cpa_8_t1*0.69923;
+     psb_t1 BY cpa_9_t1*0.29985;
+     psb_t1 BY cpa_10_t1*0.67475;
+     psb_t1 BY cpa_11_rs_t1*0.31989;
+     psb_t1 BY cpa_12_t1*0.73053;
+     parent_mf BY cpa_1_t1@1;
+     parent_mf BY cpa_2_t1*2.23493;
+     parent_mf BY cpa_3_rs_t1*0.95077;
+     parent_mf BY cpa_4_t1*2.24628;
+     parent_mf BY cpa_5_rs_t1*0.40024;
+     parent_mf BY cpa_6_t1*1.12490;
+     parent_mf BY cpa_7_t1*51.45580;
+     parent_mf BY cpa_8_t1*1.76317;
+     parent_mf BY cpa_9_t1*0.65163;
+     parent_mf BY cpa_10_t1*1.73430;
+     parent_mf BY cpa_11_rs_t1*0.83946;
+     parent_mf BY cpa_12_t1*1.89175;
+
+     psb_t1 WITH parent_mf@0;
+
+     [ help_t1*0.00007 ];
+     [ share_t1*0.00110 ];
+     [ comfort_t1*-0.00152 ];
+     [ pain_t1*-0.00295 ];
+     [ cpa_1_t1*-0.00003 ];
+     [ cpa_2_t1*-0.00007 ];
+     [ cpa_3_rs_t1*-0.00003 ];
+     [ cpa_4_t1*-0.00007 ];
+     [ cpa_5_rs_t1*-0.00001 ];
+     [ cpa_6_t1*-0.00003 ];
+     [ cpa_7_t1*-0.00071 ];
+     [ cpa_8_t1*-0.00005 ];
+     [ cpa_9_t1*-0.00002 ];
+     [ cpa_10_t1*-0.00005 ];
+     [ cpa_11_rs_t1*-0.00002 ];
+     [ cpa_12_t1*-0.00006 ];
+     [ psb_t1@0 ];
+
+     help_t1*0.99412;
+     share_t1*0.99390;
+     comfort_t1*0.99407;
+     pain_t1*0.99243;
+     cpa_1_t1*0.91245;
+     cpa_2_t1*0.58884;
+     cpa_3_rs_t1*0.92131;
+     cpa_4_t1*0.57798;
+     cpa_5_rs_t1*0.98004;
+     cpa_6_t1*0.87930;
+     cpa_7_t1*97.74718;
+     cpa_8_t1*0.72027;
+     cpa_9_t1*0.93394;
+     cpa_10_t1*0.74696;
+     cpa_11_rs_t1*0.94086;
+     cpa_12_t1*0.70789;
+     psb_t1@1;
+     parent_mf*-0.06907;
+
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION
+
+
+           NU
+              HELP_T1       SHARE_T1      COMFORT_      PAIN_T1       CPA_1_T1
+              ________      ________      ________      ________      ________
+                  1             2             3             4             5
+
+
+           NU
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+                  6             7             8             9            10
+
+
+           NU
+              CPA_7_T1      CPA_8_T1      CPA_9_T1      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+                 11            12            13            14            15
+
+
+           NU
+              CPA_12_T
+              ________
+                 16
+
+
+           LAMBDA
+              PSB_T1        PARENT_M
+              ________      ________
+ HELP_T1           17             0
+ SHARE_T1          18             0
+ COMFORT_          19             0
+ PAIN_T1           20             0
+ CPA_1_T1          21             0
+ CPA_2_T1          22            23
+ CPA_3_RS          24            25
+ CPA_4_T1          26            27
+ CPA_5_RS          28            29
+ CPA_6_T1          30            31
+ CPA_7_T1          32            33
+ CPA_8_T1          34            35
+ CPA_9_T1          36            37
+ CPA_10_T          38            39
+ CPA_11_R          40            41
+ CPA_12_T          42            43
+
+
+           THETA
+              HELP_T1       SHARE_T1      COMFORT_      PAIN_T1       CPA_1_T1
+              ________      ________      ________      ________      ________
+ HELP_T1           44
+ SHARE_T1           0            45
+ COMFORT_           0             0            46
+ PAIN_T1            0             0             0            47
+ CPA_1_T1           0             0             0             0            48
+ CPA_2_T1           0             0             0             0             0
+ CPA_3_RS           0             0             0             0             0
+ CPA_4_T1           0             0             0             0             0
+ CPA_5_RS           0             0             0             0             0
+ CPA_6_T1           0             0             0             0             0
+ CPA_7_T1           0             0             0             0             0
+ CPA_8_T1           0             0             0             0             0
+ CPA_9_T1           0             0             0             0             0
+ CPA_10_T           0             0             0             0             0
+ CPA_11_R           0             0             0             0             0
+ CPA_12_T           0             0             0             0             0
+
+
+           THETA
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1          49
+ CPA_3_RS           0            50
+ CPA_4_T1           0             0            51
+ CPA_5_RS           0             0             0            52
+ CPA_6_T1           0             0             0             0            53
+ CPA_7_T1           0             0             0             0             0
+ CPA_8_T1           0             0             0             0             0
+ CPA_9_T1           0             0             0             0             0
+ CPA_10_T           0             0             0             0             0
+ CPA_11_R           0             0             0             0             0
+ CPA_12_T           0             0             0             0             0
+
+
+           THETA
+              CPA_7_T1      CPA_8_T1      CPA_9_T1      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T1          54
+ CPA_8_T1           0            55
+ CPA_9_T1           0             0            56
+ CPA_10_T           0             0             0            57
+ CPA_11_R           0             0             0             0            58
+ CPA_12_T           0             0             0             0             0
+
+
+           THETA
+              CPA_12_T
+              ________
+ CPA_12_T          59
+
+
+           ALPHA
+              PSB_T1        PARENT_M
+              ________      ________
+                  0             0
+
+
+           BETA
+              PSB_T1        PARENT_M
+              ________      ________
+ PSB_T1             0             0
+ PARENT_M           0             0
+
+
+           PSI
+              PSB_T1        PARENT_M
+              ________      ________
+ PSB_T1             0
+ PARENT_M           0            60
+
+
+     STARTING VALUES
+
+
+           NU
+              HELP_T1       SHARE_T1      COMFORT_      PAIN_T1       CPA_1_T1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              CPA_7_T1      CPA_8_T1      CPA_9_T1      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              CPA_12_T
+              ________
+                0.000
+
+
+           LAMBDA
+              PSB_T1        PARENT_M
+              ________      ________
+ HELP_T1        0.743         0.000
+ SHARE_T1       0.311         0.000
+ COMFORT_       0.205         0.000
+ PAIN_T1        0.281         0.000
+ CPA_1_T1       1.000         1.000
+ CPA_2_T1       1.000         1.000
+ CPA_3_RS       1.000         1.000
+ CPA_4_T1       1.000         1.000
+ CPA_5_RS       1.000         1.000
+ CPA_6_T1       1.000         1.000
+ CPA_7_T1       1.000         1.000
+ CPA_8_T1       1.000         1.000
+ CPA_9_T1       1.000         1.000
+ CPA_10_T       1.000         1.000
+ CPA_11_R       1.000         1.000
+ CPA_12_T       1.000         1.000
+
+
+           THETA
+              HELP_T1       SHARE_T1      COMFORT_      PAIN_T1       CPA_1_T1
+              ________      ________      ________      ________      ________
+ HELP_T1        0.497
+ SHARE_T1       0.000         0.497
+ COMFORT_       0.000         0.000         0.497
+ PAIN_T1        0.000         0.000         0.000         0.497
+ CPA_1_T1       0.000         0.000         0.000         0.000         0.497
+ CPA_2_T1       0.000         0.000         0.000         0.000         0.000
+ CPA_3_RS       0.000         0.000         0.000         0.000         0.000
+ CPA_4_T1       0.000         0.000         0.000         0.000         0.000
+ CPA_5_RS       0.000         0.000         0.000         0.000         0.000
+ CPA_6_T1       0.000         0.000         0.000         0.000         0.000
+ CPA_7_T1       0.000         0.000         0.000         0.000         0.000
+ CPA_8_T1       0.000         0.000         0.000         0.000         0.000
+ CPA_9_T1       0.000         0.000         0.000         0.000         0.000
+ CPA_10_T       0.000         0.000         0.000         0.000         0.000
+ CPA_11_R       0.000         0.000         0.000         0.000         0.000
+ CPA_12_T       0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              CPA_2_T1      CPA_3_RS      CPA_4_T1      CPA_5_RS      CPA_6_T1
+              ________      ________      ________      ________      ________
+ CPA_2_T1       0.497
+ CPA_3_RS       0.000         0.497
+ CPA_4_T1       0.000         0.000         0.497
+ CPA_5_RS       0.000         0.000         0.000         0.497
+ CPA_6_T1       0.000         0.000         0.000         0.000         0.497
+ CPA_7_T1       0.000         0.000         0.000         0.000         0.000
+ CPA_8_T1       0.000         0.000         0.000         0.000         0.000
+ CPA_9_T1       0.000         0.000         0.000         0.000         0.000
+ CPA_10_T       0.000         0.000         0.000         0.000         0.000
+ CPA_11_R       0.000         0.000         0.000         0.000         0.000
+ CPA_12_T       0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              CPA_7_T1      CPA_8_T1      CPA_9_T1      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T1       0.497
+ CPA_8_T1       0.000         0.497
+ CPA_9_T1       0.000         0.000         0.497
+ CPA_10_T       0.000         0.000         0.000         0.497
+ CPA_11_R       0.000         0.000         0.000         0.000         0.497
+ CPA_12_T       0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              CPA_12_T
+              ________
+ CPA_12_T       0.497
+
+
+           ALPHA
+              PSB_T1        PARENT_M
+              ________      ________
+                0.000         0.000
+
+
+           BETA
+              PSB_T1        PARENT_M
+              ________      ________
+ PSB_T1         0.000         0.000
+ PARENT_M       0.000         0.000
+
+
+           PSI
+              PSB_T1        PARENT_M
+              ________      ________
+ PSB_T1         1.000
+ PARENT_M       0.000         0.050
+
+
+DIAGRAM INFORMATION
+
+  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
+  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
+
+  Diagram output
+    g:\my drive\1. projects\seleste_replication_report\sb_replication_report\scripts\mplus\1.0_one_factor_esem_t1.dgm
+
+     Beginning Time:  16:00:47
+        Ending Time:  16:00:48
+       Elapsed Time:  00:00:01
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2023 Muthen & Muthen

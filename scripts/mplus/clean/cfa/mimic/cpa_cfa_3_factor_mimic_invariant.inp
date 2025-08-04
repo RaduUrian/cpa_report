@@ -1,0 +1,205 @@
+DATA: 
+
+File = data_ora_cpa.csv; 
+
+VARIABLE: 
+
+NAMES = ID site gender age_t1 age_group_t1 age_t2 age_group_t2 
+cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+  cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+  cpa_12_t2;
+ 
+USEVARIABLES =  age_t1 age_t2 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_9_t1 cpa_10_t1
+   cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_4_t2
+  cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_9_t2 cpa_10_t2
+  cpa_12_t2;
+
+  CATEGORICAL =
+cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_9_t1 cpa_10_t1
+   cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_4_t2
+  cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_9_t2 cpa_10_t2
+  cpa_12_t2;
+
+  MISSING     = ALL (-999);
+  IDVARIABLE  = ID;
+
+DEFINE:
+
+CUT cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_9_t1 cpa_10_t1
+   cpa_12_t1 cpa_1_v2_t2 cpa_2_t2
+  cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_9_t2 cpa_10_t2
+  cpa_12_t2 (2 3 4);
+
+ANALYSIS:
+
+TYPE = General; 
+ESTIMATOR = WLSMV;
+PARAMETERIZATION = THETA;
+ITERATIONS = 10000;
+!DIFFTEST = .dat;
+
+MODEL:
+!--------------------T1------------------------------------
+
+!help t1
+HE_T1 BY cpa_3_rs_t1* cpa_6_t1 (L1-L2);
+
+!share t1
+SH_T1 BY cpa_5_rs_t1* cpa_7_t1 cpa_9_t1 (L3-L5);
+
+!comfort t1
+CO_T1 BY cpa_2_t1* cpa_4_t1 cpa_10_t1 cpa_12_t1 (L6-L9);
+
+!--------------------T2------------------------------------
+
+!help t1
+HE_T2 BY cpa_1_v2_t2* cpa_6_t2 (L1-L2);
+
+!share t1
+SH_T2 BY cpa_5_v2_t2* cpa_7_t2 cpa_9_t2 (L3-L5);
+
+!comfort t1
+CO_T2 BY cpa_2_t2* cpa_4_t2 cpa_10_t2 cpa_12_t2 (L6-L9);
+
+!factor means
+[HE_T1@0];
+[SH_T1@0];
+[CO_T1@0];
+[HE_T2@0];
+[SH_T2@0];
+[CO_T2@0];
+
+!factor variances
+HE_T1@1;
+SH_T1@1;
+CO_T1@1;
+HE_T2@1;
+SH_T2@1;
+CO_T2@1;
+
+!uniquenesses
+cpa_2_t1-cpa_12_t1@1;
+cpa_1_v2_t2-cpa_12_t2@1;
+
+!t1 correlations
+
+HE_T1 WITH SH_T1 CO_T1 (c1-c2);
+SH_T1 WITH CO_T1 (c3);
+
+!t2 correlations
+
+HE_T2 WITH SH_T2 CO_T2 (c1-c2);
+SH_T2 WITH CO_T2 (c3);
+
+! same-item residual correlations across waves
+cpa_2_t1   WITH cpa_2_t2 ;
+cpa_3_rs_t1 WITH cpa_1_v2_t2;
+cpa_4_t1   WITH cpa_4_t2 ;
+cpa_5_rs_t1 WITH cpa_5_v2_t2;
+cpa_6_t1   WITH cpa_6_t2 ;
+cpa_7_t1   WITH cpa_7_t2 ;
+cpa_9_t1   WITH cpa_9_t2 ;
+cpa_10_t1  WITH cpa_10_t2 ;
+cpa_12_t1  WITH cpa_12_t2 ;
+
+   !---- CPA-1 & CPA-3  ------------------------------------------
+    [cpa_3_rs_t1$1];! (t1);
+    [cpa_1_v2_t2$1];! (t1);
+    [cpa_3_rs_t1$2];! (t1_2);
+    [cpa_1_v2_t2$2];! (t1_2);
+    [cpa_3_rs_t1$3];! (t2_3);
+    [cpa_1_v2_t2$3];! (t2_3);
+
+  !---- CPA-2  ------------------------------------------
+  [cpa_2_t1$1] (t2);        
+  [cpa_2_t2$1] (t2);
+  [cpa_2_t1$2] (t2_2);   
+  [cpa_2_t2$2] (t2_2);
+  [cpa_2_t1$3] (t2_3);  
+  [cpa_2_t2$3] (t2_3);
+
+  !---- CPA-4 ------------------------------------------
+  [cpa_4_t1$1] (t4);        
+  [cpa_4_t2$1] (t4);
+  [cpa_4_t1$2] (t4_2);   
+  [cpa_4_t2$2] (t4_2);
+  [cpa_4_t1$3] (t4_3);   
+  [cpa_4_t2$3] (t4_3);
+
+    !---- CPA-5 ------------------------------------------
+  [cpa_5_rs_t1$1];! (t5);        
+  [cpa_5_v2_t2$1];! (t5);
+  [cpa_5_rs_t1$2];! (t5_2);   
+  [cpa_5_v2_t2$2];! (t5_2);
+  [cpa_5_rs_t1$3];! (t5_3);   
+  [cpa_5_v2_t2$3];! (t5_3);
+
+  !---- CPA-6 ------------------------------------------
+  [cpa_6_t1$1] (t6);        
+  [cpa_6_t2$1] (t6);
+  [cpa_6_t1$2] (t6_2);   
+  [cpa_6_t2$2] (t6_2);
+  [cpa_6_t1$3] (t6_3);   
+  [cpa_6_t2$3] (t6_3);
+
+  !---- CPA-7 ------------------------------------------
+  [cpa_7_t1$1] (t7);        
+  [cpa_7_t2$1] (t7);
+  [cpa_7_t1$2] (t7_2);   
+  [cpa_7_t2$2] (t7_2);
+  [cpa_7_t1$3] (t7_3);   
+  [cpa_7_t2$3] (t7_3);
+
+  !---- CPA-9 ------------------------------------------
+  [cpa_9_t1$1] (t9);       
+   [cpa_9_t2$1] (t9);
+  [cpa_9_t1$2] (t9_2);   
+  [cpa_9_t2$2] (t9_2);
+  [cpa_9_t1$3] (t9_3);   
+  [cpa_9_t2$3] (t9_3);
+
+  !---- CPA-10 -----------------------------------------
+  [cpa_10_t1$1] (t10);       
+  [cpa_10_t2$1] (t10);
+  [cpa_10_t1$2] (t10_2);  
+  [cpa_10_t2$2] (t10_2);
+  [cpa_10_t1$3] (t10_3);  
+  [cpa_10_t2$3] (t10_3);
+
+  !---- CPA-12 -----------------------------------------
+  [cpa_12_t1$1] (t12);      
+  [cpa_12_t2$1] (t12);
+  [cpa_12_t1$2] (t12_2);  
+  [cpa_12_t2$2] (t12_2);
+  [cpa_12_t1$3] (t12_3);  
+  [cpa_12_t2$3] (t12_3);
+
+!---------------------MIMIC----------------------------
+
+!T1
+
+!saturated model
+cpa_2_t1-cpa_12_t1 ON age_t1@0;
+
+!invariant model
+HE_T1-CO_T1 ON age_t1;
+
+!T2
+
+!saturated model
+cpa_2_t2-cpa_12_t2 ON age_t2@0;
+
+!invariant model
+HE_T2-CO_T2 ON age_t2;
+
+
+OUTPUT: 
+SAMPSTAT STANDARDIZED MODINDICES CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;
+
+SAVEDATA:
+DIFFTEST = mimic_invariant.dat;

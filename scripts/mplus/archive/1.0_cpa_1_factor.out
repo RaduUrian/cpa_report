@@ -1,0 +1,144 @@
+Mplus VERSION 8.10
+MUTHEN & MUTHEN
+07/08/2025   4:12 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE:
+
+  1.0 cpa 1-factor
+
+  Data:
+
+  File = data_ora_cpa.csv;
+
+  VARIABLE:
+
+  NAMES = ID site gender age_t1 age_t2 cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+    cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+    cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+    cpa_12_t2;
+
+  USEVARIABLES = cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+    cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+    cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+    cpa_12_t2;
+
+  MISSING = all (-999);
+
+  IDVARIABLE = ID;
+
+  CATEGORICAL = cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+    cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+    cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+    cpa_12_t2;
+
+  ANALYSIS:
+
+  TYPE = General;
+
+  ESTIMATOR = WLSMV;
+
+  PARAMETERIZATION=THETA
+
+  MODEL:
+  !--------------------T1------------------------------------
+  PSB_T1 BY cpa_1_t1* cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1;
+
+  cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1;
+
+  [cpa_1_t1* cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1];
+
+  PSB_T1@1;
+
+  [PSB_T1@0];
+
+  !--------------------T2------------------------------------
+  PSB_T2 BY cpa_1_v2_t2* cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+  cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+  cpa_12_t2;
+
+  cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+  cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+  cpa_12_t2;
+
+  [cpa_1_v2_t2* cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+  cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+  cpa_12_t2];
+
+  PSB_T2@1;
+
+  [PSB_T2@0];
+
+  !--------------------across-time----------------------------
+
+  !correlated uniquenesses
+  cpa_2_t1 WITH cpa_2_t2;
+  cpa_3_rs_t1 WITH cpa_3_rs_t2;
+  cpa_4_t1 WITH cpa_4_t2;
+  cpa_6_t1 WITH cpa_6_t2;
+  cpa_7_t1 WITH cpa_7_t2;
+  cpa_8_t1 WITH cpa_8_t2;
+  cpa_9_t1 WITH cpa_9_t2;
+  cpa_10_t1 WITH cpa_10_t2;
+  cpa_11_rs_t1 WITH cpa_11_rs_t2;
+  cpa_12_t1 WITH cpa_12_t2;
+
+  OUTPUT:
+  SAMPSTAT STANDARDIZED MODINDICES CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;
+
+*** WARNING in VARIABLE command
+  Note that only the first 8 characters of variable names are used in the output.
+  Shorten variable names to avoid any confusion.
+*** ERROR
+  The following MODEL statements are ignored:
+  * Statements in the GENERAL group:
+    [ CPA_1_T1 ]
+    [ CPA_2_T1 ]
+    [ CPA_3_RS_T1 ]
+    [ CPA_4_T1 ]
+    [ CPA_5_RS_T1 ]
+    [ CPA_6_T1 ]
+    [ CPA_7_T1 ]
+    [ CPA_8_T1 ]
+    [ CPA_9_T1 ]
+    [ CPA_10_T1 ]
+    [ CPA_11_RS_T1 ]
+    [ CPA_12_T1 ]
+    [ CPA_1_V2_T2 ]
+    [ CPA_2_T2 ]
+    [ CPA_3_RS_T2 ]
+    [ CPA_4_T2 ]
+    [ CPA_5_V2_T2 ]
+    [ CPA_6_T2 ]
+    [ CPA_7_T2 ]
+    [ CPA_8_T2 ]
+    [ CPA_9_T2 ]
+    [ CPA_10_T2 ]
+    [ CPA_11_RS_T2 ]
+    [ CPA_12_T2 ]
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  10
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2023 Muthen & Muthen

@@ -1,0 +1,2026 @@
+Mplus VERSION 8.10
+MUTHEN & MUTHEN
+07/09/2025   9:46 AM
+
+INPUT INSTRUCTIONS
+
+  TITLE:
+
+  5.0 t2 cpa efa no3 wlsmv
+
+  Data:
+
+  File = data_ora_cpa.csv;
+
+  VARIABLE:
+
+  NAMES = ID site gender age_t1 age_t2 cpa_1_t1 cpa_2_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+    cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2  cpa_4_t2
+    cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+    cpa_12_t2;
+
+  USEVARIABLES = cpa_1_v2_t2 cpa_2_t2 cpa_4_t2
+    cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+    cpa_12_t2;
+
+  MISSING = all (-999);
+
+  IDVARIABLE = ID;
+
+  CATEGORICAL = cpa_1_v2_t2 cpa_2_t2 cpa_4_t2
+    cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+    cpa_12_t2;
+
+  ANALYSIS:
+
+  TYPE = General;
+
+  TYPE = EFA 1 4;
+
+  ESTIMATOR = WLSMV;
+
+  ROTATION = Geomin (.5);
+
+  OUTPUT:
+  SAMPSTAT STANDARDIZED MODINDICES CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;
+
+
+
+*** WARNING in VARIABLE command
+  Note that only the first 8 characters of variable names are used in the output.
+  Shorten variable names to avoid any confusion.
+*** WARNING in OUTPUT command
+  STANDARDIZED (STD, STDY, STDYX) options are not available for TYPE=EFA.
+  Request for STANDARDIZED options will be ignored.  Note that STANDARDIZED options
+  are available with the use of EFA factors (ESEM) declared in the MODEL command.
+*** WARNING in OUTPUT command
+  CINTERVAL option is available only with TYPE=GENERAL and TYPE=MIXTURE.
+  Request for CINTERVAL is ignored.
+*** ERROR in OUTPUT command
+  SVALUES option is not available for TYPE=EFA.
+  Request for SVALUES option is ignored.
+*** WARNING in OUTPUT command
+  TECHNICAL options are not available for EFA analysis.
+  Request for all technical options is ignored.
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  102
+   1 ERROR(S) FOUND IN THE INPUT INSTRUCTIONS
+   5 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+
+
+5.0 t2 cpa efa no3 wlsmv
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         378
+
+Number of dependent variables                                   11
+Number of independent variables                                  0
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Binary and ordered categorical (ordinal)
+   CPA_1_V2    CPA_2_T2    CPA_4_T2    CPA_5_V2    CPA_6_T2    CPA_7_T2
+   CPA_8_T2    CPA_9_T2    CPA_10_T    CPA_11_R    CPA_12_T
+
+Variables with special functions
+
+  ID variable           ID
+
+Estimator                                                    WLSMV
+Rotation                                                    GEOMIN
+Row standardization                                    CORRELATION
+Type of rotation                                           OBLIQUE
+Epsilon value                                            0.500D+00
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization Specifications for the Exploratory Factor Analysis
+Rotation Algorithm
+  Number of random starts                                       30
+  Maximum number of iterations                               10000
+  Derivative convergence criterion                       0.100D-04
+Link                                                        PROBIT
+
+Input data file(s)
+  data_ora_cpa.csv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            33
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       0.992
+ CPA_2_T2       0.939         0.947
+ CPA_4_T2       0.960         0.931         0.968
+ CPA_5_V2       0.992         0.947         0.968         1.000
+ CPA_6_T2       0.981         0.939         0.963         0.989         0.989
+ CPA_7_T2       0.979         0.939         0.955         0.987         0.976
+ CPA_8_T2       0.963         0.926         0.944         0.971         0.963
+ CPA_9_T2       0.987         0.942         0.963         0.995         0.984
+ CPA_10_T       0.876         0.857         0.876         0.884         0.881
+ CPA_11_R       0.939         0.897         0.915         0.942         0.934
+ CPA_12_T       0.860         0.839         0.857         0.865         0.860
+
+
+           Covariance Coverage
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       0.987
+ CPA_8_T2       0.960         0.971
+ CPA_9_T2       0.981         0.968         0.995
+ CPA_10_T       0.876         0.860         0.878         0.884
+ CPA_11_R       0.931         0.915         0.937         0.852         0.942
+ CPA_12_T       0.857         0.841         0.860         0.815         0.833
+
+
+           Covariance Coverage
+              CPA_12_T
+              ________
+ CPA_12_T       0.865
+
+
+UNIVARIATE PROPORTIONS AND COUNTS FOR CATEGORICAL VARIABLES
+
+    CPA_1_V2
+      Category 1    0.005            2.000
+      Category 2    0.043           16.000
+      Category 3    0.355          133.000
+      Category 4    0.389          146.000
+      Category 5    0.208           78.000
+    CPA_2_T2
+      Category 1    0.022            8.000
+      Category 2    0.075           27.000
+      Category 3    0.352          126.000
+      Category 4    0.377          135.000
+      Category 5    0.173           62.000
+    CPA_4_T2
+      Category 1    0.049           18.000
+      Category 2    0.262           96.000
+      Category 3    0.413          151.000
+      Category 4    0.276          101.000
+    CPA_5_V2
+      Category 1    0.003            1.000
+      Category 2    0.026           10.000
+      Category 3    0.315          119.000
+      Category 4    0.444          168.000
+      Category 5    0.212           80.000
+    CPA_6_T2
+      Category 1    0.016            6.000
+      Category 2    0.134           50.000
+      Category 3    0.441          165.000
+      Category 4    0.313          117.000
+      Category 5    0.096           36.000
+    CPA_7_T2
+      Category 1    0.032           12.000
+      Category 2    0.174           65.000
+      Category 3    0.349          130.000
+      Category 4    0.295          110.000
+      Category 5    0.150           56.000
+    CPA_8_T2
+      Category 1    0.014            5.000
+      Category 2    0.084           31.000
+      Category 3    0.204           75.000
+      Category 4    0.376          138.000
+      Category 5    0.322          118.000
+    CPA_9_T2
+      Category 1    0.005            2.000
+      Category 2    0.029           11.000
+      Category 3    0.213           80.000
+      Category 4    0.386          145.000
+      Category 5    0.367          138.000
+    CPA_10_T
+      Category 1    0.003            1.000
+      Category 2    0.057           19.000
+      Category 3    0.341          114.000
+      Category 4    0.425          142.000
+      Category 5    0.174           58.000
+    CPA_11_R
+      Category 1    0.006            2.000
+      Category 2    0.059           21.000
+      Category 3    0.205           73.000
+      Category 4    0.483          172.000
+      Category 5    0.247           88.000
+    CPA_12_T
+      Category 1    0.067           22.000
+      Category 2    0.272           89.000
+      Category 3    0.349          114.000
+      Category 4    0.254           83.000
+      Category 5    0.058           19.000
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_1_V2      CPA_1_V2      CPA_1_V2      CPA_1_V2      CPA_2_T2
+              ________      ________      ________      ________      ________
+               -2.553        -1.665        -0.246         0.813        -2.008
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_2_T2      CPA_2_T2      CPA_2_T2      CPA_4_T2      CPA_4_T2
+              ________      ________      ________      ________      ________
+               -1.294        -0.126         0.942        -1.653        -0.492
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_4_T2      CPA_5_V2      CPA_5_V2      CPA_5_V2      CPA_5_V2
+              ________      ________      ________      ________      ________
+                0.595        -2.789        -1.894        -0.402         0.801
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_6_T2      CPA_6_T2      CPA_6_T2      CPA_6_T2      CPA_7_T2
+              ________      ________      ________      ________      ________
+               -2.143        -1.038         0.230         1.303        -1.850
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_7_T2      CPA_7_T2      CPA_7_T2      CPA_8_T2      CPA_8_T2
+              ________      ________      ________      ________      ________
+               -0.819         0.138         1.036        -2.208        -1.292
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_8_T2      CPA_8_T2      CPA_9_T2      CPA_9_T2      CPA_9_T2
+              ________      ________      ________      ________      ________
+               -0.517         0.463        -2.554        -1.817        -0.683
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_9_T2      CPA_10_T      CPA_10_T      CPA_10_T      CPA_10_T
+              ________      ________      ________      ________      ________
+                0.340        -2.748        -1.556        -0.250         0.940
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_11_R      CPA_11_R      CPA_11_R      CPA_11_R      CPA_12_T
+              ________      ________      ________      ________      ________
+               -2.535        -1.517        -0.614         0.683        -1.496
+
+
+           MEANS/INTERCEPTS/THRESHOLDS
+              CPA_12_T      CPA_12_T      CPA_12_T
+              ________      ________      ________
+               -0.414         0.490         1.571
+
+
+           CORRELATION MATRIX (WITH VARIANCES ON THE DIAGONAL)
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2
+ CPA_2_T2       0.287
+ CPA_4_T2       0.280         0.643
+ CPA_5_V2       0.277         0.104         0.164
+ CPA_6_T2       0.447         0.059        -0.024         0.312
+ CPA_7_T2       0.284         0.130         0.219         0.354         0.311
+ CPA_8_T2       0.390         0.201         0.275         0.134         0.259
+ CPA_9_T2       0.251         0.095         0.251         0.345         0.247
+ CPA_10_T       0.338         0.361         0.504         0.333         0.234
+ CPA_11_R       0.202         0.043         0.096         0.438         0.160
+ CPA_12_T       0.281         0.525         0.506         0.176         0.146
+
+
+           CORRELATION MATRIX (WITH VARIANCES ON THE DIAGONAL)
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_8_T2       0.415
+ CPA_9_T2       0.655         0.411
+ CPA_10_T       0.271         0.302         0.315
+ CPA_11_R       0.283         0.138         0.296         0.268
+ CPA_12_T       0.170         0.245         0.150         0.479         0.169
+
+
+           CORRELATION MATRIX (WITH VARIANCES ON THE DIAGONAL)
+              CPA_12_T
+              ________
+
+
+SUMMARY OF MODEL FIT INFORMATION
+
+
+                   Number of                   Degrees of
+     Model        Parameters      Chi-Square    Freedom     P-Value
+
+     1-factor          11            478.472        44       0.0000
+     2-factor          21            180.636        34       0.0000
+     3-factor          30            101.718        25       0.0000
+     4-factor          38             23.383        17       0.1372
+
+                                               Degrees of
+     Models Compared              Chi-Square    Freedom     P-Value
+
+     1-factor against 2-factor       216.957        10       0.0000
+     2-factor against 3-factor        75.691         9       0.0000
+     3-factor against 4-factor        62.268         8       0.0000
+
+
+
+RESULTS FOR EXPLORATORY FACTOR ANALYSIS
+
+
+           EIGENVALUES FOR SAMPLE CORRELATION MATRIX
+                  1             2             3             4             5
+              ________      ________      ________      ________      ________
+                3.812         1.771         1.077         1.030         0.651
+
+
+           EIGENVALUES FOR SAMPLE CORRELATION MATRIX
+                  6             7             8             9            10
+              ________      ________      ________      ________      ________
+                0.595         0.545         0.475         0.418         0.334
+
+
+           EIGENVALUES FOR SAMPLE CORRELATION MATRIX
+                 11
+              ________
+                0.291
+
+
+EXPLORATORY FACTOR ANALYSIS WITH 1 FACTOR(S):
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       11
+
+Chi-Square Test of Model Fit
+
+          Value                            478.472*
+          Degrees of Freedom                    44
+          P-Value                           0.0000
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.162
+          90 Percent C.I.                    0.149  0.175
+          Probability RMSEA <= .05           0.000
+
+CFI/TLI
+
+          CFI                                0.750
+          TLI                                0.687
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           1791.728
+          Degrees of Freedom                    55
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.136
+
+
+
+MINIMUM ROTATION FUNCTION VALUE       8.95810
+
+
+
+           GEOMIN ROTATED LOADINGS (* significant at 5% level)
+                  1
+              ________
+ CPA_1_V2       0.540*
+ CPA_2_T2       0.586*
+ CPA_4_T2       0.689*
+ CPA_5_V2       0.483*
+ CPA_6_T2       0.385*
+ CPA_7_T2       0.640*
+ CPA_8_T2       0.510*
+ CPA_9_T2       0.643*
+ CPA_10_T       0.644*
+ CPA_11_R       0.391*
+ CPA_12_T       0.563*
+
+
+           GEOMIN FACTOR CORRELATIONS (* significant at 5% level)
+                  1
+              ________
+      1         1.000
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+                0.708         0.657         0.525         0.767         0.852
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+                0.591         0.740         0.587         0.585         0.847
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              CPA_12_T
+              ________
+                0.683
+
+
+           S.E. GEOMIN ROTATED LOADINGS
+                  1
+              ________
+ CPA_1_V2       0.041
+ CPA_2_T2       0.035
+ CPA_4_T2       0.033
+ CPA_5_V2       0.041
+ CPA_6_T2       0.046
+ CPA_7_T2       0.034
+ CPA_8_T2       0.041
+ CPA_9_T2       0.036
+ CPA_10_T       0.034
+ CPA_11_R       0.044
+ CPA_12_T       0.040
+
+
+           S.E. GEOMIN FACTOR CORRELATIONS
+                  1
+              ________
+      1         0.000
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+                0.044         0.041         0.045         0.040         0.035
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+                0.044         0.041         0.047         0.044         0.034
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_12_T
+              ________
+                0.045
+
+
+           Est./S.E. GEOMIN ROTATED LOADINGS
+                  1
+              ________
+ CPA_1_V2      13.133
+ CPA_2_T2      16.559
+ CPA_4_T2      20.999
+ CPA_5_V2      11.695
+ CPA_6_T2       8.374
+ CPA_7_T2      18.585
+ CPA_8_T2      12.570
+ CPA_9_T2      17.686
+ CPA_10_T      18.952
+ CPA_11_R       8.901
+ CPA_12_T      14.036
+
+
+           Est./S.E. GEOMIN FACTOR CORRELATIONS
+                  1
+              ________
+      1         0.000
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+               15.925        15.847        11.623        19.220        24.031
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+               13.427        17.846        12.573        13.345        24.721
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_12_T
+              ________
+               15.154
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED)
+
+
+           Model Estimated Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       1.000
+ CPA_2_T2       0.317         1.000
+ CPA_4_T2       0.372         0.404         1.000
+ CPA_5_V2       0.261         0.283         0.333         1.000
+ CPA_6_T2       0.208         0.226         0.265         0.186         1.000
+ CPA_7_T2       0.346         0.375         0.441         0.309         0.246
+ CPA_8_T2       0.276         0.299         0.352         0.246         0.197
+ CPA_9_T2       0.347         0.376         0.443         0.310         0.248
+ CPA_10_T       0.348         0.377         0.444         0.311         0.248
+ CPA_11_R       0.211         0.229         0.269         0.189         0.150
+ CPA_12_T       0.304         0.330         0.388         0.272         0.217
+
+
+           Model Estimated Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       1.000
+ CPA_8_T2       0.326         1.000
+ CPA_9_T2       0.411         0.328         1.000
+ CPA_10_T       0.412         0.329         0.414         1.000
+ CPA_11_R       0.250         0.199         0.251         0.252         1.000
+ CPA_12_T       0.360         0.287         0.362         0.363         0.220
+
+
+           Model Estimated Correlations
+              CPA_12_T
+              ________
+ CPA_12_T       1.000
+
+
+           Residuals for Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       0.000
+ CPA_2_T2      -0.029         0.000
+ CPA_4_T2      -0.092         0.240         0.000
+ CPA_5_V2       0.016        -0.179        -0.169         0.000
+ CPA_6_T2       0.239        -0.167        -0.289         0.126         0.000
+ CPA_7_T2      -0.062        -0.245        -0.222         0.045         0.065
+ CPA_8_T2       0.114        -0.098        -0.077        -0.113         0.063
+ CPA_9_T2      -0.096        -0.281        -0.191         0.034        -0.001
+ CPA_10_T      -0.011        -0.017         0.060         0.022        -0.014
+ CPA_11_R      -0.009        -0.186        -0.173         0.249         0.010
+ CPA_12_T      -0.023         0.195         0.118        -0.096        -0.071
+
+
+           Residuals for Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       0.000
+ CPA_8_T2       0.089         0.000
+ CPA_9_T2       0.244         0.083         0.000
+ CPA_10_T      -0.141        -0.027        -0.099         0.000
+ CPA_11_R       0.033        -0.061         0.045         0.016         0.000
+ CPA_12_T      -0.190        -0.042        -0.212         0.117        -0.051
+
+
+           Residuals for Correlations
+              CPA_12_T
+              ________
+ CPA_12_T       0.000
+
+
+EXPLORATORY FACTOR ANALYSIS WITH 2 FACTOR(S):
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       21
+
+Chi-Square Test of Model Fit
+
+          Value                            180.636*
+          Degrees of Freedom                    34
+          P-Value                           0.0000
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.107
+          90 Percent C.I.                    0.092  0.122
+          Probability RMSEA <= .05           0.000
+
+CFI/TLI
+
+          CFI                                0.916
+          TLI                                0.863
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           1791.728
+          Degrees of Freedom                    55
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.068
+
+
+
+MINIMUM ROTATION FUNCTION VALUE       7.41379
+
+
+
+           GEOMIN ROTATED LOADINGS (* significant at 5% level)
+                  1             2
+              ________      ________
+ CPA_1_V2       0.286*        0.411*
+ CPA_2_T2       0.809*       -0.105*
+ CPA_4_T2       0.801*        0.013
+ CPA_5_V2       0.073         0.527*
+ CPA_6_T2       0.022         0.476*
+ CPA_7_T2       0.008         0.764*
+ CPA_8_T2       0.216*        0.436*
+ CPA_9_T2       0.014         0.749*
+ CPA_10_T       0.530*        0.300*
+ CPA_11_R       0.039         0.459*
+ CPA_12_T       0.648*        0.076
+
+
+           GEOMIN FACTOR CORRELATIONS (* significant at 5% level)
+                  1             2
+              ________      ________
+      1         1.000
+      2         0.254*        1.000
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+                0.690         0.378         0.353         0.698         0.767
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+                0.413         0.715         0.434         0.549         0.779
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              CPA_12_T
+              ________
+                0.549
+
+
+           S.E. GEOMIN ROTATED LOADINGS
+                  1             2
+              ________      ________
+ CPA_1_V2       0.059         0.056
+ CPA_2_T2       0.042         0.035
+ CPA_4_T2       0.041         0.039
+ CPA_5_V2       0.049         0.048
+ CPA_6_T2       0.056         0.053
+ CPA_7_T2       0.035         0.037
+ CPA_8_T2       0.054         0.051
+ CPA_9_T2       0.041         0.044
+ CPA_10_T       0.045         0.051
+ CPA_11_R       0.051         0.049
+ CPA_12_T       0.042         0.042
+
+
+           S.E. GEOMIN FACTOR CORRELATIONS
+                  1             2
+              ________      ________
+      1         0.000
+      2         0.034         0.000
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+                0.046         0.063         0.059         0.047         0.046
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+                0.054         0.044         0.060         0.045         0.043
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_12_T
+              ________
+                0.053
+
+
+           Est./S.E. GEOMIN ROTATED LOADINGS
+                  1             2
+              ________      ________
+ CPA_1_V2       4.811         7.336
+ CPA_2_T2      19.319        -2.993
+ CPA_4_T2      19.318         0.320
+ CPA_5_V2       1.480        10.953
+ CPA_6_T2       0.390         9.067
+ CPA_7_T2       0.219        20.373
+ CPA_8_T2       3.995         8.502
+ CPA_9_T2       0.349        17.122
+ CPA_10_T      11.694         5.846
+ CPA_11_R       0.774         9.390
+ CPA_12_T      15.312         1.808
+
+
+           Est./S.E. GEOMIN FACTOR CORRELATIONS
+                  1             2
+              ________      ________
+      1         0.000
+      2         7.366         0.000
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+               14.894         5.997         5.988        14.823        16.647
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+                7.682        16.239         7.236        12.176        18.265
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_12_T
+              ________
+               10.308
+
+
+           FACTOR STRUCTURE
+                  1             2
+              ________      ________
+ CPA_1_V2       0.390         0.483
+ CPA_2_T2       0.782         0.100
+ CPA_4_T2       0.804         0.216
+ CPA_5_V2       0.206         0.545
+ CPA_6_T2       0.143         0.482
+ CPA_7_T2       0.201         0.766
+ CPA_8_T2       0.327         0.491
+ CPA_9_T2       0.204         0.752
+ CPA_10_T       0.606         0.434
+ CPA_11_R       0.156         0.469
+ CPA_12_T       0.668         0.240
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED)
+
+
+           Model Estimated Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       1.000
+ CPA_2_T2       0.265         1.000
+ CPA_4_T2       0.319         0.628         1.000
+ CPA_5_V2       0.283         0.110         0.172         1.000
+ CPA_6_T2       0.239         0.065         0.120         0.264         1.000
+ CPA_7_T2       0.372         0.083         0.171         0.418         0.369
+ CPA_8_T2       0.295         0.213         0.268         0.282         0.241
+ CPA_9_T2       0.367         0.086         0.173         0.411         0.363
+ CPA_10_T       0.352         0.445         0.491         0.273         0.220
+ CPA_11_R       0.237         0.077         0.131         0.258         0.227
+ CPA_12_T       0.290         0.515         0.538         0.175         0.129
+
+
+           Model Estimated Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       1.000
+ CPA_8_T2       0.377         1.000
+ CPA_9_T2       0.576         0.372         1.000
+ CPA_10_T       0.336         0.320         0.334         1.000
+ CPA_11_R       0.359         0.238         0.353         0.223         1.000
+ CPA_12_T       0.189         0.249         0.190         0.426         0.137
+
+
+           Model Estimated Correlations
+              CPA_12_T
+              ________
+ CPA_12_T       1.000
+
+
+           Residuals for Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       0.000
+ CPA_2_T2       0.022         0.000
+ CPA_4_T2      -0.039         0.015         0.000
+ CPA_5_V2      -0.006        -0.005        -0.008         0.000
+ CPA_6_T2       0.208        -0.006        -0.144         0.047         0.000
+ CPA_7_T2      -0.089         0.047         0.048        -0.064        -0.058
+ CPA_8_T2       0.095        -0.012         0.007        -0.148         0.018
+ CPA_9_T2      -0.116         0.009         0.078        -0.066        -0.116
+ CPA_10_T      -0.014        -0.084         0.013         0.061         0.014
+ CPA_11_R      -0.035        -0.034        -0.034         0.180        -0.066
+ CPA_12_T      -0.009         0.010        -0.032         0.001         0.016
+
+
+           Residuals for Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       0.000
+ CPA_8_T2       0.038         0.000
+ CPA_9_T2       0.079         0.039         0.000
+ CPA_10_T      -0.065        -0.018        -0.019         0.000
+ CPA_11_R      -0.076        -0.100        -0.057         0.045         0.000
+ CPA_12_T      -0.019        -0.005        -0.040         0.054         0.032
+
+
+           Residuals for Correlations
+              CPA_12_T
+              ________
+ CPA_12_T       0.000
+
+
+EXPLORATORY FACTOR ANALYSIS WITH 3 FACTOR(S):
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       30
+
+Chi-Square Test of Model Fit
+
+          Value                            101.718*
+          Degrees of Freedom                    25
+          P-Value                           0.0000
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.090
+          90 Percent C.I.                    0.072  0.109
+          Probability RMSEA <= .05           0.000
+
+CFI/TLI
+
+          CFI                                0.956
+          TLI                                0.903
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           1791.728
+          Degrees of Freedom                    55
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.049
+
+
+
+MINIMUM ROTATION FUNCTION VALUE       6.79974
+
+
+
+           GEOMIN ROTATED LOADINGS (* significant at 5% level)
+                  1             2             3
+              ________      ________      ________
+ CPA_1_V2       0.190*        0.546*        0.052
+ CPA_2_T2       0.762*        0.047        -0.055
+ CPA_4_T2       0.837*       -0.086*        0.162*
+ CPA_5_V2      -0.032         0.510*        0.204*
+ CPA_6_T2      -0.114*        0.611*        0.068
+ CPA_7_T2       0.009         0.126*        0.714*
+ CPA_8_T2       0.188*        0.171*        0.368*
+ CPA_9_T2       0.019         0.002         0.854*
+ CPA_10_T       0.466*        0.323*        0.131*
+ CPA_11_R      -0.038         0.396*        0.195*
+ CPA_12_T       0.599*        0.233*       -0.037
+
+
+           GEOMIN FACTOR CORRELATIONS (* significant at 5% level)
+                  1             2             3
+              ________      ________      ________
+      1         1.000
+      2         0.230*        1.000
+      3         0.178*        0.391*        1.000
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+                0.590         0.414         0.261         0.626         0.611
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+                0.401         0.712         0.263         0.537         0.753
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              CPA_12_T
+              ________
+                0.537
+
+
+           S.E. GEOMIN ROTATED LOADINGS
+                  1             2             3
+              ________      ________      ________
+ CPA_1_V2       0.053         0.071         0.057
+ CPA_2_T2       0.046         0.049         0.046
+ CPA_4_T2       0.046         0.043         0.041
+ CPA_5_V2       0.049         0.076         0.063
+ CPA_6_T2       0.046         0.071         0.058
+ CPA_7_T2       0.035         0.063         0.072
+ CPA_8_T2       0.053         0.063         0.062
+ CPA_9_T2       0.029         0.044         0.071
+ CPA_10_T       0.052         0.070         0.057
+ CPA_11_R       0.052         0.061         0.063
+ CPA_12_T       0.049         0.061         0.054
+
+
+           S.E. GEOMIN FACTOR CORRELATIONS
+                  1             2             3
+              ________      ________      ________
+      1         0.000
+      2         0.040         0.000
+      3         0.039         0.039         0.000
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+                0.064         0.061         0.064         0.062         0.072
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+                0.074         0.045         0.101         0.047         0.045
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_12_T
+              ________
+                0.055
+
+
+           Est./S.E. GEOMIN ROTATED LOADINGS
+                  1             2             3
+              ________      ________      ________
+ CPA_1_V2       3.586         7.689         0.915
+ CPA_2_T2      16.502         0.949        -1.199
+ CPA_4_T2      18.338        -1.998         3.978
+ CPA_5_V2      -0.648         6.698         3.244
+ CPA_6_T2      -2.480         8.557         1.179
+ CPA_7_T2       0.263         1.993         9.930
+ CPA_8_T2       3.518         2.689         5.975
+ CPA_9_T2       0.655         0.053        11.990
+ CPA_10_T       8.903         4.637         2.310
+ CPA_11_R      -0.715         6.440         3.100
+ CPA_12_T      12.160         3.802        -0.682
+
+
+           Est./S.E. GEOMIN FACTOR CORRELATIONS
+                  1             2             3
+              ________      ________      ________
+      1         0.000
+      2         5.759         0.000
+      3         4.521        10.020         0.000
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+                9.215         6.813         4.044        10.116         8.504
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+                5.389        15.824         2.609        11.398        16.732
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_12_T
+              ________
+                9.673
+
+
+           FACTOR STRUCTURE
+                  1             2             3
+              ________      ________      ________
+ CPA_1_V2       0.325         0.610         0.299
+ CPA_2_T2       0.763         0.201         0.099
+ CPA_4_T2       0.847         0.170         0.277
+ CPA_5_V2       0.122         0.582         0.397
+ CPA_6_T2       0.039         0.611         0.286
+ CPA_7_T2       0.165         0.407         0.765
+ CPA_8_T2       0.293         0.358         0.468
+ CPA_9_T2       0.172         0.340         0.858
+ CPA_10_T       0.564         0.481         0.340
+ CPA_11_R       0.088         0.463         0.343
+ CPA_12_T       0.646         0.356         0.160
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED)
+
+
+           Model Estimated Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       1.000
+ CPA_2_T2       0.260         1.000
+ CPA_4_T2       0.268         0.638         1.000
+ CPA_5_V2       0.362         0.098         0.116         1.000
+ CPA_6_T2       0.356         0.042         0.026         0.369         1.000
+ CPA_7_T2       0.293         0.103         0.227         0.358         0.282
+ CPA_8_T2       0.275         0.214         0.290         0.268         0.217
+ CPA_9_T2       0.263         0.100         0.253         0.343         0.247
+ CPA_10_T       0.387         0.433         0.486         0.297         0.253
+ CPA_11_R       0.288         0.070         0.090         0.303         0.296
+ CPA_12_T       0.325         0.500         0.536         0.194         0.155
+
+
+           Model Estimated Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       1.000
+ CPA_8_T2       0.382         1.000
+ CPA_9_T2       0.657         0.406         1.000
+ CPA_10_T       0.309         0.313         0.302         1.000
+ CPA_11_R       0.304         0.222         0.295         0.236         1.000
+ CPA_12_T       0.165         0.241         0.150         0.437         0.148
+
+
+           Model Estimated Correlations
+              CPA_12_T
+              ________
+ CPA_12_T       1.000
+
+
+           Residuals for Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       0.000
+ CPA_2_T2       0.027         0.000
+ CPA_4_T2       0.012         0.005         0.000
+ CPA_5_V2      -0.085         0.006         0.048         0.000
+ CPA_6_T2       0.091         0.017        -0.050        -0.057         0.000
+ CPA_7_T2      -0.010         0.027        -0.008        -0.004         0.029
+ CPA_8_T2       0.115        -0.013        -0.016        -0.135         0.042
+ CPA_9_T2      -0.012        -0.005        -0.002         0.002         0.000
+ CPA_10_T      -0.050        -0.073         0.018         0.037        -0.019
+ CPA_11_R      -0.085        -0.027         0.006         0.135        -0.136
+ CPA_12_T      -0.045         0.025        -0.031        -0.018        -0.009
+
+
+           Residuals for Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       0.000
+ CPA_8_T2       0.033         0.000
+ CPA_9_T2      -0.002         0.005         0.000
+ CPA_10_T      -0.038        -0.011         0.012         0.000
+ CPA_11_R      -0.021        -0.083         0.001         0.032         0.000
+ CPA_12_T       0.004         0.003         0.000         0.043         0.021
+
+
+           Residuals for Correlations
+              CPA_12_T
+              ________
+ CPA_12_T       0.000
+
+
+EXPLORATORY FACTOR ANALYSIS WITH 4 FACTOR(S):
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       38
+
+Chi-Square Test of Model Fit
+
+          Value                             23.383*
+          Degrees of Freedom                    17
+          P-Value                           0.1372
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.032
+          90 Percent C.I.                    0.000  0.060
+          Probability RMSEA <= .05           0.837
+
+CFI/TLI
+
+          CFI                                0.996
+          TLI                                0.988
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           1791.728
+          Degrees of Freedom                    55
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.021
+
+
+
+MINIMUM ROTATION FUNCTION VALUE       6.54190
+
+
+
+           GEOMIN ROTATED LOADINGS (* significant at 5% level)
+                  1             2             3             4
+              ________      ________      ________      ________
+ CPA_1_V2       0.131*        0.638*        0.063         0.039
+ CPA_2_T2       0.744*        0.121*       -0.030        -0.043
+ CPA_4_T2       0.830*       -0.052         0.024         0.155*
+ CPA_5_V2      -0.021         0.086         0.697*        0.069
+ CPA_6_T2      -0.192*        0.645*        0.143*        0.039
+ CPA_7_T2      -0.012         0.123*        0.125*        0.682*
+ CPA_8_T2       0.144*        0.351*       -0.132*        0.414*
+ CPA_9_T2       0.013        -0.005         0.134*        0.797*
+ CPA_10_T       0.456*        0.169*        0.293*        0.088
+ CPA_11_R      -0.008         0.000         0.544*        0.107
+ CPA_12_T       0.580*        0.181*        0.141*       -0.046
+
+
+           GEOMIN FACTOR CORRELATIONS (* significant at 5% level)
+                  1             2             3             4
+              ________      ________      ________      ________
+      1         1.000
+      2         0.228*        1.000
+      3         0.142*        0.296*        1.000
+      4         0.151*        0.304*        0.318*        1.000
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+                0.488         0.409         0.261         0.437         0.518
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+                0.393         0.606         0.279         0.530         0.658
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              CPA_12_T
+              ________
+                0.540
+
+
+           S.E. GEOMIN ROTATED LOADINGS
+                  1             2             3             4
+              ________      ________      ________      ________
+ CPA_1_V2       0.054         0.094         0.050         0.051
+ CPA_2_T2       0.050         0.057         0.052         0.046
+ CPA_4_T2       0.047         0.043         0.047         0.042
+ CPA_5_V2       0.035         0.053         0.105         0.047
+ CPA_6_T2       0.046         0.097         0.062         0.056
+ CPA_7_T2       0.035         0.057         0.049         0.067
+ CPA_8_T2       0.052         0.072         0.065         0.063
+ CPA_9_T2       0.032         0.041         0.044         0.070
+ CPA_10_T       0.054         0.067         0.064         0.056
+ CPA_11_R       0.045         0.059         0.094         0.061
+ CPA_12_T       0.051         0.063         0.060         0.056
+
+
+           S.E. GEOMIN FACTOR CORRELATIONS
+                  1             2             3             4
+              ________      ________      ________      ________
+      1         0.000
+      2         0.050         0.000
+      3         0.046         0.051         0.000
+      4         0.041         0.042         0.044         0.000
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+                0.094         0.061         0.065         0.119         0.098
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+                0.073         0.059         0.092         0.047         0.085
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_12_T
+              ________
+                0.055
+
+
+           Est./S.E. GEOMIN ROTATED LOADINGS
+                  1             2             3             4
+              ________      ________      ________      ________
+ CPA_1_V2       2.409         6.812         1.245         0.758
+ CPA_2_T2      14.759         2.139        -0.573        -0.940
+ CPA_4_T2      17.816        -1.203         0.520         3.731
+ CPA_5_V2      -0.598         1.631         6.644         1.466
+ CPA_6_T2      -4.150         6.680         2.308         0.698
+ CPA_7_T2      -0.328         2.141         2.551        10.159
+ CPA_8_T2       2.779         4.884        -2.042         6.595
+ CPA_9_T2       0.387        -0.119         3.011        11.458
+ CPA_10_T       8.413         2.531         4.601         1.561
+ CPA_11_R      -0.182        -0.008         5.800         1.749
+ CPA_12_T      11.389         2.853         2.349        -0.825
+
+
+           Est./S.E. GEOMIN FACTOR CORRELATIONS
+                  1             2             3             4
+              ________      ________      ________      ________
+      1         0.000
+      2         4.523         0.000
+      3         3.063         5.765         0.000
+      4         3.636         7.320         7.207         0.000
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+                5.185         6.644         4.014         3.679         5.271
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+                5.414        10.336         3.033        11.359         7.782
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              CPA_12_T
+              ________
+                9.785
+
+
+           FACTOR STRUCTURE
+                  1             2             3             4
+              ________      ________      ________      ________
+ CPA_1_V2       0.291         0.698         0.282         0.273
+ CPA_2_T2       0.761         0.269         0.098         0.096
+ CPA_4_T2       0.846         0.192         0.177         0.272
+ CPA_5_V2       0.109         0.309         0.741         0.314
+ CPA_6_T2      -0.019         0.655         0.319         0.252
+ CPA_7_T2       0.137         0.365         0.377         0.758
+ CPA_8_T2       0.268         0.470         0.124         0.500
+ CPA_9_T2       0.150         0.280         0.387         0.840
+ CPA_10_T       0.549         0.387         0.436         0.301
+ CPA_11_R       0.085         0.191         0.576         0.279
+ CPA_12_T       0.635         0.341         0.262         0.141
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED)
+
+
+           Model Estimated Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       1.000
+ CPA_2_T2       0.281         1.000
+ CPA_4_T2       0.255         0.635         1.000
+ CPA_5_V2       0.270         0.083         0.141         1.000
+ CPA_6_T2       0.445         0.045        -0.003         0.297         1.000
+ CPA_7_T2       0.304         0.102         0.222         0.344         0.293
+ CPA_8_T2       0.362         0.231         0.279         0.156         0.289
+ CPA_9_T2       0.255         0.098         0.250         0.349         0.240
+ CPA_10_T       0.358         0.429         0.493         0.347         0.218
+ CPA_11_R       0.180         0.057         0.118         0.436         0.201
+ CPA_12_T       0.322         0.499         0.538         0.209         0.141
+
+
+           Model Estimated Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       1.000
+ CPA_8_T2       0.412         1.000
+ CPA_9_T2       0.654         0.416         1.000
+ CPA_10_T       0.301         0.282         0.303         1.000
+ CPA_11_R       0.285         0.119         0.299         0.265         1.000
+ CPA_12_T       0.163         0.235         0.154         0.436         0.152
+
+
+           Model Estimated Correlations
+              CPA_12_T
+              ________
+ CPA_12_T       1.000
+
+
+           Residuals for Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       0.000
+ CPA_2_T2       0.006         0.000
+ CPA_4_T2       0.025         0.008         0.000
+ CPA_5_V2       0.007         0.022         0.023         0.000
+ CPA_6_T2       0.002         0.014        -0.021         0.015         0.000
+ CPA_7_T2      -0.020         0.028        -0.003         0.011         0.018
+ CPA_8_T2       0.028        -0.030        -0.004        -0.022        -0.030
+ CPA_9_T2      -0.004        -0.003         0.001        -0.004         0.007
+ CPA_10_T      -0.020        -0.069         0.010        -0.013         0.016
+ CPA_11_R       0.022        -0.014        -0.022         0.002        -0.040
+ CPA_12_T      -0.042         0.025        -0.032        -0.033         0.005
+
+
+           Residuals for Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       0.000
+ CPA_8_T2       0.003         0.000
+ CPA_9_T2       0.001        -0.006         0.000
+ CPA_10_T      -0.030         0.020         0.012         0.000
+ CPA_11_R      -0.002         0.020        -0.003         0.003         0.000
+ CPA_12_T       0.006         0.010        -0.004         0.043         0.016
+
+
+           Residuals for Correlations
+              CPA_12_T
+              ________
+ CPA_12_T       0.000
+
+
+RESIDUAL OUTPUT
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED)
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2
+ CPA_2_T2       0.000
+ CPA_4_T2       0.000         0.000
+ CPA_5_V2       0.000         0.000         0.000
+ CPA_6_T2       0.000         0.000         0.000         0.000
+ CPA_7_T2       0.000         0.000         0.000         0.000         0.000
+ CPA_8_T2       0.000         0.000         0.000         0.000         0.000
+ CPA_9_T2       0.000         0.000         0.000         0.000         0.000
+ CPA_10_T       0.000         0.000         0.000         0.000         0.000
+ CPA_11_R       0.000         0.000         0.000         0.000         0.000
+ CPA_12_T       0.000         0.000         0.000         0.000         0.000
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_8_T2       0.000
+ CPA_9_T2       0.000         0.000
+ CPA_10_T       0.000         0.000         0.000
+ CPA_11_R       0.000         0.000         0.000         0.000
+ CPA_12_T       0.000         0.000         0.000         0.000         0.000
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_12_T
+              ________
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2
+ CPA_2_T2       0.287
+ CPA_4_T2       0.280         0.643
+ CPA_5_V2       0.277         0.104         0.164
+ CPA_6_T2       0.447         0.059        -0.024         0.312
+ CPA_7_T2       0.284         0.130         0.219         0.354         0.311
+ CPA_8_T2       0.390         0.201         0.275         0.134         0.259
+ CPA_9_T2       0.251         0.095         0.251         0.345         0.247
+ CPA_10_T       0.338         0.361         0.504         0.333         0.234
+ CPA_11_R       0.202         0.043         0.096         0.438         0.160
+ CPA_12_T       0.281         0.525         0.506         0.176         0.146
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_8_T2       0.415
+ CPA_9_T2       0.655         0.411
+ CPA_10_T       0.271         0.302         0.315
+ CPA_11_R       0.283         0.138         0.296         0.268
+ CPA_12_T       0.170         0.245         0.150         0.479         0.169
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_12_T
+              ________
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED)
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2
+ CPA_2_T2       0.281
+ CPA_4_T2       0.255         0.635
+ CPA_5_V2       0.270         0.083         0.141
+ CPA_6_T2       0.445         0.045        -0.003         0.297
+ CPA_7_T2       0.304         0.102         0.222         0.344         0.293
+ CPA_8_T2       0.362         0.231         0.279         0.156         0.289
+ CPA_9_T2       0.255         0.098         0.250         0.349         0.240
+ CPA_10_T       0.358         0.429         0.493         0.347         0.218
+ CPA_11_R       0.180         0.057         0.118         0.436         0.201
+ CPA_12_T       0.322         0.499         0.538         0.209         0.141
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_8_T2       0.412
+ CPA_9_T2       0.654         0.416
+ CPA_10_T       0.301         0.282         0.303
+ CPA_11_R       0.285         0.119         0.299         0.265
+ CPA_12_T       0.163         0.235         0.154         0.436         0.152
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_12_T
+              ________
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2
+ CPA_2_T2       0.006
+ CPA_4_T2       0.025         0.008
+ CPA_5_V2       0.007         0.022         0.023
+ CPA_6_T2       0.002         0.014        -0.021         0.015
+ CPA_7_T2      -0.020         0.028        -0.003         0.011         0.018
+ CPA_8_T2       0.028        -0.030        -0.004        -0.022        -0.030
+ CPA_9_T2      -0.004        -0.003         0.001        -0.004         0.007
+ CPA_10_T      -0.020        -0.069         0.010        -0.013         0.016
+ CPA_11_R       0.022        -0.014        -0.022         0.002        -0.040
+ CPA_12_T      -0.042         0.025        -0.032        -0.033         0.005
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_8_T2       0.003
+ CPA_9_T2       0.001        -0.006
+ CPA_10_T      -0.030         0.020         0.012
+ CPA_11_R      -0.002         0.020        -0.003         0.003
+ CPA_12_T       0.006         0.010        -0.004         0.043         0.016
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_12_T
+              ________
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED)
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2
+ CPA_2_T2       0.260
+ CPA_4_T2       0.268         0.638
+ CPA_5_V2       0.362         0.098         0.116
+ CPA_6_T2       0.356         0.042         0.026         0.369
+ CPA_7_T2       0.293         0.103         0.227         0.358         0.282
+ CPA_8_T2       0.275         0.214         0.290         0.268         0.217
+ CPA_9_T2       0.263         0.100         0.253         0.343         0.247
+ CPA_10_T       0.387         0.433         0.486         0.297         0.253
+ CPA_11_R       0.288         0.070         0.090         0.303         0.296
+ CPA_12_T       0.325         0.500         0.536         0.194         0.155
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_8_T2       0.382
+ CPA_9_T2       0.657         0.406
+ CPA_10_T       0.309         0.313         0.302
+ CPA_11_R       0.304         0.222         0.295         0.236
+ CPA_12_T       0.165         0.241         0.150         0.437         0.148
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_12_T
+              ________
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2
+ CPA_2_T2       0.027
+ CPA_4_T2       0.012         0.005
+ CPA_5_V2      -0.085         0.006         0.048
+ CPA_6_T2       0.091         0.017        -0.050        -0.057
+ CPA_7_T2      -0.010         0.027        -0.008        -0.004         0.029
+ CPA_8_T2       0.115        -0.013        -0.016        -0.135         0.042
+ CPA_9_T2      -0.012        -0.005        -0.002         0.002         0.000
+ CPA_10_T      -0.050        -0.073         0.018         0.037        -0.019
+ CPA_11_R      -0.085        -0.027         0.006         0.135        -0.136
+ CPA_12_T      -0.045         0.025        -0.031        -0.018        -0.009
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_8_T2       0.033
+ CPA_9_T2      -0.002         0.005
+ CPA_10_T      -0.038        -0.011         0.012
+ CPA_11_R      -0.021        -0.083         0.001         0.032
+ CPA_12_T       0.004         0.003         0.000         0.043         0.021
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_12_T
+              ________
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED)
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2
+ CPA_2_T2       0.265
+ CPA_4_T2       0.319         0.628
+ CPA_5_V2       0.283         0.110         0.172
+ CPA_6_T2       0.239         0.065         0.120         0.264
+ CPA_7_T2       0.372         0.083         0.171         0.418         0.369
+ CPA_8_T2       0.295         0.213         0.268         0.282         0.241
+ CPA_9_T2       0.367         0.086         0.173         0.411         0.363
+ CPA_10_T       0.352         0.445         0.491         0.273         0.220
+ CPA_11_R       0.237         0.077         0.131         0.258         0.227
+ CPA_12_T       0.290         0.515         0.538         0.175         0.129
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_8_T2       0.377
+ CPA_9_T2       0.576         0.372
+ CPA_10_T       0.336         0.320         0.334
+ CPA_11_R       0.359         0.238         0.353         0.223
+ CPA_12_T       0.189         0.249         0.190         0.426         0.137
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_12_T
+              ________
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2
+ CPA_2_T2       0.022
+ CPA_4_T2      -0.039         0.015
+ CPA_5_V2      -0.006        -0.005        -0.008
+ CPA_6_T2       0.208        -0.006        -0.144         0.047
+ CPA_7_T2      -0.089         0.047         0.048        -0.064        -0.058
+ CPA_8_T2       0.095        -0.012         0.007        -0.148         0.018
+ CPA_9_T2      -0.116         0.009         0.078        -0.066        -0.116
+ CPA_10_T      -0.014        -0.084         0.013         0.061         0.014
+ CPA_11_R      -0.035        -0.034        -0.034         0.180        -0.066
+ CPA_12_T      -0.009         0.010        -0.032         0.001         0.016
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_8_T2       0.038
+ CPA_9_T2       0.079         0.039
+ CPA_10_T      -0.065        -0.018        -0.019
+ CPA_11_R      -0.076        -0.100        -0.057         0.045
+ CPA_12_T      -0.019        -0.005        -0.040         0.054         0.032
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_12_T
+              ________
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED)
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2
+ CPA_2_T2       0.317
+ CPA_4_T2       0.372         0.404
+ CPA_5_V2       0.261         0.283         0.333
+ CPA_6_T2       0.208         0.226         0.265         0.186
+ CPA_7_T2       0.346         0.375         0.441         0.309         0.246
+ CPA_8_T2       0.276         0.299         0.352         0.246         0.197
+ CPA_9_T2       0.347         0.376         0.443         0.310         0.248
+ CPA_10_T       0.348         0.377         0.444         0.311         0.248
+ CPA_11_R       0.211         0.229         0.269         0.189         0.150
+ CPA_12_T       0.304         0.330         0.388         0.272         0.217
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_8_T2       0.326
+ CPA_9_T2       0.411         0.328
+ CPA_10_T       0.412         0.329         0.414
+ CPA_11_R       0.250         0.199         0.251         0.252
+ CPA_12_T       0.360         0.287         0.362         0.363         0.220
+
+
+           Model Estimated Covariances/Correlations/Residual Correlations
+              CPA_12_T
+              ________
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2
+ CPA_2_T2      -0.029
+ CPA_4_T2      -0.092         0.240
+ CPA_5_V2       0.016        -0.179        -0.169
+ CPA_6_T2       0.239        -0.167        -0.289         0.126
+ CPA_7_T2      -0.062        -0.245        -0.222         0.045         0.065
+ CPA_8_T2       0.114        -0.098        -0.077        -0.113         0.063
+ CPA_9_T2      -0.096        -0.281        -0.191         0.034        -0.001
+ CPA_10_T      -0.011        -0.017         0.060         0.022        -0.014
+ CPA_11_R      -0.009        -0.186        -0.173         0.249         0.010
+ CPA_12_T      -0.023         0.195         0.118        -0.096        -0.071
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_8_T2       0.089
+ CPA_9_T2       0.244         0.083
+ CPA_10_T      -0.141        -0.027        -0.099
+ CPA_11_R       0.033        -0.061         0.045         0.016
+ CPA_12_T      -0.190        -0.042        -0.212         0.117        -0.051
+
+
+           Residuals for Covariances/Correlations/Residual Correlations
+              CPA_12_T
+              ________
+
+
+MODIFICATION INDICES
+
+
+     MODIFICATION INDICES FOR ANALYSIS WITH 1 FACTOR(S)
+
+
+
+     MODIFICATION INDICES
+
+
+           THETA
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       0.000
+ CPA_2_T2       0.353         0.000
+ CPA_4_T2       3.886       107.450         0.000
+ CPA_5_V2       0.108        11.700        10.956         0.000
+ CPA_6_T2      36.145        10.779        32.065         5.841         0.000
+ CPA_7_T2       2.094        25.578        23.824         1.197         2.045
+ CPA_8_T2       6.449         4.238         2.908         5.403         1.694
+ CPA_9_T2       4.046        32.272        16.193         0.669         0.000
+ CPA_10_T       0.047         0.127         5.439         0.208         0.076
+ CPA_11_R       0.034        13.763        12.602        49.988         0.036
+ CPA_12_T       0.190        24.002        13.716         4.105         2.519
+
+
+           THETA
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       0.000
+ CPA_8_T2       5.186         0.000
+ CPA_9_T2     107.508         3.853         0.000
+ CPA_10_T      10.111         0.331         5.131         0.000
+ CPA_11_R       0.491         1.446         1.081         0.182         0.000
+ CPA_12_T      17.722         0.869        18.075         8.573         1.530
+
+
+           THETA
+              CPA_12_T
+              ________
+ CPA_12_T       0.000
+
+
+     EXPECTED PARAMETER CHANGE
+
+
+           THETA
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       0.000
+ CPA_2_T2      -0.036         0.000
+ CPA_4_T2      -0.118         0.457         0.000
+ CPA_5_V2       0.019        -0.209        -0.205         0.000
+ CPA_6_T2       0.292        -0.192        -0.345         0.140         0.000
+ CPA_7_T2      -0.081        -0.304        -0.292         0.059         0.079
+ CPA_8_T2       0.139        -0.118        -0.098        -0.131         0.071
+ CPA_9_T2      -0.121        -0.348        -0.249         0.044        -0.001
+ CPA_10_T      -0.013        -0.021         0.110         0.027        -0.016
+ CPA_11_R      -0.010        -0.213        -0.206         0.305         0.011
+ CPA_12_T      -0.027         0.254         0.181        -0.114        -0.084
+
+
+           THETA
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       0.000
+ CPA_8_T2       0.118         0.000
+ CPA_9_T2       0.463         0.107         0.000
+ CPA_10_T      -0.185        -0.033        -0.132         0.000
+ CPA_11_R       0.039        -0.068         0.055         0.021         0.000
+ CPA_12_T      -0.240        -0.051        -0.259         0.156        -0.061
+
+
+           THETA
+              CPA_12_T
+              ________
+ CPA_12_T       0.000
+
+
+     MODIFICATION INDICES FOR ANALYSIS WITH 2 FACTOR(S)
+
+
+
+     MODIFICATION INDICES
+
+
+           THETA
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       0.000
+ CPA_2_T2       0.438         0.000
+ CPA_4_T2       1.385         4.165         0.000
+ CPA_5_V2       0.024         0.024         0.051         0.000
+ CPA_6_T2      47.376         0.032        16.086         1.468         0.000
+ CPA_7_T2       8.371         2.527         2.679         5.340         3.669
+ CPA_8_T2       7.181         0.138         0.045        15.716         0.244
+ CPA_9_T2      10.954         0.077         6.315         5.437        10.762
+ CPA_10_T       0.136         7.258         0.709         2.677         0.133
+ CPA_11_R       0.851         0.996         1.002        49.526         2.988
+ CPA_12_T       0.050         0.236         4.609         0.000         0.258
+
+
+           THETA
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       0.000
+ CPA_8_T2       1.966         0.000
+ CPA_9_T2      45.855         1.657         0.000
+ CPA_10_T       4.172         0.254         0.352         0.000
+ CPA_11_R       5.476         6.398         3.556         2.428         0.000
+ CPA_12_T       0.381         0.018         1.279         3.363         1.160
+
+
+           THETA
+              CPA_12_T
+              ________
+ CPA_12_T       0.000
+
+
+     EXPECTED PARAMETER CHANGE
+
+
+           THETA
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       0.000
+ CPA_2_T2       0.037         0.000
+ CPA_4_T2      -0.065         0.176         0.000
+ CPA_5_V2      -0.007        -0.009        -0.013         0.000
+ CPA_6_T2       0.282        -0.010        -0.223         0.060         0.000
+ CPA_7_T2      -0.145         0.099         0.097        -0.119        -0.101
+ CPA_8_T2       0.120        -0.020         0.011        -0.186         0.023
+ CPA_9_T2      -0.173         0.017         0.152        -0.120        -0.181
+ CPA_10_T      -0.018        -0.155         0.043         0.081         0.018
+ CPA_11_R      -0.042        -0.054        -0.053         0.269        -0.082
+ CPA_12_T      -0.012         0.032        -0.143         0.001         0.024
+
+
+           THETA
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       0.000
+ CPA_8_T2       0.067         0.000
+ CPA_9_T2       0.393         0.063         0.000
+ CPA_10_T      -0.106        -0.024        -0.031         0.000
+ CPA_11_R      -0.122        -0.119        -0.094         0.064         0.000
+ CPA_12_T      -0.033        -0.006        -0.063         0.086         0.048
+
+
+           THETA
+              CPA_12_T
+              ________
+ CPA_12_T       0.000
+
+
+     MODIFICATION INDICES FOR ANALYSIS WITH 3 FACTOR(S)
+
+
+
+     MODIFICATION INDICES
+
+
+           THETA
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       0.000
+ CPA_2_T2       0.883         0.000
+ CPA_4_T2       0.197         0.773         0.000
+ CPA_5_V2       9.708         0.039         2.835         0.000
+ CPA_6_T2      30.244         0.376         4.385         5.329         0.000
+ CPA_7_T2       0.165         1.076         0.133         0.027         1.498
+ CPA_8_T2      14.601         0.185         0.333        16.579         2.029
+ CPA_9_T2       0.256         0.040         0.010         0.008         0.000
+ CPA_10_T       2.603         6.143         1.902         1.302         0.360
+ CPA_11_R       8.114         0.749         0.052        48.214        24.059
+ CPA_12_T       1.781         1.736         5.768         0.355         0.138
+
+
+           THETA
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       0.000
+ CPA_8_T2       4.185         0.000
+ CPA_9_T2       0.784         0.100         0.000
+ CPA_10_T       1.803         0.114         0.286         0.000
+ CPA_11_R       0.541         5.413         0.002         1.597         0.000
+ CPA_12_T       0.027         0.012         0.000         2.721         0.594
+
+
+           THETA
+              CPA_12_T
+              ________
+ CPA_12_T       0.000
+
+
+     EXPECTED PARAMETER CHANGE
+
+
+           THETA
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       0.000
+ CPA_2_T2       0.053         0.000
+ CPA_4_T2       0.027         0.083         0.000
+ CPA_5_V2      -0.184         0.011         0.106         0.000
+ CPA_6_T2       0.361         0.038        -0.153        -0.159         0.000
+ CPA_7_T2      -0.022         0.065        -0.024        -0.009         0.072
+ CPA_8_T2       0.177        -0.021        -0.031        -0.190         0.071
+ CPA_9_T2      -0.034        -0.015        -0.008         0.006         0.001
+ CPA_10_T      -0.086        -0.133         0.073         0.057        -0.033
+ CPA_11_R      -0.145        -0.045         0.013         0.306        -0.282
+ CPA_12_T      -0.075         0.082        -0.165        -0.030        -0.020
+
+
+           THETA
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       0.000
+ CPA_8_T2       0.144         0.000
+ CPA_9_T2      -0.222         0.028         0.000
+ CPA_10_T      -0.069        -0.015         0.033         0.000
+ CPA_11_R      -0.038        -0.105         0.003         0.051         0.000
+ CPA_12_T       0.009         0.005        -0.001         0.077         0.033
+
+
+           THETA
+              CPA_12_T
+              ________
+ CPA_12_T       0.000
+
+
+     MODIFICATION INDICES FOR ANALYSIS WITH 4 FACTOR(S)
+
+
+
+     MODIFICATION INDICES
+
+
+           THETA
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       0.000
+ CPA_2_T2       0.077         0.000
+ CPA_4_T2       2.074         2.268         0.000
+ CPA_5_V2       0.165         1.105         1.348         0.000
+ CPA_6_T2       0.155         0.460         1.864         0.753         0.000
+ CPA_7_T2       1.196         1.505         0.020         0.461         1.006
+ CPA_8_T2       4.631         1.616         0.035         2.124         5.176
+ CPA_9_T2       0.059         0.023         0.003         0.085         0.150
+ CPA_10_T       0.708         7.435         0.921         0.628         0.451
+ CPA_11_R       1.101         0.392         1.010         0.480         3.964
+ CPA_12_T       2.575         2.365         8.400         2.487         0.065
+
+
+           THETA
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       0.000
+ CPA_8_T2       0.186         0.000
+ CPA_9_T2       0.438         0.565         0.000
+ CPA_10_T       1.566         0.572         0.325         0.000
+ CPA_11_R       0.008         0.998         0.029         0.051         0.000
+ CPA_12_T       0.076         0.172         0.027         3.804         0.683
+
+
+           THETA
+              CPA_12_T
+              ________
+ CPA_12_T       0.000
+
+
+     EXPECTED PARAMETER CHANGE
+
+
+           THETA
+              CPA_1_V2      CPA_2_T2      CPA_4_T2      CPA_5_V2      CPA_6_T2
+              ________      ________      ________      ________      ________
+ CPA_1_V2       0.000
+ CPA_2_T2       0.016         0.000
+ CPA_4_T2       0.101         0.123         0.000
+ CPA_5_V2       0.028         0.069         0.080         0.000
+ CPA_6_T2       0.084         0.042        -0.120         0.066         0.000
+ CPA_7_T2      -0.061         0.067        -0.008         0.041         0.059
+ CPA_8_T2       0.178        -0.064        -0.010        -0.113        -0.195
+ CPA_9_T2      -0.017        -0.010         0.004        -0.020         0.029
+ CPA_10_T      -0.044        -0.130         0.047        -0.057         0.036
+ CPA_11_R       0.058        -0.034        -0.056         0.133        -0.120
+ CPA_12_T      -0.089         0.083        -0.176        -0.087         0.014
+
+
+           THETA
+              CPA_7_T2      CPA_8_T2      CPA_9_T2      CPA_10_T      CPA_11_R
+              ________      ________      ________      ________      ________
+ CPA_7_T2       0.000
+ CPA_8_T2       0.048         0.000
+ CPA_9_T2       0.185        -0.098         0.000
+ CPA_10_T      -0.058         0.034         0.030         0.000
+ CPA_11_R      -0.005         0.063        -0.010         0.012         0.000
+ CPA_12_T       0.014         0.019        -0.010         0.080         0.037
+
+
+           THETA
+              CPA_12_T
+              ________
+ CPA_12_T       0.000
+
+
+DIAGRAM INFORMATION
+
+  Mplus diagrams are currently not available for EFA.
+  No diagram output was produced.
+
+
+     Beginning Time:  09:46:54
+        Ending Time:  09:46:54
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2023 Muthen & Muthen

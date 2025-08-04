@@ -1,0 +1,101 @@
+Mplus VERSION 8.10
+MUTHEN & MUTHEN
+07/22/2025  11:21 AM
+
+INPUT INSTRUCTIONS
+
+  TITLE:
+  CPA 3-Factor Longitudinal ESEM – Target Rotation - age MI T1
+
+  DATA:
+    FILE = data_ora_cpa.csv;
+
+  VARIABLE:
+
+  !-------------------------------------------------
+  ! 1. VARIABLES
+  !-------------------------------------------------
+  NAMES = ID site gender age_months_t1 age_group_t1 age_t2 age_group_t2
+  cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+    cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+    cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+    cpa_12_t2;
+
+  USEVARIABLES = age_group_t1 cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+    cpa_11_rs_t1 cpa_12_t1;
+
+    CATEGORICAL =
+  cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+    cpa_11_rs_t1 cpa_12_t1;
+
+  GROUPING = age_group_t1 (3 = 3yo, 4 = 4yo, 5 = 5yo, 6 = 6yo)
+
+    MISSING     = ALL (-999);
+    IDVARIABLE  = ID;
+
+  DEFINE:
+
+  CUT cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+    cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+    cpa_11_rs_t1 cpa_12_t1 (2 3 4);
+
+  !-------------------------------------------------
+  ! 2. ANALYSIS
+  !-------------------------------------------------
+  ANALYSIS:
+    TYPE             = GENERAL;
+    ESTIMATOR        = WLSMV;
+    PARAMETERIZATION = THETA;
+    ROTATION         = TARGET;
+    ITERATIONS = 10000;
+    MODEL = CONFIGURAL METRIC SCALAR;
+
+  !-------------------------------------------------
+  ! 3. MODEL  (Target matrix inside BY lines)
+  !-------------------------------------------------
+  MODEL:
+
+  !---------------- WAVE-1  (Factors F1, F2) ----------------
+  F1_T1 BY
+  cpa_1_t1~0 cpa_2_t1~0 cpa_3_rs_t1~0 cpa_4_t1~0 cpa_5_rs_t1*  cpa_6_t1~0 cpa_7_t1*
+  cpa_8_t1~0 cpa_9_t1* cpa_10_t1~0 cpa_11_rs_t1* cpa_12_t1~0 (*t1);
+
+  F2_T1 BY
+  cpa_1_t1* cpa_2_t1* cpa_3_rs_t1~0 cpa_4_t1* cpa_5_rs_t1~0 cpa_6_t1~0
+  cpa_7_t1~0 cpa_8_t1*  cpa_9_t1~0 cpa_10_t1~0
+  cpa_11_rs_t1~0 cpa_12_t1*(*t1);
+
+  F3_T1 BY cpa_1_t1~0 cpa_2_t1~0 cpa_3_rs_t1* cpa_4_t1~0 cpa_5_rs_t1~0 cpa_6_t1*
+  cpa_7_t1~0 cpa_8_t1~0  cpa_9_t1~0 cpa_10_t1*
+  cpa_11_rs_t1~0 cpa_12_t1~0(*t1);
+
+  !-------------------------------------------------
+  OUTPUT:
+    SAMPSTAT STANDARDIZED MODINDICES (ALL)
+    CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;
+
+*** WARNING in VARIABLE command
+  Note that only the first 8 characters of variable names are used in the output.
+  Shorten variable names to avoid any confusion.
+*** WARNING in OUTPUT command
+  MODINDICES option is not available when performing measurement invariance
+  testing with multiple models with the MODEL option of the ANALYSIS command.
+  Request for MODINDICES is ignored.
+*** ERROR in ANALYSIS command
+  Measurement invariance testing with MODEL=METRIC is not allowed for analysis with
+  EFA factors (ESEM) and categorical outcomes.
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2023 Muthen & Muthen

@@ -1,0 +1,84 @@
+TITLE:
+  8.0 CPA 2-Factor Longitudinal ESEM – MLR
+
+DATA:
+  FILE = data_ora_cpa.csv;
+
+!-------------------------------------------------
+! 1. VARIABLES  (drop items 1 & 5)
+!-------------------------------------------------
+VARIABLE:
+NAMES = ID site gender age_t1 age_t2 cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+  cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+  cpa_12_t2;
+ 
+USEVARIABLES = cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1 cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+  cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+  cpa_12_t2;
+
+  MISSING     = ALL (-999);
+  IDVARIABLE  = ID;
+
+!-------------------------------------------------
+! 2. ANALYSIS
+!-------------------------------------------------
+ANALYSIS:
+  TYPE             = GENERAL;
+  ESTIMATOR        = MLR;
+  ROTATION         = GEOMIN(0.5);
+  ITERATIONS = 10000;
+
+!-------------------------------------------------
+! 3. MODEL  (Target matrix inside BY lines)
+!-------------------------------------------------
+MODEL:
+
+!---------------- WAVE-1  (Factors F1, F2) ----------------
+F1_T1 F2_T1 BY
+cpa_1_t1 cpa_2_t1 cpa_3_rs_t1
+  cpa_4_t1 cpa_5_rs_t1 cpa_6_t1 cpa_7_t1 cpa_8_t1 cpa_9_t1 cpa_10_t1
+  cpa_11_rs_t1 cpa_12_t1;
+
+!---------------- WAVE-2  (Factors F3, F4) ----------------
+F1_T2 F2_T2 BY
+cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
+  cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+  cpa_12_t2;
+
+! same-item residual correlations across waves
+cpa_2_t1   WITH cpa_2_t2 ;
+cpa_3_rs_t1 WITH cpa_3_rs_t2;
+cpa_4_t1   WITH cpa_4_t2 ;
+cpa_5_rs_t1 WITH cpa_5_v2_t2;
+cpa_6_t1   WITH cpa_6_t2 ;
+cpa_7_t1   WITH cpa_7_t2 ;
+cpa_8_t1   WITH cpa_8_t2 ;
+cpa_9_t1   WITH cpa_9_t2 ;
+cpa_10_t1  WITH cpa_10_t2 ;
+cpa_11_rs_t1 WITH cpa_11_rs_t2 ;
+cpa_12_t1  WITH cpa_12_t2 ;
+
+!factor means
+[F1_T1@0];
+[F2_T1@0];
+[F1_T2@0];
+[F2_T2@0];
+
+!factor variances
+F1_T1@1;
+F2_T1@1;
+F1_T2@1;
+F2_T2@1;
+
+!uniquenesses
+cpa_1_t1-cpa_12_t1;
+cpa_1_v2_t2-cpa_12_t2;
+
+!-------------------------------------------------
+OUTPUT:
+  SAMPSTAT STANDARDIZED MODINDICES (ALL)
+  CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;

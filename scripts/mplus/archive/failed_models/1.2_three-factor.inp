@@ -1,0 +1,112 @@
+TITLE:
+
+1.2 psb 3-factor model
+
+Data: 
+
+File = data_ora_ca_p2_clean.csv; 
+
+VARIABLE: 
+
+NAMES = ID gender age_t1 help_t1 share_t1 comfort_t1 aht_t1 mdg_t1 pain_t1 
+age_t2 help_t2 share_t2 comfort_t2 aht_t2 mdg_t2 pain_t2;
+ 
+USEVARIABLES = help_t1 share_t1 comfort_t1 aht_t1 mdg_t1 pain_t1
+ help_t2 share_t2 comfort_t2 aht_t2 mdg_t2 pain_t2;
+
+MISSING = all (-999);
+
+IDVARIABLE = ID;
+
+ANALYSIS:
+
+TYPE = General; 
+
+ESTIMATOR = MLR; 
+
+MODEL: 
+
+!---------------------t1--------------------------------
+
+!helping t1
+
+HE_T1 BY help_t1* aht_t1;
+
+[help_t1*  aht_t1];
+
+HE_T1@1;
+
+[HE_T1@0];
+
+!sharing t1
+
+SH_T1 BY share_t1* mdg_t1;
+
+[share_t1* mdg_t1];
+
+SH_T1@1;
+
+[SH_T1@0];
+
+!comforting t1
+
+CO_T1 BY comfort_t1* pain_t1;
+
+[comfort_t1* pain_t1];
+
+CO_T1@1;
+
+[CO_T1@0];
+
+!---------------------t2--------------------------------
+
+!helping t2
+
+HE_T2 BY help_t2* aht_t2;
+
+[help_t2*  aht_t2];
+
+HE_T2@1;
+
+[HE_T2@0];
+
+!sharing t2
+
+SH_T2 BY share_t2* mdg_t2;
+
+[share_t2* mdg_t2];
+
+SH_T2@1;
+
+[SH_T2@0];
+
+!comforting t2
+
+CO_T2 BY comfort_t2* pain_t2;
+
+[comfort_t2* pain_t2];
+
+CO_T2@1;
+
+[CO_T2@0];
+
+!----------------------across-time----------------------
+
+!covariances
+
+HE_T1 SH_T1 CO_T1 WITH HE_T2 SH_T2 CO_T2;
+HE_T1 WITH SH_T1 CO_T1;
+SH_T1 WITH CO_T1;
+HE_T2 WITH SH_T2 CO_T2;
+SH_T2 WITH CO_T2;
+
+! cross-time residual covariances
+help_t1 WITH help_t2;
+share_t1 WITH share_t2;
+comfort_t1 WITH comfort_t2;
+aht_t1 WITH aht_t2;
+mdg_t1 WITH mdg_t2;
+pain_t1 WITH pain_t2;
+
+OUTPUT: 
+SAMPSTAT STANDARDIZED MODINDICES CINTERVAL RESIDUAL SVALUES TECH1 TECH3 TECH4;
