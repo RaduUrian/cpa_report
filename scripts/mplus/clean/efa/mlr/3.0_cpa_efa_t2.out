@@ -1,6 +1,6 @@
 Mplus VERSION 8.10
 MUTHEN & MUTHEN
-08/01/2025   7:12 AM
+08/04/2025   3:47 PM
 
 INPUT INSTRUCTIONS
 
@@ -31,7 +31,7 @@ INPUT INSTRUCTIONS
 
      DEFINE:
     CUT cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
-      cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+      cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2
       cpa_12_t2 (2 3 4);
 
   ANALYSIS:
@@ -3119,9 +3119,9 @@ MODIFICATION INDICES
  CPA_12_T       0.000
 
 
-     Beginning Time:  07:12:39
-        Ending Time:  07:12:42
-       Elapsed Time:  00:00:03
+     Beginning Time:  15:47:30
+        Ending Time:  15:47:32
+       Elapsed Time:  00:00:02
 
 
 

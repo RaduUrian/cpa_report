@@ -78,15 +78,35 @@ options(scipen = 999)
 #2. Data Load
 
 ```{r load clean data}
-data <- read.csv(here("data","data_clean", "data_ora_cpa.csv"), 
-                 col.names = c(
-                   "id",
+data <- read.csv(here("data","data_raw", "data_ora_complete_final.csv"))
+
+```
+
+#3. Wrangling
+
+```{r select variables}
+data <- data %>% 
+  select(c(ID_child_raw_t1_child,
+           Site_raw_t1_child,
+           Gender_raw_t1,
+           age_months_raw_t1,
+           SES_birthd_mom_t1,
+           SES_birthd_dad_t1,
+           SES_birthd_mom_t2,
+           SES_birthd_dad_t2,
+           SES_whoanswers_t1,
+           SES_whoanswers_t2,
+           age_months_raw_t2,
+           CPA_1:CPA_12_t1,
+           CPA_1_V2:CPA_12_t2))
+```
+
+```{r names}
+colnames(data) <- c("id",
                    "site",
                    "gender",
                    "age_months_t1",
-                   "age_group_t1",
                    "age_months_t2",
-                   "age_group_t2",
                    "cpa_1_t1",
                    "cpa_2_t1",
                    "cpa_3_rs_t1",
@@ -109,27 +129,11 @@ data <- read.csv(here("data","data_clean", "data_ora_cpa.csv"),
                    "cpa_8_t2",
                    "cpa_9_t2",
                    "cpa_10_t2",
-                   "cpa_11_t2",
-                   "cpa_12_t2",
-                   "language"
-                   
+                   "cpa_11_rs_t2",
+                   "cpa_12_t2"
                  )
-                   )
-
 ```
 
-#3. Wrangling
-
-```{r select variables}
-data <- data %>% 
-  select(c(id,
-           site,
-           gender,
-           age_months_t1,
-           age_months_t2,
-           cpa_1_t1:cpa_12_t1,
-           cpa_1_v2_t2:cpa_12_t2))
-```
 
 ```{r fix gender}
 data <- data %>% 
@@ -277,7 +281,7 @@ data <- data %>%
 ```{r collapse cpa levels}
 data <- data %>%                         
   mutate(across(
-    c(CPA_1:CPA_3_RS_t2,CPA_5_V2:CPA_12_t2),
+    c(cpa_1_t1:cpa_3_rs_t2, cpa_5_v2_t2:cpa_12_t2),
     ~ case_when(
         . <= 2        ~ 1,     
         . == 3        ~ 2,     
@@ -292,7 +296,7 @@ data <- data %>%
 
 ```{r}
 data %>% 
-  select(cpa_1_t1:cpa_12_t2) %>% 
+  select(age_months_t1, age_months_t2, gender, cpa_1_t1:cpa_12_t2) %>% 
   naniar::vis_miss()
 ```
 
@@ -519,15 +523,17 @@ kmo <- KMO(data_imputed_numeric)
 ## Parallel Analysis
 
 ```{r}
-data_pa_t1 <- data %>% 
-  select(cpa_1_t1:cpa_12_t1) %>% 
+data_pa_t1 <- data %>%
+  select(cpa_1_t1:cpa_12_t1) %>%
   mutate(across(c(cpa_1_t1:cpa_12_t1), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .)))
 
-data_pa_t2 <- data %>% 
-  select(cpa_1_v2_t2:cpa_12_t2) %>% 
+data_pa_t2 <- data %>%
+  select(cpa_1_v2_t2:cpa_12_t2) %>%
   mutate(across(c(cpa_1_v2_t2:cpa_12_t2), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .)))
 
 pa_t1 <- random.polychor.pa(data.matrix = data_pa_t1, nrep = 1000, q.eigen = .95)
+
+pa_t2 <- random.polychor.pa(data.matrix = data_pa_t2, nrep = 1000, q.eigen = .95)
 ```
 
 

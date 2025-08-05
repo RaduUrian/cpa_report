@@ -90,15 +90,57 @@ snapshot()
 data <- read.csv(here("data", "data_clean", "data_cpa_clean.csv"))
 ```
 
-#3. Model
+#3. Composite Reliability
+
+```{r t1}
+omega_t1_1f <- data %>% 
+  select(c(
+  "cpa_1_t1", "cpa_2_t1","cpa_3_rs_t1","cpa_4_t1","cpa_5_rs_t1","cpa_6_t1",
+  "cpa_7_t1","cpa_8_t1", "cpa_9_t1","cpa_10_t1","cpa_11_rs_t1", "cpa_12_t1")) %>% 
+  psych::omega(nfactors = 1)
+
+omega_t1_2f <- data %>% 
+  select(c(
+  "cpa_1_t1", "cpa_2_t1","cpa_3_rs_t1","cpa_4_t1","cpa_5_rs_t1","cpa_6_t1",
+  "cpa_7_t1","cpa_8_t1", "cpa_9_t1","cpa_10_t1","cpa_11_rs_t1", "cpa_12_t1")) %>% 
+  psych::omega(nfactors = 2)
+
+omega_t1_3f <- data %>% 
+  select(c(
+  "cpa_1_t1", "cpa_2_t1","cpa_3_rs_t1","cpa_4_t1","cpa_5_rs_t1","cpa_6_t1",
+  "cpa_7_t1","cpa_8_t1", "cpa_9_t1","cpa_10_t1","cpa_11_rs_t1", "cpa_12_t1")) %>% 
+  psych::omega(nfactors = 3)
+```
+
+```{r t2}
+omega_t2_1f <- data %>% 
+  select(c(
+  "cpa_1_v2_t2","cpa_2_t2", "cpa_3_rs_t2", "cpa_4_t2", "cpa_5_v2_t2","cpa_6_t2",
+  "cpa_7_t2", "cpa_8_t2", "cpa_9_t2","cpa_10_t2", "cpa_12_t2")) %>% 
+  psych::omega(nfactors = 1)
+
+omega_t2_2f <- data %>% 
+  select(c(
+  "cpa_1_v2_t2","cpa_2_t2", "cpa_3_rs_t2", "cpa_4_t2", "cpa_5_v2_t2","cpa_6_t2",
+  "cpa_7_t2", "cpa_8_t2", "cpa_9_t2","cpa_10_t2", "cpa_12_t2")) %>% 
+  psych::omega(nfactors = 2)
+
+omega_t2_3f <- data %>% 
+  select(c(
+  "cpa_1_v2_t2","cpa_2_t2", "cpa_3_rs_t2", "cpa_4_t2", "cpa_5_v2_t2","cpa_6_t2",
+  "cpa_7_t2", "cpa_8_t2", "cpa_9_t2","cpa_10_t2", "cpa_12_t2")) %>% 
+  psych::omega(nfactors = 3)
+```
+
+#4. DFI
 
 ```{r}
 
 ord_vars <- c(
-  "CPA_2_t1","CPA_3_RS_t1","CPA_4_t1","CPA_5_RS","CPA_6_t1",
-  "CPA_7_t1","CPA_9_t1","CPA_10_t1","CPA_12_t1",
-  "CPA_1_V2","CPA_2_t2","CPA_4_t2","CPA_5_V2","CPA_6_t2",
-  "CPA_7_t2","CPA_9_t2","CPA_10_t2","CPA_12_t2"
+  "cpa_2_t1","cpa_3_rs_t1","cpa_4_t1","cpa_5_rs_t1","cpa_6_t1",
+  "cpa_7_t1","cpa_9_t1","cpa_10_t1","cpa_12_t1",
+  "cpa_1_v2_t2","cpa_2_t2","cpa_4_t2","cpa_5_v2_t2","cpa_6_t2",
+  "cpa_7_t2","cpa_9_t2","cpa_10_t2","cpa_12_t2"
 )
 
 # 1. keep only variables you model
@@ -111,92 +153,86 @@ data_mod <- data_mod %>%
 
 ## Longitudinal CFA model with corrected variable names
 model_syntax <- '
-  HE_T1 =~ CPA_3_RS_t1 + CPA_6_t1
-  SH_T1 =~ CPA_5_RS    + CPA_7_t1 + CPA_9_t1
-  CO_T1 =~ CPA_2_t1    + CPA_4_t1 + CPA_10_t1 + CPA_12_t1
+  HE_T1 =~ cpa_3_rs_t1 + cpa_6_t1
+  SH_T1 =~ cpa_5_rs_t1    + cpa_7_t1 + cpa_9_t1
+  CO_T1 =~ cpa_2_t1    + cpa_4_t1 + cpa_10_t1 + cpa_12_t1
 
-  HE_T2 =~ CPA_1_V2 + CPA_6_t2
-  SH_T2 =~ CPA_5_V2 + CPA_7_t2 + CPA_9_t2
-  CO_T2 =~ CPA_2_t2 + CPA_4_t2 + CPA_10_t2 + CPA_12_t2
+  HE_t2 =~ cpa_1_v2_t2 + cpa_6_t2
+  SH_t2 =~ cpa_5_v2_t2 + cpa_7_t2 + cpa_9_t2
+  CO_t2 =~ cpa_2_t2 + cpa_4_t2 + cpa_10_t2 + cpa_12_t2
 
   HE_T1 ~ 0*1
   SH_T1 ~ 0*1
   CO_T1 ~ 0*1
-  HE_T2 ~ 1
-  SH_T2 ~ 1
-  CO_T2 ~ 1
+  HE_t2 ~ 1
+  SH_t2 ~ 1
+  CO_t2 ~ 1
 
   HE_T1 ~~ 1*HE_T1
   SH_T1 ~~ 1*SH_T1
   CO_T1 ~~ 1*CO_T1
-  HE_T2 ~~ 1*HE_T2
-  SH_T2 ~~ 1*SH_T2
-  CO_T2 ~~ 1*CO_T2
+  HE_t2 ~~ 1*HE_t2
+  SH_t2 ~~ 1*SH_t2
+  CO_t2 ~~ 1*CO_t2
 
-  CPA_2_t1    ~~ 1*CPA_2_t1
-  CPA_3_RS_t1 ~~ 1*CPA_3_RS_t1
-  CPA_4_t1    ~~ 1*CPA_4_t1
-  CPA_5_RS    ~~ 1*CPA_5_RS
-  CPA_6_t1    ~~ 1*CPA_6_t1
-  CPA_7_t1    ~~ 1*CPA_7_t1
-  CPA_9_t1    ~~ 1*CPA_9_t1
-  CPA_10_t1   ~~ 1*CPA_10_t1
-  CPA_12_t1   ~~ 1*CPA_12_t1
+  cpa_2_t1    ~~ 1*cpa_2_t1
+  cpa_3_rs_t1 ~~ 1*cpa_3_rs_t1
+  cpa_4_t1    ~~ 1*cpa_4_t1
+  cpa_5_rs_t1    ~~ 1*cpa_5_rs_t1
+  cpa_6_t1    ~~ 1*cpa_6_t1
+  cpa_7_t1    ~~ 1*cpa_7_t1
+  cpa_9_t1    ~~ 1*cpa_9_t1
+  cpa_10_t1   ~~ 1*cpa_10_t1
+  cpa_12_t1   ~~ 1*cpa_12_t1
   
-CPA_1_V2    ~~ CPA_1_V2
-CPA_2_t2    ~~ CPA_2_t2
-CPA_4_t2    ~~ CPA_4_t2
-CPA_5_V2    ~~ CPA_5_V2
-CPA_6_t2    ~~ CPA_6_t2
-CPA_7_t2    ~~ CPA_7_t2
-CPA_9_t2    ~~ CPA_9_t2
-CPA_10_t2   ~~ CPA_10_t2
-CPA_12_t2   ~~ CPA_12_t2
+cpa_1_v2_t2    ~~ cpa_1_v2_t2
+cpa_2_t2    ~~ cpa_2_t2
+cpa_4_t2    ~~ cpa_4_t2
+cpa_5_v2_t2    ~~ cpa_5_v2_t2
+cpa_6_t2    ~~ cpa_6_t2
+cpa_7_t2    ~~ cpa_7_t2
+cpa_9_t2    ~~ cpa_9_t2
+cpa_10_t2   ~~ cpa_10_t2
+cpa_12_t2   ~~ cpa_12_t2
 
-  CPA_2_t1    ~~ CPA_2_t2
-  CPA_3_RS_t1 ~~ CPA_1_V2
-  CPA_4_t1    ~~ CPA_4_t2
-  CPA_5_RS    ~~ CPA_5_V2
-  CPA_6_t1    ~~ CPA_6_t2
-  CPA_7_t1    ~~ CPA_7_t2
-  CPA_9_t1    ~~ CPA_9_t2
-  CPA_10_t1   ~~ CPA_10_t2
-  CPA_12_t1   ~~ CPA_12_t2
+  cpa_2_t1    ~~ cpa_2_t2
+  cpa_3_rs_t1 ~~ cpa_1_v2_t2
+  cpa_4_t1    ~~ cpa_4_t2
+  cpa_5_rs_t1    ~~ cpa_5_v2_t2
+  cpa_6_t1    ~~ cpa_6_t2
+  cpa_7_t1    ~~ cpa_7_t2
+  cpa_9_t1    ~~ cpa_9_t2
+  cpa_10_t1   ~~ cpa_10_t2
+  cpa_12_t1   ~~ cpa_12_t2
 
-  CPA_3_RS_t1 | a1*t1 + t2 + t3
-  CPA_1_V2    | a1*t1 + t2 + t3
+  cpa_3_rs_t1 | a1*t1 + t2 + t3
+  cpa_1_v2_t2    | a1*t1 + t2 + t3
 
-  CPA_2_t1    | a2*t1 + t2 + t3
-  CPA_2_t2    | a2*t1 + t2 + t3
+  cpa_2_t1    | a2*t1 + t2 + t3
+  cpa_2_t2    | a2*t1 + t2 + t3
 
-  CPA_4_t1    | a4*t1 + a4_2*t2 + t3
-  CPA_4_t2    | a4*t1 + a4_2*t2 + t3
+  cpa_4_t1    | a4*t1 + a4_2*t2 + t3
+  cpa_4_t2    | a4*t1 + a4_2*t2 + t3
 
-  CPA_5_RS    | a5*t1 + t2 + t3
-  CPA_5_V2    | a5*t1 + t2 + t3
+  cpa_5_rs_t1    | a5*t1 + t2 + t3
+  cpa_5_v2_t2    | a5*t1 + t2 + t3
 
-  CPA_6_t1    | a6*t1 + a6_2*t2 + t3
-  CPA_6_t2    | a6*t1 + a6_2*t2 + t3
+  cpa_6_t1    | a6*t1 + a6_2*t2 + t3
+  cpa_6_t2    | a6*t1 + a6_2*t2 + t3
 
-  CPA_7_t1    | a7*t1 + a7_2*t2 + t3
-  CPA_7_t2    | a7*t1 + a7_2*t2 + t3
+  cpa_7_t1    | a7*t1 + a7_2*t2 + t3
+  cpa_7_t2    | a7*t1 + a7_2*t2 + t3
 
-  CPA_9_t1    | a9*t1 + t2 + t3
-  CPA_9_t2    | a9*t1 + t2 + t3
+  cpa_9_t1    | a9*t1 + t2 + t3
+  cpa_9_t2    | a9*t1 + t2 + t3
 
-  CPA_10_t1   | a10*t1 + t2 + t3
-  CPA_10_t2   | a10*t1 + t2 + t3
+  cpa_10_t1   | a10*t1 + t2 + t3
+  cpa_10_t2   | a10*t1 + t2 + t3
 
-  CPA_12_t1   | a12*t1 + t2 + t3
-  CPA_12_t2   | a12*t1 + t2 + t3
+  cpa_12_t1   | a12*t1 + t2 + t3
+  cpa_12_t2   | a12*t1 + t2 + t3
 '
 
-
-## To fit the model, read your data (e.g., data_ora_cpa.csv), convert the
-## ordinal items to ordered factors, and call cfa() with the WLSMV
-## estimator and theta parameterisation:
-# mydata <- read.csv("data_ora_cpa.csv")
-data_mod[ord_vars] <- lapply(data_mod[ord_vars], ordered)
 fit <- cfa(model_syntax,
            data         = data_mod,
            estimator    = "WLSMV",
@@ -206,204 +242,21 @@ fit <- cfa(model_syntax,
            auto.fix.first = FALSE,
            auto.var = TRUE,
            auto.cov.y = TRUE,
-           auto.cov.lv.x = TRUE,
-           mimic = "Mplus"
+           auto.cov.lv.x = TRUE
            )
 
 summary(fit)
 
 dfi_results <- dynamic::DDDFI(fit,
                               scale = "categorical",
-                              data = data_mod)
+                              data = data_mod,
+                              plot.dfi = TRUE,
+                              plot.dist = TRUE,
+                              plot.discrepancy = TRUE)
 print(dfi_results)
 
 ```
 
-```{r}
-# assuming you've already fit 'fit' with WLSMV + ordered + theta
-pe  <- parameterEstimates(fit, standardized = TRUE)
-ss  <- standardizedSolution(fit)  # includes est.std
-
-write.csv(pe, here("stand_est.csv"))
-
-# Any NA loadings?
-nas_load <- subset(ss, op == "=~" & is.na(est.std))
-nas_load
-
-# Any NA thresholds?
-nas_thr  <- subset(pe, op == "|" & is.na(est))
-nas_thr
-
-# Any NA factor covariances (catHB also uses these)?
-nas_latcov <- subset(ss, op == "~~" & lhs != rhs & is.na(est.std))
-nas_latcov
-
-for (v in ord_vars) {
-  cat("\n", v, "\n"); print(table(data_mod[[v]], useNA = "ifany"))
-}
-
-
-```
-
-```{r}
-model_catHB <- "
-HE_T1=~.459*CPA_3_RS_t1 + .826*CPA_6_t1
-SH_T1=~.435*CPA_5_RS + .718*CPA_7_t1 + .858*CPA_9_t1
-CO_T1=~.638*CPA_10_t1 + .740*CPA_12_t1 + .800*CPA_2_t1 + .822*CPA_4_t1
-HE_T2=~.781*CPA_1_V2 + .576*CPA_6_t2
-SH_T2=~.517*CPA_5_V2 + .780*CPA_7_t2 + .815*CPA_9_t2
-CO_T2=~.712*CPA_10_t2 + .717*CPA_12_t2 + .696*CPA_2_t2 + .802*CPA_4_t2
-
-# factor covariances (correlations)
-HE_T1~~.326*SH_T1
-HE_T1~~.307*CO_T1
-HE_T1~~.475*HE_T2
-HE_T1~~.171*SH_T2
-HE_T1~~.051*CO_T2
-SH_T1~~.392*CO_T1
-SH_T1~~.259*HE_T2
-SH_T1~~.550*SH_T2
-SH_T1~~.266*CO_T2
-CO_T1~~.200*HE_T2
-CO_T1~~.197*SH_T2
-CO_T1~~.576*CO_T2
-HE_T2~~.553*SH_T2
-HE_T2~~.432*CO_T2
-SH_T2~~.393*CO_T2
-
-# correlated uniquenesses (T1–T2 residual covariances)
-CPA_2_t1~~.210*CPA_2_t2
-CPA_4_t1~~.316*CPA_4_t2
-CPA_5_RS~~.053*CPA_5_V2
-CPA_6_t1~~.576*CPA_6_t2
-CPA_7_t1~~.237*CPA_7_t2
-CPA_9_t1~~.011*CPA_9_t2
-CPA_10_t1~~.254*CPA_10_t2
-CPA_12_t1~~.261*CPA_12_t2
-CPA_3_RS_t1~~.049*CPA_1_V2
-
-# thresholds (three per item)
-CPA_10_t1 | -1.727*t1
-CPA_10_t1 | -.141*t2
-CPA_10_t1 | 1.510*t3
-CPA_10_t2 | -1.727*t1
-CPA_10_t2 | -.318*t2
-CPA_10_t2 | .967*t3
-CPA_12_t1 | -.710*t1
-CPA_12_t1 | .633*t2
-CPA_12_t1 | 2.264*t3
-CPA_12_t2 | -.710*t1
-CPA_12_t2 | .690*t2
-CPA_12_t2 | 2.363*t3
-CPA_1_V2 | -1.122*t1
-CPA_1_V2 | -.174*t2
-CPA_1_V2 | .534*t3
-CPA_2_t1 | -2.014*t1
-CPA_2_t1 | -.044*t2
-CPA_2_t1 | 1.753*t3
-CPA_2_t2 | -2.014*t1
-CPA_2_t2 | -.255*t2
-CPA_2_t2 | 1.353*t3
-CPA_3_RS_t1 | -1.122*t1
-CPA_3_RS_t1 | .016*t2
-CPA_3_RS_t1 | 1.256*t3
-CPA_4_t1 | -2.747*t1
-CPA_4_t1 | -.874*t2
-CPA_4_t1 | .999*t3
-CPA_4_t2 | -2.747*t1
-CPA_4_t2 | -.874*t2
-CPA_4_t2 | .879*t3
-CPA_5_RS | -1.480*t1
-CPA_5_RS | -.660*t2
-CPA_5_RS | .263*t3
-CPA_5_V2 | -1.480*t1
-CPA_5_V2 | -.253*t2
-CPA_5_V2 | .735*t3
-CPA_6_t1 | -1.666*t1
-CPA_6_t1 | .349*t2
-CPA_6_t1 | 1.927*t3
-CPA_6_t2 | -1.666*t1
-CPA_6_t2 | .349*t2
-CPA_6_t2 | 2.054*t3
-CPA_7_t1 | -1.134*t1
-CPA_7_t1 | .467*t2
-CPA_7_t1 | 1.690*t3
-CPA_7_t2 | -1.134*t1
-CPA_7_t2 | .467*t2
-CPA_7_t2 | 1.969*t3
-CPA_9_t1 | -3.038*t1
-CPA_9_t1 | -1.165*t2
-CPA_9_t1 | .894*t3
-CPA_9_t2 | -3.038*t1
-CPA_9_t2 | -.974*t2
-CPA_9_t2 | .886*t3
-"
-
-```
-
-```{r}
-library(dynamic)
-dfi <- catHB(
-  model     = model_catHB,   # the string below
-  n         = 470,           # your used N
-  manual    = TRUE,
-  estimator = "WLSMV",
-  plot      = TRUE
-)
-dfi
-
-
-```
-
-```{r}
-bundle <- list(
-  fit            = fit,                # your fitted lavaan object
-  ord_vars       = ord_vars,           # the ordered indicators vector you used
-  model_syntax   = model_syntax,       # the exact syntax string
-  n_used         = nobs(fit),          # N used (e.g., 470)
-  lavaan_version = as.character(packageVersion("lavaan")),
-  dynamic_version= if (requireNamespace("dynamic", quietly=TRUE))
-                     as.character(utils::packageVersion("dynamic")) else NA_character_,
-  sessionInfo    = utils::sessionInfo()
-)
-
-saveRDS(bundle, file = here("lavaan_fit_bundle.rds"))
-```
-
-```{r}
-dat <- lavaan::HolzingerSwineford1939
-
-dat <- dat %>% 
-  mutate(
-    across(
-      x1:x9,
-      ~as.integer(.)
-    )
-  )
-
-# 2) CFA model with categorical indicators + correlated uniquenesses
-lavmod_cat <- "
-  F1 =~ x1 + x2 + x3
-  F2 =~ x4 + x5 + x6
-  F3 =~ x7 + x8 + x9
-
-  # correlated uniquenesses (residual covariances among items)
-  x1 ~~ x2
-  x4 ~~ x5
-  x7 ~~ x8
-"
-
-fit_cat <- cfa(
-  lavmod_cat, data = dat,
-  ordered = TRUE,
-  estimator = "WLSMV",
-  parameterization = "theta",
-  std.lv = TRUE
-)
-
-summary(fit_cat, fit.measures = TRUE, standardized = TRUE)
-catHB(fit_cat)
-```
 
 
 

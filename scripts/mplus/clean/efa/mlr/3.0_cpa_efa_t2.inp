@@ -25,7 +25,7 @@ IDVARIABLE = ID;
 
    DEFINE:
   CUT cpa_1_v2_t2 cpa_2_t2 cpa_3_rs_t2 cpa_4_t2
-    cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 cpa_11_rs_t2
+    cpa_5_v2_t2 cpa_6_t2 cpa_7_t2 cpa_8_t2 cpa_9_t2 cpa_10_t2 
     cpa_12_t2 (2 3 4);
 
 ANALYSIS:
