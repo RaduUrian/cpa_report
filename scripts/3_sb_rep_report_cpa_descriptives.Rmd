@@ -89,14 +89,27 @@ data <- data %>%
   select(c(ID_child_raw_t1_child,
            Site_raw_t1_child,
            Gender_raw_t1,
+           Gender_raw_t2,
            age_months_raw_t1,
+           age_years_raw_t1,
+           age_months_raw_t2,
+           age_years_raw_t2,
+           testdate_raw_t1,
+           testdate_raw_t2,
            SES_birthd_mom_t1,
            SES_birthd_dad_t1,
            SES_birthd_mom_t2,
            SES_birthd_dad_t2,
            SES_whoanswers_t1,
            SES_whoanswers_t2,
-           age_months_raw_t2,
+           SES_net_income_PPPadjusted_t1,
+           SES_net_income_PPPadjusted_t2,
+           SES_schooledu_1_t1,
+           SES_schooledu_1_t2,
+           SES_ethnic_ch_t1,
+           SES_ethnic_ch_t2,
+           SES_dur_jobedu_1_t1,
+           SES_dur_jobedu_1_t2,
            CPA_1:CPA_12_t1,
            CPA_1_V2:CPA_12_t2))
 ```
@@ -104,9 +117,28 @@ data <- data %>%
 ```{r names}
 colnames(data) <- c("id",
                    "site",
-                   "gender",
+                   "gender_t1",
+                   "gender_t2",
                    "age_months_t1",
+                   "age_years_t1",
                    "age_months_t2",
+                   "age_years_t2",
+                   "testdate_t1",
+                   "testdate_t2",
+                   "birthd_mom_t1",
+                   "birthd_dad_t1",
+                   "birthd_mom_t2",
+                   "birthd_dad_t2",
+                   "who_answers_t1",
+                   "who_answers_t2",
+                   "income_t1",
+                   "income_t2",
+                   "edu_t1",
+                   "edu_t2",
+                   "ethnicity_t1",
+                   "ethnicity_t2",
+                   "edu_duration_t1",
+                   "edu_duration_t2",
                    "cpa_1_t1",
                    "cpa_2_t1",
                    "cpa_3_rs_t1",
@@ -137,9 +169,15 @@ colnames(data) <- c("id",
 
 ```{r fix gender}
 data <- data %>% 
-  mutate(gender = case_when(
-    gender == "girl" ~ 1,
-    gender == "boy" ~ 0
+  mutate(gender_t1 = case_when(
+    gender_t1 == "girl" ~ 1,
+    gender_t1 == "boy" ~ 0
+  )) 
+
+data <- data %>% 
+  mutate(gender_t2 = case_when(
+    gender_t2 == "girl" ~ 1,
+    gender_t2 == "boy" ~ 0
   )) 
 ```
 
@@ -150,17 +188,6 @@ data <- data %>%
     site == "GE" ~ 2,
     site == "UK" ~ 3
   )) 
-```
-
-```{r fix variable types}
-# coerce into numeric format
-data <- data %>% 
-  mutate(
-    across(
-      .cols = site:cpa_12_t2,
-      .fns = ~ as.numeric(.)
-    )
-  )
 ```
 
 ```{r fix age}
@@ -210,9 +237,61 @@ data <- data %>%
   )
 ```
 
-#3. Descriptives
+```{r parent age}
+data <- data %>% 
+  mutate(
+    birthd_caregiver_t1 = case_when(
+      who_answers_t1 == 1 ~ birthd_mom_t1,
+      who_answers_t1 == 2 ~ birthd_dad_t1
+    )
+  )
 
-## Basic Descriptives
+data <- data %>% 
+  mutate(
+    birthd_caregiver_t2 = case_when(
+      who_answers_t2 == 1 ~ birthd_mom_t2,
+      who_answers_t2 == 2 ~ birthd_dad_t2
+    )
+  )
+
+data$birthd_caregiver_t1 <- lubridate::dmy(data$birthd_caregiver_t1)
+data$birthd_caregiver_t2 <- lubridate::dmy(data$birthd_caregiver_t2)
+data$testdate_t1 <- lubridate::dmy(data$testdate_t1)
+data$testdate_t2 <- lubridate::dmy(data$testdate_t2)
+
+data <- data %>% 
+  mutate(
+    age_caregiver_t1 = time_length(as.period(interval(start = birthd_caregiver_t1, end = testdate_t1)),
+                      unit = "year")
+  )
+
+data <- data %>% 
+  mutate(
+    age_caregiver_t2 = time_length(as.period(interval(start = birthd_caregiver_t2, end = testdate_t2)),
+                      unit = "year")
+  )
+  
+```
+
+```{r recode parent gender}
+data <- data %>% 
+  mutate(
+    who_answers_t1 = case_when(
+      who_answers_t1 == 1 ~ 1,
+      who_answers_t1 == 2 ~ 0,
+      TRUE ~ NA_integer_
+    )
+    )
+
+data <- data %>% 
+  mutate(
+    who_answers_t2 = case_when(
+      who_answers_t2 == 1 ~ 1,
+      who_answers_t2 == 2 ~ 0,
+      TRUE ~ NA_integer_
+    )
+    )
+```
 
 ```{r turn cpa to categorical variables}
 data <- data %>% 
@@ -230,13 +309,21 @@ data <- data %>%
   )
 ```
 
+#3. Descriptives
+
+## Basic Descriptives
+
 ```{r basic descriptives}
 skim(data)
 
 describe(data)
 ```
+```{r average income}
+income <- c(data$income_t1, data$income_t2)
+describe(income)
+```
 
-```{r}
+```{r age group frequencies}
 age_bins_t1 <- data %>% 
   count(age_group_t1, name = "Frequency") %>%
   mutate(Proportion = Frequency / sum(Frequency))
@@ -244,6 +331,40 @@ age_bins_t1 <- data %>%
 age_bins_t2 <- data %>% 
   count(age_group_t2, name = "Frequency") %>%
   mutate(Proportion = Frequency / sum(Frequency))
+```
+
+```{r education frequencies}
+education <- c(data$edu_t1, data$edu_t2)
+
+education <- fct_collapse(factor(education),
+                                     "5" = c("5", "6"))
+
+education_summary <- tibble(education) %>%
+  count(education, name = "Frequency") %>%
+  mutate(Proportion = Frequency / sum(Frequency))
+```
+
+```{r ethnicity}
+data <- data %>% 
+  mutate(
+    ethnicity_t1 = if_else(str_detect(ethnicity_t1, ","),
+                           "mixed",
+                           as.character(ethnicity_t1))
+  )
+
+data <- data %>% 
+  mutate(
+    ethnicity_t2 = if_else(str_detect(ethnicity_t2, ","),
+                           "mixed",
+                           as.character(ethnicity_t2))
+  )
+
+ethnicity <- c(data$ethnicity_t1, data$ethnicity_t2)
+
+ethnicity_summary <- tibble(ethnicity) %>% 
+    count(ethnicity, name = "Frequency") %>%
+  mutate(Proportion = Frequency / sum(Frequency))
+
 ```
 
 
@@ -291,6 +412,57 @@ data <- data %>%
       )
   ))
 ```
+
+### Canadian Sample
+
+```{r describe}
+data_can <- data %>% 
+  filter(site == 1)
+
+ describe(data_can)
+```
+
+```{r ethnicity canada}
+data_can <- data_can %>% 
+  mutate(
+    ethnicity_t1 = if_else(str_detect(ethnicity_t1, ","),
+                           "mixed",
+                           as.character(ethnicity_t1))
+  )
+
+data_can <- data_can %>% 
+  mutate(
+    ethnicity_t2 = if_else(str_detect(ethnicity_t2, ","),
+                           "mixed",
+                           as.character(ethnicity_t2))
+  )
+
+ethnicity <- c(data_can$ethnicity_t1, data_can$ethnicity_t2)
+
+ethnicity_summary <- tibble(ethnicity) %>% 
+    count(ethnicity, name = "Frequency") %>%
+  mutate(Proportion = Frequency / sum(Frequency))
+
+```
+
+```{r education canada}
+edu_duration <- c(data_can$edu_duration_t1, data_can$edu_duration_t2)
+
+edu_duration_summary <- tibble(edu_duration) %>%
+  mutate(edu_duration = as.integer(edu_duration)) %>% 
+  drop_na(edu_duration) %>% 
+  summarize(
+    n = n(),
+    mean = mean(edu_duration, na.rm = TRUE),
+    sd = sd(edu_duration, na.rm = TRUE)
+  )
+```
+
+```{r income canada}
+income_can <- c(data_can$income_t1, data_can$income_t2)
+describe(income_can)
+```
+
 
 ## Missing Data
 
