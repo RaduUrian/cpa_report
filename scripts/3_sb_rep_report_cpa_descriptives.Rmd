@@ -314,10 +314,37 @@ data <- data %>%
 ## Basic Descriptives
 
 ```{r basic descriptives}
-skim(data)
+skim <- skim(data)
 
-describe(data)
+outliers <- skim %>% 
+  filter(str_starts(skim_variable, "cpa")) %>%
+  mutate(missing = 1 - complete_rate) %>% 
+  select(skim_variable, missing) %>% 
+  rename(var = skim_variable)
+
+descriptives <- describe(data)
+
+descriptives <- descriptives %>%
+  rownames_to_column(var = "var") %>%           
+  filter(str_starts(var, "cpa")) %>%             
+  select(var, n, mean, sd, skew, kurtosis)  
+
+descriptives <- full_join(descriptives, outliers, by = "var")
+
+write.csv(descriptives, here("output", "cpa_descriptives.csv"))
 ```
+
+```{r attrition}
+attrition <- data %>% 
+  summarise(
+    n_t1            = sum(!is.na(testdate_t1)),                         # completed at T1
+    n_t2            = sum(!is.na(testdate_t2)),                         # completed at T2
+    lost_to_follow  = sum(!is.na(testdate_t1) &  is.na(testdate_t2)),   # present T1, missing T2
+    pct_lost        = round(lost_to_follow / n_t1 * 100, 1)             # %
+  )
+```
+
+
 ```{r average income}
 income <- c(data$income_t1, data$income_t2)
 describe(income)
