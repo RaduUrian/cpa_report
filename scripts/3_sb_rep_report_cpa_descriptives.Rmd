@@ -58,21 +58,23 @@ pacman::p_load(
   naniar,
   ggpubr,
   rstatix,
-  modelbased,
-  performance,
   haven,
   MVN,
   ggrepel,
-  see,
   lavaan,
   EFAtools,
   olsrr,
-  random.polychor.pa
+  random.polychor.pa,
+  easystats,
+  tidygraph,
+  ggraph,
+  pracma
 )
 
 # Remove scientific notations
 options(scipen = 999) 
 
+options("mc.cores"=6) 
 ```
 
 #2. Data Load
@@ -110,6 +112,7 @@ data <- data %>%
            SES_ethnic_ch_t2,
            SES_dur_jobedu_1_t1,
            SES_dur_jobedu_1_t2,
+           Attrition_timepoint2,
            CPA_1:CPA_12_t1,
            CPA_1_V2:CPA_12_t2))
 ```
@@ -139,6 +142,7 @@ colnames(data) <- c("id",
                    "ethnicity_t2",
                    "edu_duration_t1",
                    "edu_duration_t2",
+                   "attrition",
                    "cpa_1_t1",
                    "cpa_2_t1",
                    "cpa_3_rs_t1",
@@ -244,7 +248,9 @@ data <- data %>%
       who_answers_t1 == 1 ~ birthd_mom_t1,
       who_answers_t1 == 2 ~ birthd_dad_t1
     )
-  )
+  ) %>% 
+  relocate(birthd_caregiver_t1,
+           .before = who_answers_t1)
 
 data <- data %>% 
   mutate(
@@ -252,7 +258,9 @@ data <- data %>%
       who_answers_t2 == 1 ~ birthd_mom_t2,
       who_answers_t2 == 2 ~ birthd_dad_t2
     )
-  )
+  ) %>% 
+  relocate(birthd_caregiver_t2,
+           .before = who_answers_t2)
 
 data$birthd_caregiver_t1 <- lubridate::dmy(data$birthd_caregiver_t1)
 data$birthd_caregiver_t2 <- lubridate::dmy(data$birthd_caregiver_t2)
@@ -263,13 +271,17 @@ data <- data %>%
   mutate(
     age_caregiver_t1 = time_length(as.period(interval(start = birthd_caregiver_t1, end = testdate_t1)),
                       unit = "year")
-  )
+  ) %>% 
+  relocate(age_caregiver_t1,
+           .after = who_answers_t1)
 
 data <- data %>% 
   mutate(
     age_caregiver_t2 = time_length(as.period(interval(start = birthd_caregiver_t2, end = testdate_t2)),
                       unit = "year")
-  )
+  ) %>% 
+  relocate(age_caregiver_t2,
+           .after = who_answers_t2)
   
 ```
 
@@ -313,6 +325,29 @@ data <- data %>%
 
 ## Basic Descriptives
 
+```{r frequency tables}
+freq_prop <- data %>%
+  pivot_longer(cols = c(cpa_1_t1:cpa_12_t2), names_to = "item", values_to = "response") %>%
+  group_by(item, response) %>%
+  summarise(Frequency = n(), .groups = "drop") %>%
+  group_by(item) %>%
+  mutate(Proportion = Frequency / sum(Frequency)) %>%
+  arrange(item, response)
+
+write.csv(freq_prop, here("output", "frequency_table.csv"))
+```
+
+```{r fix cpa coding}
+# turn all '6' values (not seen) into NAs
+data <- data %>% 
+  mutate(
+    across(
+      .cols = cpa_1_t1:cpa_12_t2,
+      .fns = ~ if_else(.x == 6, NA_integer_, as.numeric(.))
+    )
+  )
+```
+
 ```{r basic descriptives}
 skim <- skim(data)
 
@@ -322,6 +357,8 @@ outliers <- skim %>%
   select(skim_variable, missing) %>% 
   rename(var = skim_variable)
 
+describe(data)
+
 descriptives <- describe(data)
 
 descriptives <- descriptives %>%
@@ -329,7 +366,7 @@ descriptives <- descriptives %>%
   filter(str_starts(var, "cpa")) %>%             
   select(var, n, mean, sd, skew, kurtosis)  
 
-descriptives <- full_join(descriptives, outliers, by = "var")
+descriptives <- tibble(full_join(descriptives, outliers, by = "var"))
 
 write.csv(descriptives, here("output", "cpa_descriptives.csv"))
 ```
@@ -337,9 +374,9 @@ write.csv(descriptives, here("output", "cpa_descriptives.csv"))
 ```{r attrition}
 attrition <- data %>% 
   summarise(
-    n_t1            = sum(!is.na(testdate_t1)),                         # completed at T1
-    n_t2            = sum(!is.na(testdate_t2)),                         # completed at T2
-    lost_to_follow  = sum(!is.na(testdate_t1) &  is.na(testdate_t2)),   # present T1, missing T2
+    n_t1            = sum(!is.na(age_months_t1)),                         # completed at T1
+    n_t2            = sum(!is.na(age_months_t2)),                         # completed at T2
+    lost_to_follow  = sum(!is.na(age_months_t1) &  is.na(age_months_t2)),   # present T1, missing T2
     pct_lost        = round(lost_to_follow / n_t1 * 100, 1)             # %
   )
 ```
@@ -392,28 +429,6 @@ ethnicity_summary <- tibble(ethnicity) %>%
     count(ethnicity, name = "Frequency") %>%
   mutate(Proportion = Frequency / sum(Frequency))
 
-```
-
-
-```{r frequency tables}
-freq_prop <- data %>%
-  pivot_longer(cols = c(cpa_1_t1:cpa_12_t2), names_to = "item", values_to = "response") %>%
-  group_by(item, response) %>%
-  summarise(Frequency = n(), .groups = "drop") %>%
-  group_by(item) %>%
-  mutate(Proportion = Frequency / sum(Frequency)) %>%
-  arrange(item, response)
-```
-
-```{r fix cpa coding}
-# turn all '6' values (not seen) into NAs
-data <- data %>% 
-  mutate(
-    across(
-      .cols = cpa_1_t1:cpa_12_t2,
-      .fns = ~ if_else(.x == 6, NA_integer_, as.numeric(.))
-    )
-  )
 ```
 
 ```{r collapse age bins}
@@ -495,56 +510,47 @@ describe(income_can)
 
 ```{r}
 data %>% 
-  select(age_months_t1, age_months_t2, gender, cpa_1_t1:cpa_12_t2) %>% 
+  select(age_months_t1, age_months_t2, gender_t1, cpa_1_t1:cpa_12_t2) %>% 
   naniar::vis_miss()
+
+data %>% 
+  select(cpa_1_t1:cpa_12_t2) %>% 
+  naniar::miss_var_summary() %>% 
+  arrange(variable)
 ```
 
 ```{r case-wise missing data prop}
-miss_case_table(data)
+data %>%
+  select(cpa_1_t1:cpa_12_t2) %>%
+  miss_case_table() %>%
+  mutate(cum_prop = cumsum(pct_cases))
 ```
 
 ```{r shadow matrix}
 # create shadow matrix
-data_missing_full_shadow <- bind_shadow(data,
-                                        only_miss = TRUE)
+data_missing_full_shadow <- data %>% 
+  select(site, gender_t1, age_years_t1, age_years_t2, cpa_1_t1:cpa_12_t2) %>% 
+  bind_shadow(only_miss = TRUE)
 
 # turn variable type into factor with 1 = NA, 0 = not NA
 data_missing_full_shadow <- data_missing_full_shadow %>%
+  select(-c(age_years_t2_NA)) %>% 
   mutate(across(
-      .cols = c(cpa_1_t1:cpa_12_t2_NA),
+      .cols = c(cpa_1_t1_NA:cpa_12_t2_NA),
       ~case_when(.x == "!NA" ~ 0,
                           .x == "NA" ~ 1)))
 
 ```
 
-```{r NA correlation plot}
-jpeg(file = here("output", "NA_correlation.jpeg"),   # The directory you want to save the file in
-    width = 700, # The width of the plot in inches
-    height = 700) # The height of the plot in inches
-
-# create correlation plot of missingness
-data_missing_full_shadow %>% 
-  dplyr::select(cpa_1_t1:cpa_12_t2_NA) %>%
-  cor(method = "spearman") %>% 
-  corrplot::corrplot(addCoef.col = 'black',
-                   type = "lower",
-                   diag = FALSE)
-
-# Step 3: Run dev.off() to create the file!
-dev.off()
-
-```
-
 ```{r overall missingness pattern}
 # open picture save interface
-jpeg(file = here("output", "all_correlations.jpeg"),
-    width = 800, # The width of the plot in inches
-    height = 800) # The height of the plot in inches
+jpeg(file = here("output", "all_correlations_na.jpeg"),
+    width = 2000, # The width of the plot in inches
+    height = 2000) # The height of the plot in inches
 
 # create plot
 data_missing_full_shadow %>% 
   mutate(across(c(cpa_1_t1_NA:cpa_12_t2_NA), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .))) %>% 
-  select(-c(id, site, age_group_t1, age_group_t2, language)) %>% 
   cor(use = "pairwise.complete.obs", 
       method = "spearman") %>% 
   corrplot::corrplot(addCoef.col = 'black',
@@ -557,27 +563,19 @@ dev.off()
 
 ```{r mean imputation}
 data_imputed <- data %>%
-  mutate(across(c(cpa_1_t1:cpa_12_t2), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .)))
-```
-
-## MVN
-
-```{r mvn}
-
-data_imputed %>% 
-  dplyr::select(-c(id, site, gender, age_months_t1, age_months_t2, language, age_group_t1, age_group_t2)) %>% 
-  mvn(mvn_test = "mardia" )
-
+  mutate(across(c(cpa_1_t1:cpa_12_t2), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .))) %>% 
+  select(id, cpa_1_t1:cpa_12_t2) %>% 
+  mutate(id = as.integer(as.factor(id)))
 ```
 
 ## Outliers
 
 ```{r fake regression model}
 # build fake regression of id on all predictors
-lm_id <- lm(id ~ cpa_1_t1 + cpa_2_t1 + cpa_3_rs_t1 + cpa_4_t1 + cpa_5_t1 + cpa_6_t1 +
-    cpa_7_t1 + cpa_8_t1 + cpa_9_t1 + cpa_10_t1 + cpa_11_RS_t1 + cpa_12_t1 
+lm_id <- lm(id ~ cpa_1_t1 + cpa_2_t1 + cpa_3_rs_t1 + cpa_4_t1 + cpa_5_rs_t1 + cpa_6_t1 +
+    cpa_7_t1 + cpa_8_t1 + cpa_9_t1 + cpa_10_t1 + cpa_11_rs_t1 + cpa_12_t1 
     + cpa_1_v2_t2 + cpa_2_t2 + cpa_3_rs_t2 + cpa_4_t2 + cpa_5_v2_t2 + cpa_6_t2 +
-    cpa_7_t2 + cpa_8_t2 + cpa_9_t2 + cpa_10_t2 + cpa_11_RS_t2 + cpa_12_t2,
+    cpa_7_t2 + cpa_8_t2 + cpa_9_t2 + cpa_10_t2 + cpa_11_rs_t2 + cpa_12_t2,
             data = data_imputed)
 
 summary(lm_id)
@@ -642,7 +640,7 @@ ggsave(here("output", "mv_outiers_hist.jpeg"),
 
 ```{r variance ratios}
 data_imputed_numeric <- data_imputed %>% 
-  select(-c(id, gender, age_months_t1, age_months_t2))
+  select(c(cpa_1_t1:cpa_12_t2))
 
 # Calculate variances for all variables
 variances <- sapply(data_imputed_numeric, var)
@@ -685,13 +683,23 @@ jpeg(file = here("output", "all_correlations.jpeg"),
     width = 1200, # The width of the plot in inches
     height = 1200) # The height of the plot in inches
 
-data_imputed %>% 
+cpa_cor <- data_imputed %>% 
   dplyr::select(cpa_1_t1:cpa_12_t2) %>% 
   mutate(across(c(cpa_1_t1:cpa_12_t2), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .))) %>% 
-  cor() %>% 
-  corrplot::corrplot(addCoef.col = 'black',
+  correlation::correlation(method = "polychoric")
+
+cpa_cor_summary <- cpa_cor %>% 
+  summary()
+
+cpa_cir_plot <- cpa_cor_summary %>% 
+  plot()
+
+corrplot::corrplot(cpa_cor, 
+                   addCoef.col = 'black',
                    type = "lower",
                    diag = FALSE)
+
+write.csv(tibble(cpa_cor), here("output", "cpa_cor.csv"))
 
 # run dev.off() to create the file
 dev.off()
@@ -708,6 +716,7 @@ eigen(cov_matrix)
 det(cov_matrix) 
 solve(cov_matrix) 
 cov2cor(cov_matrix)
+pracma::cond(cov_matrix)
 ```
 
 ## Factorability
